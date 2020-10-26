@@ -36,63 +36,71 @@ const loginValidation = [
         .withMessage('Your password must be at least eight charachters')
 ];
 
-router.post('/signup', validate, async (req, res) => {
+router.post("/signup", validate, async (req, res) => {
+	const errors = validationResult(req);
 
-    const errors = validationResults(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
 
-    if(!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
+	const userExist = await User.findOne({ email: req.body.email });
+	if (userExist)
+		return res
+			.status(400)
+			.send({ success: false, message: "Email already exists" });
 
-    const userExist = await User.findOne({email: req.body.email});
-    if (userExist) return res.status(400).send({success: false, message: 'Email already exists'});
+	const salt = await bcrypt.genSalt();
+	const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-    const salt = await bcrypt.genSalt();
-    const hashPassword = await bcrypt.hash(req.body.password, salt)
+	const user = new User({
+		userName: req.body.userName,
+		email: req.body.email,
+		password: hashPassword,
+	});
+	try {
+		const savedUser = await user.save();
+		// create and assign a token
 
-
-    const user = new User({
-        userName: req.body.userName,
-        email: req.body.email,
-        password: hashPassword,
-    });
-    try{
-        const savedUser = await user.save();
-        // create and assign a token
-
-        const token = generateToken(user);
-        res.send({
-            success: true,
-            data: {
-                id: savedUser._id,
-                userName: savedUser.userName, 
-                email: savedUser.email,
-            },
-            token
-        });
-    } catch (error) {
-        res.status(400).send({success: false, error});
-    }
+		const token = generateToken(user);
+		res.send({
+			success: true,
+			data: {
+				id: savedUser._id,
+				userName: savedUser.userName,
+				email: savedUser.email,
+			},
+			token,
+		});
+	} catch (error) {
+		res.status(400).send({ success: false, error });
+	}
 });
 
-router.post('/login', loginValidation, async (req, res) => {
+router.post("/login", loginValidation, async (req, res) => {
+	const errors = validationResults(req);
 
-    const errors = validationResults(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).json({ errors: errors.array() });
+	}
 
-    if(!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
+	const user = await User.findOne({ email: req.body.email });
+	if (!user)
+		return res
+			.status(404)
+			.send({ success: false, message: "User is not signed up" });
 
-    const user = await User.findOne({email: req.body.email})
-    if(!user) return res.status(404).send({success: false, message: 'User is not signed up'});
+	const validPassword = await bcrypt.compare(req.body.password, user.password);
+	if (!validPassword)
+		return res
+			.status(404)
+			.send({ success: false, message: "Invalid Email or Password" });
 
-    const validPassword = await bcrypt.compare(req.body.password, user.password)
-    if(!validPassword) return res.status(404).send({success: false, message:'Invalid Email or Password'});
-    
-    // creating and assigning a token
+	// creating and assigning a token
 
-    const token = generateToken(user);
-    res.header('auth-token', token).send({success: true, message: 'Logged in successfully !', token}); 
+	const token = generateToken(user);
+	res
+		.header("auth-token", token)
+		.send({ success: true, message: "Logged in successfully !", token });
 });
 
 module.exports = router;
