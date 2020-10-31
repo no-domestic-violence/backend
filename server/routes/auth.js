@@ -1,39 +1,34 @@
-const express = require('express');
-const {check, validationResult} = require('express-validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const { check, validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const User = require('../models/User');
-const { findOne } = require('../models/User');
+const User = require("../models/User");
+const { findOne } = require("../models/User");//??
 
 const validate = [
-    check ('username')
-        .isLength({min: 2})
-        .withMessage('Your username is required'),
-    check ('email')
-        .isEmail()
-        .withMessage('Please provide a valid email address'),
-    check('password')
-        .isLength({min: 8})
-        .withMessage('Your password must be at least eight charachters')
+	check("username")
+		.isLength({ min: 2 })
+		.withMessage("Your username is required"),
+	check("email").isEmail().withMessage("Please provide a valid email address"),
+	check("password")
+		.isLength({ min: 8 })
+		.withMessage("Your password must be at least eight charachters"),
 ];
 
-const generateToken = user =>  {
-    return jwt.sign(
-        {_id: user._id, email: user.email, username: user.username},
-        'SECRET_KEY'
-    );
-}
+const generateToken = (user) => {
+	return jwt.sign(
+		{ _id: user._id, email: user.email, username: user.username },
+		"SECRET_KEY"
+	);
+};
 
 const loginValidation = [
-
-    check ('email')
-        .isEmail()
-        .withMessage('Please provide a valid email address'),
-    check('password')
-        .isLength({min: 8})
-        .withMessage('Your password must be at least eight charachters')
+	check("email").isEmail().withMessage("Please provide a valid email address"),
+	check("password")
+		.isLength({ min: 8 })
+		.withMessage("Your password must be at least eight charachters"),
 ];
 
 router.post("/signup", validate, async (req, res) => {
@@ -57,7 +52,6 @@ router.post("/signup", validate, async (req, res) => {
 		password: hashPassword,
 	});
 	try {
-		// const savedUser = await user.save();
 		// create and assign a token
 		const token = generateToken(user);
 		res.send({
@@ -78,8 +72,7 @@ router.post("/login", loginValidation, async (req, res) => {
 	}
 
 	const user = await User.findOne({ email: req.body.email });
-	console.log(user)
-	
+
 	if (!user)
 		return res
 			.status(404)
@@ -91,8 +84,6 @@ router.post("/login", loginValidation, async (req, res) => {
 			.status(404)
 			.send({ success: false, message: "Invalid Email or Password" });
 
-	// creating and assigning a token
-
 	const token = generateToken(user);
 
 	res
@@ -101,11 +92,3 @@ router.post("/login", loginValidation, async (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-
-
-
-
