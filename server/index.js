@@ -8,9 +8,12 @@ app.use(express.json());
 // Importing routes
 const authRoutes = require("./routes/auth");
 const verifyToken = require("./routes/verifyToken");
+const shelterRoutes = require('./routes/sheltersRoutes');
 
 // Setting routes
 app.use(authRoutes);
+app.use(shelterRoutes);
+
 
 //app.get('api/user/profile', verifyToken, (req, res) => {
 //res.send({success: true, data: req.user})
