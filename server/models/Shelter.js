@@ -4,12 +4,16 @@ const mongoose = require('mongoose');
 const shelterSchema = new mongoose.Schema({
     latitude: {
 		type: Number,
+        required: true, 
 	},
 	longitude: {
 		type: Number,
+        required: true, 
+
 	},
 	place_name: {
 		type: String,
+        required: true, 
 	},
 	description: {
 		type: String,

@@ -9,10 +9,12 @@ app.use(express.json());
 const authRoutes = require("./routes/auth");
 const verifyToken = require("./routes/verifyToken");
 const shelterRoutes = require('./routes/sheltersRoutes');
+const hotlinesRoutes = require('./routes/hotlinesRoutes');
 
 // Setting routes
 app.use(authRoutes);
 app.use(shelterRoutes);
+app.use(hotlinesRoutes);
 
 
 //app.get('api/user/profile', verifyToken, (req, res) => {
