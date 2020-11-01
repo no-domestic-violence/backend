@@ -33,6 +33,7 @@ const loginValidation = [
 
 router.post("/signup", validate, async (req, res) => {
 	const errors = validationResult(req);
+
 	if (!errors.isEmpty()) {
 		return res.status(422).json({ errors: errors.array() });
 	}
@@ -51,7 +52,9 @@ router.post("/signup", validate, async (req, res) => {
 		email: req.body.email,
 		password: hashPassword,
 	});
+	
 	try {
+		await user.save();
 		// create and assign a token
 		const token = generateToken(user);
 		res.send({
