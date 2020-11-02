@@ -1,21 +1,29 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/key');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(express.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+);
 
 // Importing routes
 const authRoutes = require('./routes/auth');
 // const verifyToken = require('./routes/verifyToken');
 const shelterRoutes = require('./routes/sheltersRoutes');
 const hotlinesRoutes = require('./routes/hotlinesRoutes');
+const sosContactRoutes = require('./routes/sosContactRoutes');
 
 // Setting routes
 app.use(authRoutes);
 app.use(shelterRoutes);
 app.use(hotlinesRoutes);
+app.use(sosContactRoutes);
 
 // app.get('api/user/profile', verifyToken, (req, res) => {
 // res.send({success: true, data: req.user})
