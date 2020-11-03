@@ -1,16 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/key');
-const bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(express.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  }),
-);
+app.use(express.urlencoded({ extended: true }));
 
 // Importing routes
 const authRoutes = require('./routes/auth');
@@ -37,6 +32,8 @@ mongoose
   .connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB is connected!!!!'))
   .catch((err) => console.log(err));
+
+mongoose.set('useCreateIndex', true);
 
 const port = process.env.PORT || 3001;
 
