@@ -11,7 +11,7 @@ const validate = [
   check('contact_1.message').notEmpty().withMessage('Please enter a message.'),
 ];
 
-router.route('/emergency').get(function (req, res) {
+router.route('/users').get(function (req, res) {
   Contact.find(function (err, foundContacts) {
     if (!err) {
       res.send(foundContacts);
@@ -20,8 +20,9 @@ router.route('/emergency').get(function (req, res) {
     }
   });
 });
+
 router
-  .route('/emergency/:username')
+  .route('/users/:username/contacts')
 
   .get(function (req, res) {
     Contact.findOne(
@@ -39,14 +40,36 @@ router
     );
   })
 
-  .patch(function (req, res) {
-    Contact.updateOne(
-      { username: req.params.username }, //condition
+  //   .patch(function (req, res) {
+  //     Contact.updateOne(
+  //       { username: req.params.username }, //condition
+  //       { $set: req.body },
+  //       //{ upsert: true },
+  //       function (err) {
+  //         if (!err) {
+  //           res.send('Successfully added contact');
+  //           console.log(req.body);
+  //           console.log(req.params);
+  //         } else {
+  //           res.send(err);
+  //         }
+  //       },
+  //     );
+  //   });
+
+  .patch(validate, async (req, res) => {
+    const errors = validationResult(req);
+    const hasErrors = !errors.isEmpty();
+    if (hasErrors) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    const foundUser = await Contact.findOneAndUpdate(
+      { username: req.params.username },
       { $set: req.body },
-      //{ upsert: true },
-      function (err) {
+      { new: true },
+      function (err, foundContact) {
         if (!err) {
-          res.send('Successfully added contact');
+          res.send('Successfully added contact.');
           console.log(req.body);
           console.log(req.params);
         } else {
@@ -55,28 +78,6 @@ router
       },
     );
   });
-
-//   .patch(validate, async (req, res) => {
-//     const errors = validationResult(req);
-//     const hasErrors = !errors.isEmpty();
-//     if (hasErrors) {
-//       return res.status(422).json({ errors: errors.array() });
-//     }
-//     const foundUser = await Contact.findOneAndUpdate(
-//       { username: req.params.username },
-//       { $set: req.body },
-//       { new: true },
-//       function (err, foundContact) {
-//         if (!err) {
-//           res.send('Successfully added contact.');
-//           console.log(req.body);
-//           console.log(req.params);
-//         } else {
-//           res.send(err);
-//         }
-//       },
-//     );
-//   });
 
 // .delete(function (req, res){
 //     Contact.deleteOne( { })
