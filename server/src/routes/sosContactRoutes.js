@@ -1,16 +1,18 @@
 const express = require('express');
 const Contact = require('../models/User');
+
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
-const validate = [
-  check('contact_1.name').notEmpty().withMessage('Contact name is required.'),
-  check('contact_1.phone')
-    .notEmpty()
-    .withMessage('Contact phone number is required.'),
-  check('contact_1.message').notEmpty().withMessage('Please enter a message.'),
-];
+// const validate = [
+//   check('contact_1.name').notEmpty().withMessage('Contact name is required.'),
+//   check('contact_1.phone')
+//     .notEmpty()
+//     .withMessage('Contact phone number is required.'),
+//   check('contact_1.message').notEmpty().withMessage('Please enter a message.'),
+// ];
 
+//this gets all the user data
 router.route('/users').get(function (req, res) {
   Contact.find(function (err, foundContacts) {
     if (!err) {
@@ -39,45 +41,57 @@ router
       },
     );
   })
-
-  //   .patch(function (req, res) {
-  //     Contact.updateOne(
-  //       { username: req.params.username }, //condition
-  //       { $set: req.body },
-  //       //{ upsert: true },
-  //       function (err) {
-  //         if (!err) {
-  //           res.send('Successfully added contact');
-  //           console.log(req.body);
-  //           console.log(req.params);
-  //         } else {
-  //           res.send(err);
-  //         }
-  //       },
-  //     );
-  //   });
-
-  .patch(validate, async (req, res) => {
-    const errors = validationResult(req);
-    const hasErrors = !errors.isEmpty();
-    if (hasErrors) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    const foundUser = await Contact.findOneAndUpdate(
-      { username: req.params.username },
+  //TODO: Make $push work, current code only replaces the existing object
+  .patch(function (req, res) {
+    Contact.updateOne(
+      { username: req.params.username }, //condition
       { $set: req.body },
+      // {
+      //   $push: {
+      //     contacts: {
+      //       name: req.body.name,
+      //       phone: req.body.phone,
+      //       message: req.body.message,
+      //     },
+      //   },
+      // },
       { new: true },
-      function (err, foundContact) {
+      function (err) {
         if (!err) {
-          res.send('Successfully added contact.');
+          res.send('Successfully added contact');
           console.log(req.body);
           console.log(req.params);
         } else {
           res.send(err);
+          console.log(req.body);
         }
       },
     );
   });
+
+//TODO: Validation
+
+// .patch(validate, async (req, res) => {
+//   const errors = validationResult(req);
+//   const hasErrors = !errors.isEmpty();
+//   if (hasErrors) {
+//     return res.status(422).json({ errors: errors.array() });
+//   }
+//   const foundUser = await Contact.findOneAndUpdate(
+//     { username: req.params.username },
+//     { $set: req.body },
+//     { new: true },
+//     function (err, foundContact) {
+//       if (!err) {
+//         res.send('Successfully added contact.');
+//         console.log(req.body);
+//         console.log(req.params);
+//       } else {
+//         res.send(err);
+//       }
+//     },
+//   );
+// });
 
 // .delete(function (req, res){
 //     Contact.deleteOne( { })
