@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 mongoose
-  .connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(config.mongoURI || process.env.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB is connected!!!!'))
   .catch((err) => console.log(err));
 
