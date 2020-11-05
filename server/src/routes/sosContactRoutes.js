@@ -1,7 +1,6 @@
 const express = require('express');
 const Contact = require('../models/User');
-
-const { check, validationResult } = require('express-validator');
+// const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
 // const validate = [
@@ -12,64 +11,58 @@ const router = express.Router();
 //   check('contact_1.message').notEmpty().withMessage('Please enter a message.'),
 // ];
 
-//this gets all the user data
-router.route('/users').get(function (req, res) {
-  Contact.find(function (err, foundContacts) {
+// this gets all the user data
+router.route('/users').get((req, res) => {
+  Contact.find((err, foundContacts) => {
     if (!err) {
-      res.send(foundContacts);
-    } else {
-      res.send(err);
+      return res.send(foundContacts);
     }
+    return res.send(err);
   });
 });
 
 router
   .route('/users/:username/contacts')
 
-  .get(function (req, res) {
+  .get((req, res) => {
     Contact.findOne(
       {
         username: req.params.username,
       },
-      function (err, foundContact) {
+      (err, foundContact) => {
         if (foundContact) {
           res.send(foundContact);
-          console.log(req.params);
         } else {
           res.send('No user matching that username was found.');
         }
       },
     );
   })
-  //TODO: Make $push work, current code only replaces the existing object
-  .patch(function (req, res) {
+
+  .patch((req, res) => {
     Contact.updateOne(
-      { username: req.params.username }, //condition
-      { $set: req.body },
-      // {
-      //   $push: {
-      //     contacts: {
-      //       name: req.body.name,
-      //       phone: req.body.phone,
-      //       message: req.body.message,
-      //     },
-      //   },
-      // },
+      { username: req.params.username }, // condition
+      {
+        $push: {
+          contacts: {
+            name: req.body.name,
+            phone: req.body.phone,
+            message: req.body.message,
+          },
+        },
+      },
       { new: true },
-      function (err) {
+      (err) => {
         if (!err) {
           res.send('Successfully added contact');
-          console.log(req.body);
-          console.log(req.params);
         } else {
           res.send(err);
-          console.log(req.body);
         }
       },
     );
   });
 
-//TODO: Validation
+// TODO: Validation
 
 // .patch(validate, async (req, res) => {
 //   const errors = validationResult(req);
