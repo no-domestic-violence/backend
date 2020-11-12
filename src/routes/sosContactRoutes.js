@@ -55,35 +55,33 @@ router
       (err) => {
         if (!err) {
           res.send('Successfully added contact');
-          console.log(req.body);
+        } else {
+          res.send(err);
+        }
+      },
+    );
+  })
+
+  .delete((req, res) => {
+    Contact.updateOne(
+      { username: req.params.username },
+      {
+        $pull: {
+          contacts: {
+            _id: req.query.id,
+          },
+        },
+      },
+      { safe: true },
+      (err) => {
+        if (!err) {
+          res.send('Successfully deleted Contact');
         } else {
           res.send(err);
         }
       },
     );
   });
-
-router.delete(`/users/:username/delete`, (req, res) => {
-  Contact.updateOne(
-    { username: req.params.username },
-    {
-      $pull: {
-        contacts: {
-          _id: req.query.id,
-        },
-      },
-    },
-    { safe: true },
-    (err) => {
-      if (!err) {
-        res.send('Successfully deleted Contact');
-        console.log(req.query);
-      } else {
-        res.send(err);
-      }
-    },
-  );
-});
 
 // TODO: Validation
 
