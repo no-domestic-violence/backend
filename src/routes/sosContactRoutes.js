@@ -60,6 +60,27 @@ router
         }
       },
     );
+  })
+
+  .delete((req, res) => {
+    Contact.updateOne(
+      { username: req.params.username },
+      {
+        $pull: {
+          contacts: {
+            _id: req.query.id,
+          },
+        },
+      },
+      { safe: true },
+      (err) => {
+        if (!err) {
+          res.send('Successfully deleted Contact');
+        } else {
+          res.send(err);
+        }
+      },
+    );
   });
 
 // TODO: Validation
@@ -86,8 +107,10 @@ router
 //   );
 // });
 
-// .delete(function (req, res){
-//     Contact.deleteOne( { })
+// delete first contact
+// .patch((req, res)=>{
+//     Contact.updateOne( { username: req.params.username },
+//       { $pull: { contacts[0]}})
 // })
 
 module.exports = router;
