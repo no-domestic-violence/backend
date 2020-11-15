@@ -21,6 +21,30 @@ router.route('/users').get((req, res) => {
   });
 });
 
+// updating an existing contact
+router.route('/users/:username/contacts/:_id').patch((req, res) => {
+  Contact.findOneAndUpdate(
+    {
+      username: req.params.username,
+    }, // condition
+    {
+      $set: {
+        'contacts.$[contact].name': req.body.name,
+        'contacts.$[contact].phone': req.body.phone,
+        'contacts.$[contact].message': req.body.message,
+      },
+    },
+    { arrayFilters: [{ 'contact._id': req.params._id }] },
+    (err) => {
+      if (!err) {
+        res.send('Successfully edited contact');
+      } else {
+        res.send(err);
+      }
+    },
+  );
+});
+
 router
   .route('/users/:username/contacts')
 
@@ -38,7 +62,7 @@ router
       },
     );
   })
-
+  // adding new contact
   .patch((req, res) => {
     Contact.updateOne(
       { username: req.params.username }, // condition
