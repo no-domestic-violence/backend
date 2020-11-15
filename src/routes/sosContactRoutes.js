@@ -38,10 +38,8 @@ router.route('/users/:username/contacts/:_id').patch((req, res) => {
     (err) => {
       if (!err) {
         res.send('Successfully edited contact');
-        console.log(req.params);
       } else {
         res.send(err);
-        console.log(req.params);
       }
     },
   );
