@@ -29,12 +29,12 @@ router.route('/users/:username/contacts/:_id').patch((req, res) => {
     }, // condition
     {
       $set: {
-        'contacts.$[el].name': req.body.name,
-        'contacts.$[el].phone': req.body.phone,
-        'contacts.$[el].message': req.body.message,
+        'contacts.$[contact].name': req.body.name,
+        'contacts.$[contact].phone': req.body.phone,
+        'contacts.$[contact].message': req.body.message,
       },
     },
-    { arrayFilters: [{ 'el._id': req.params._id }] },
+    { arrayFilters: [{ 'contact._id': req.params._id }] },
     (err) => {
       if (!err) {
         res.send('Successfully edited contact');
