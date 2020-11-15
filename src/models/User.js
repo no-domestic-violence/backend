@@ -14,16 +14,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   password: { type: String, required: true },
-  // contact_1: {
-  //   name: { type: String, default: '' },
-  //   phone: { type: String, default: '' },
-  //   message: { type: String, default: '' },
-  // },
-  // contact_2: {
-  //   name: { type: String, default: '' },
-  //   phone: { type: String, default: '' },
-  //   message: { type: String, default: '' },
-  // },
+
   contacts: [
     {
       name: { type: String },
@@ -32,5 +23,4 @@ const userSchema = new mongoose.Schema({
     },
   ],
 });
-
 module.exports = mongoose.model('User', userSchema);
