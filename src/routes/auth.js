@@ -119,7 +119,7 @@ router.post('/changePassword', async (req, res) => {
 });
 
 router.delete('/deleteUser', async (req, res) => {
-  const username = req.query['0'];
+  const username = req.query.username;
   User.findOneAndDelete({ username })
     .then((user) => {
       if (!user) return res.status(404).send('User not found');
