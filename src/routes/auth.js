@@ -101,8 +101,7 @@ router.post('/login', loginValidation, async (req, res) => {
 
 router.post('/changePassword', async (req, res) => {
   const { email, oldPassword, password } = req.body;
-
-  if (!email || !oldPassword || password) {
+  if (!email || !oldPassword) {
     return res.status(422).json({ message: 'Provide email and password!' });
   }
   const user = await User.findOne({ email });
