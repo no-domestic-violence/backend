@@ -99,4 +99,38 @@ router.post('/login', loginValidation, async (req, res) => {
   });
 });
 
+router.post('/changePassword', async (req, res) => {
+  const { email, oldPassword, password } = req.body;
+  if (!email || !oldPassword) {
+    return res.status(422).json({ message: 'Provide email and password!' });
+  }
+  const user = await User.findOne({ email });
+  const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+  if (!isPasswordCorrect) {
+    return res.status(400).json({ message: 'Old password is not correct' });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedNewPassword = await bcrypt.hash(password, salt);
+
+  user.password = hashedNewPassword;
+  await user.save();
+  res.send('You updated the password');
+});
+
+router.delete('/deleteUser', async (req, res) => {
+  const username = req.query.username;
+  User.findOneAndDelete({ username })
+    .then((user) => {
+      if (!user) return res.status(404).send('User not found');
+      res.status(202).json({
+        user,
+        message: 'User was deleted!',
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 module.exports = router;
