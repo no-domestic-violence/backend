@@ -3,17 +3,17 @@
 
 ## Table of contents
 
-- [Project Description](#--project-description)
-- [Tech Stack](#--tech-stack)
-- [Application architecture diagram](#--application-architecture-diagram)
+- [Project Description](#project-description)
+- [Tech Stack](#tech-stack)
+- [Application architecture diagram](#application-architecture-diagram)
 - [Data Model](#--data-model)
-- [Folder structure](#--folder-structure)
-- [Setup](#--setup)
-- [Authors of the project](#--authors-of-the-project)
+- [Folder structure](#folder-structure)
+- [Setup](#setup)
+- [Authors of the project](#authors-of-the-project)
 
 
 ## Project Description
-
+POOL project is a mobile application that aims to help the survivors of domestic violence. The main features of the app are: resources in forms of curated articles, videos & podcasts about intimate partner violence, finding shelters and hotlines. Signed up users can have additional access to emergency contact features. 
 
 ## Tech Stack
 
@@ -30,6 +30,13 @@
 ![Architecture diagram](app_architecture.png)
 
 ## Data Model
+Why NoSQL ?
+###
+The main reasons for choosing MongoDB in POOL project are as below:
+- Flexibility → Since the Pool project is in the development phase, it does not have fixed data models. Therefore, the database system may need to accommodate frequent design changes and new features.
+- Prioritizing scalability over consistency→ The project needs to store dynamic structured data at large scale
+- Performing Geolocation Operations → Map is one of the main features of the app which needs frequent and fast geospatial querying.
+- Storing large volumes of data without relations → Some of the collections such as shelters, hotlines and resources do not have relations.
 
 ## Folder Structure
 
