@@ -1,9 +1,37 @@
-[![Depfu](https://badges.depfu.com/badges/9916734af8c74c90ee3959bbdc0fae77/status.svg)](https://depfu.com)
 [![Depfu](https://badges.depfu.com/badges/9916734af8c74c90ee3959bbdc0fae77/overview.svg)](https://depfu.com/github/no-domestic-violence/backend?project_id=17563)
 [![Depfu](https://badges.depfu.com/badges/9916734af8c74c90ee3959bbdc0fae77/count.svg)](https://depfu.com/github/no-domestic-violence/backend?project_id=17563)
 
+## Table of contents
 
-**Folder Structure**
+- [Project Description](#--project-description)
+- [Tech Stack](#--tech-stack)
+- [Application architecture diagram](#--application-architecture-diagram)
+- [Data Model](#--data-model)
+- [Folder structure](#--folder-structure)
+- [Setup](#--setup)
+- [Authors of the project](#--authors-of-the-project)
+
+
+## Project Description
+
+
+## Tech Stack
+
+- Node.js
+- Express
+- Mongoose
+- Mongo DB
+- Json Web Token
+- Bcryptjs
+- Heroku
+
+## Application architecture diagram
+
+![Architecture diagram](app_architecture.png)
+
+## Data Model
+
+## Folder Structure
 
 ```s
 └── src
@@ -29,35 +57,51 @@
     ├── .eslintrc
     ├── README.md
 ```
+## Setup 
 
 **To run locally**
 
-1. Install dependencies:
+1. Clone this repo by running the following command:
+
+```s
+git clone https://github.com/no-domestic-violence/backend.git
+cd backend
+```
+
+2. Install dependencies:
 
 ```s
 npm install
 ```
 
-2. Start environment
+3. Create development.js file inside of config folder and add the following environment variables: 
+
+```s
+module.exports = {
+  mongoURI: 'your mongodb atlas uri',
+  JWTSecret: 'your JWTSecret uri',
+};
+```
+
+4. Start environment
 
 ```s
 npm start
 ```
+5. Open http://localhost:3001 to view it in the browser.
 
-Runs the app in the development mode.
-Open http://localhost:3001 to view it in the browser.
-
-3. Before merging to master, check errors and prettier rules
+6. Before merging to master, check errors and prettier rules
 
 ```s
 npm lint
 ```
 
-**To test with device in development modemode**
+**The api uses Heroku for production**
 
-1. You need to connect to MongoAtlas by providing the MONGOURI
+- Production URL: https://pool-api-mobile.herokuapp.com/
+- Not protected endpoints: /shelters, /hotlines
 
-**Heroku for development**
+**To use Heroku for development**
 
 1. Check that app is running
 
@@ -76,8 +120,9 @@ heroku builds
 ```s
 heroku build:cancel
 ```
+---
+## Authors of the project:
 
-**The api uses Heroku for deployment**
-
-- Base URL: https://pool-api-mobile.herokuapp.com/
-- Not protected endpoints: /shelters, /hotlines
+- Soyoon Choi  
+- Irina Baeva
+- Behnaz Derakhshani 
