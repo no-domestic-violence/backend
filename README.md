@@ -38,6 +38,8 @@ The main reasons for choosing MongoDB in POOL project are as below:
 - Performing Geolocation Operations → Map is one of the main features of the app which needs frequent and fast geospatial querying.
 - Storing large volumes of data without relations → Some of the collections such as shelters, hotlines and resources do not have relations.
 
+![DB Model](db_model.png)
+
 ## Folder Structure
 
 ```s
