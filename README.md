@@ -38,6 +38,12 @@ The main reasons for choosing MongoDB in POOL project are as below:
 - Performing Geolocation Operations → Map is one of the main features of the app which needs frequent and fast geospatial querying.
 - Storing large volumes of data without relations → Some of the collections such as shelters, hotlines and resources do not have relations.
 
+##
+
+Users can perform CRUD operations on contacts and bookmarks. Other data such as articles, videos and podcasts are read only.
+Contacts document is embedded in the users collection for optimal querying. Since a user can have maximum 2 emergency contacts (one-to-few relationship), the document size would not exceed the limit.
+A user can add as many bookmarks as they want (one-to-many relationship). As a lot of data is updated frequently in the bookmarks collection, referencing was chosen for better performance.
+Each article, video, podcast has one or few violence type tags. The number of violence types are limited, thus another collection is not needed.
 
 
 ## Folder Structure
