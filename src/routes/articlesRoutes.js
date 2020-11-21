@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Getting all the articles
 router.route('/articles').get((req, res) => {
+    console.log('All articles are shown');
     Articles.find((err, foundArticles) => {
       if (!err) {
         return res.send(foundArticles);
@@ -16,11 +17,11 @@ router.route('/articles').get((req, res) => {
 
 // Getting a specific article
 router.get('/articles/:id', function (req, res) {
-    console.log('get req for single article');
+    console.log('One article is chosen');
     Article.findById(req.params.id)
     .exec(function(err, article){
         if (err){
-            console.log("error");
+            console.log(err);
         }else {
             res.send(article);
         }
@@ -28,7 +29,7 @@ router.get('/articles/:id', function (req, res) {
     });
 });
 
-// Bookmarking an article
+// To Do : Bookmarking an article
 
 module.exports = router;
 

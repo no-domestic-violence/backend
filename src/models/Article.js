@@ -10,17 +10,17 @@ const articleSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
+    text: {
       type: String,
       required: true,
     },
 
-    urlToImage: {
+    url_to_image: {
       type: String,
       required: true,
     },
     violence_type: {
-      type: String,
+      type: [String],
       required: true,
     },
     created_at: {
