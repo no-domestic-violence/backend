@@ -13,13 +13,13 @@ const authRoutes = require('./routes/auth');
 const shelterRoutes = require('./routes/sheltersRoutes');
 const hotlinesRoutes = require('./routes/hotlinesRoutes');
 const sosContactRoutes = require('./routes/sosContactRoutes');
-
+const articlesRoutes = require('./routes/articlesRoutes');
 // Setting routes
 app.use(authRoutes);
 app.use(shelterRoutes);
 app.use(hotlinesRoutes);
 app.use(sosContactRoutes);
-
+app.use(articlesRoutes);
 // app.get('api/user/profile', verifyToken, (req, res) => {
 // res.send({success: true, data: req.user})
 // })
