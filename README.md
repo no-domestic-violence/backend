@@ -143,5 +143,5 @@ heroku build:cancel
 ## Authors of the project:
 
 - Soyoon Choi: Update user, CRUD Contacts of user
-- Irina Baeva: Delete user, Create /Read Shelters and Hotlines
+- Irina Baeva: Delete /Update user, Create /Read Shelters and Hotlines
 - Behnaz Derakhshani: Create /Read user, Create /Read Articles
