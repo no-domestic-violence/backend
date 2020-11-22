@@ -58,11 +58,13 @@ Each article, video, podcast has one or few violence type tags. The number of vi
     │   └── production.js
     ├── index.js
     ├── models
+        ├── Article.js
     │   ├── Hotline.js
     │   ├── Shelter.js
     │   └── User.js
     └── routes
         ├── auth.js
+        ├── articlesRoutes.js
         ├── hotlinesRoutes.js
         ├── sheltersRoutes.js
         ├── sosContactRoutes.js
@@ -140,6 +142,6 @@ heroku build:cancel
 ---
 ## Authors of the project:
 
-- Soyoon Choi  
-- Irina Baeva
-- Behnaz Derakhshani 
+- Soyoon Choi: Update user, CRUD Contacts of user
+- Irina Baeva: Delete /Update user, Create /Read Shelters and Hotlines
+- Behnaz Derakhshani: Create /Read user, Create /Read Articles
