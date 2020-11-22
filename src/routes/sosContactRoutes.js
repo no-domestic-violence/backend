@@ -1,32 +1,13 @@
 const express = require('express');
 const Contact = require('../models/User');
-// const { check, validationResult } = require('express-validator');
 const router = express.Router();
-
-// const validate = [
-//   check('contact_1.name').notEmpty().withMessage('Contact name is required.'),
-//   check('contact_1.phone')
-//     .notEmpty()
-//     .withMessage('Contact phone number is required.'),
-//   check('contact_1.message').notEmpty().withMessage('Please enter a message.'),
-// ];
-
-// this gets all the user data
-router.route('/users').get((req, res) => {
-  Contact.find((err, foundContacts) => {
-    if (!err) {
-      return res.send(foundContacts);
-    }
-    return res.send(err);
-  });
-});
 
 // updating an existing contact
 router.route('/users/:username/contacts/:_id').patch((req, res) => {
   Contact.findOneAndUpdate(
     {
       username: req.params.username,
-    }, // condition
+    },
     {
       $set: {
         'contacts.$[contact].name': req.body.name,
@@ -106,35 +87,5 @@ router
       },
     );
   });
-
-// TODO: Validation
-
-// .patch(validate, async (req, res) => {
-//   const errors = validationResult(req);
-//   const hasErrors = !errors.isEmpty();
-//   if (hasErrors) {
-//     return res.status(422).json({ errors: errors.array() });
-//   }
-//   const foundUser = await Contact.findOneAndUpdate(
-//     { username: req.params.username },
-//     { $set: req.body },
-//     { new: true },
-//     function (err, foundContact) {
-//       if (!err) {
-//         res.send('Successfully added contact.');
-//         console.log(req.body);
-//         console.log(req.params);
-//       } else {
-//         res.send(err);
-//       }
-//     },
-//   );
-// });
-
-// delete first contact
-// .patch((req, res)=>{
-//     Contact.updateOne( { username: req.params.username },
-//       { $pull: { contacts[0]}})
-// })
 
 module.exports = router;
