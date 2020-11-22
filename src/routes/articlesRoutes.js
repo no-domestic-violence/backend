@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Getting all the articles
 router.route('/articles').get((req, res) => {
-  console.log('All articles are shown');
+  
   Article.find((err, foundArticles) => {
     if (!err) {
       return res.send(foundArticles);
@@ -17,7 +17,7 @@ router.route('/articles').get((req, res) => {
 
 // Getting a specific article
 router.get('/articles/:id', function (req, res) {
-  console.log('One article is chosen');
+  
   Article.findById(req.params.id).exec(function (err, article) {
     if (err) {
       console.log(err);
