@@ -25,9 +25,15 @@ POOL project is a mobile application that aims to help the survivors of domestic
 - Bcryptjs
 - Heroku
 
-## Application architecture diagram
+## Application Architecture Diagram
 
 ![Architecture diagram](app_architecture.png)
+
+The components implements the following functionalities: 
+
+- React Native: User registration, login, browse educational resources and add/delete bookmarks, search hotlines and shelters on map,  show/create/edit/remove emergency contacts.
+- Express/node.js server: Abstracts access to database for clients with RESTful API using Mongoose library: user management (login, register, delete), emergency contact management (read,add, edit, remove), bookmark management (add, remove, read), fetching resources, shelters, hotlines.
+- MongoDB database: stores the user related data (login credentials, emergency contacts, bookmarks, T&C acceptance history), geospatial data for shelters, resources, hotlines, and T&C.
 
 ## Data Model
 Why NoSQL ?
@@ -140,6 +146,37 @@ heroku builds
 heroku build:cancel
 ```
 ---
+
+## Routing for REST API
+
+API endpoints are set up on the server side for the client to be able to communicate with the database. The client can make a request to this route. On this route with a callback function, the server makes a request to the database and gets a response. Inside the callback, you can query the database by using different Mongoose helper functions.
+
+To query specific data with conditions, the client should specify the particular variable that needs to be fetched in the URL. This route parameter is passed onto the server inside req.params. With this parameter server looks for the matching data in the db. In order to perform this, the name of the variable should be assigned with a colon in the respective backend API endpoint. 
+
+Example backend code: 
+```
+router
+  .route('/users/:username/contacts')
+   /* This endpoint is for users who would like to add, edit and delete their 
+   emergency contact in the app. :username is retrieved from a list of users 
+   of the app */
+
+	.get((req, res) => {
+    Contact.findOne(
+      { username: req.params.username }             
+   ...
+  })
+```
+Example frontend code:
+```
+const getContacts = async () => {
+    try {
+      const response = await appApiClient.get(
+        `/users/${username}/contacts`);
+    ...
+  };
+```
+
 ## Authors of the project:
 
 - Soyoon Choi: Update user, CRUD Contacts of user
