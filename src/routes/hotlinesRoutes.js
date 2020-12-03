@@ -12,7 +12,7 @@ router.get('/hotlines', async (req, res) => {
         { city: { $regex: querySearch, $options: 'i' } },
         { organisation_name: { $regex: querySearch, $options: 'i' } },
       ],
-    });
+    }).sort({"organisation_name": 1});
     res.send(hotlines);
   } catch (error) {
     res.send(error);

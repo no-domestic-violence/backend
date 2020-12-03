@@ -1,7 +1,8 @@
 const express = require('express');
 const Contact = require('../models/User');
-const router = express.Router();
+const verifyToken  = require('./verifyToken')
 
+const router = express.Router();
 // updating an existing contact
 router.route('/users/:username/contacts/:_id').patch((req, res) => {
   Contact.findOneAndUpdate(
@@ -29,7 +30,7 @@ router.route('/users/:username/contacts/:_id').patch((req, res) => {
 router
   .route('/users/:username/contacts')
 
-  .get((req, res) => {
+  .get(verifyToken, (req, res) => {
     Contact.findOne(
       {
         username: req.params.username,
@@ -44,6 +45,7 @@ router
     );
   })
   // adding new contact
+  
   .patch((req, res) => {
     Contact.updateOne(
       { username: req.params.username }, // condition
