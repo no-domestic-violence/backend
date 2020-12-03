@@ -46,7 +46,7 @@ router
   })
   // adding new contact
   
-  .patch((req, res) => {
+  .patch(verifyToken, (req, res) => {
     Contact.updateOne(
       { username: req.params.username }, // condition
       {
@@ -69,7 +69,7 @@ router
     );
   })
 
-  .delete((req, res) => {
+  .delete(verifyToken, (req, res) => {
     Contact.updateOne(
       { username: req.params.username },
       {
