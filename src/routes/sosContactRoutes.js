@@ -1,6 +1,6 @@
 const express = require('express');
 const Contact = require('../models/User');
-const verifyToken  = require('./verifyToken')
+const verifyToken = require('./verifyToken');
 
 const router = express.Router();
 // updating an existing contact
@@ -35,6 +35,7 @@ router
       {
         username: req.params.username,
       },
+      ['contacts'],
       (err, foundContact) => {
         if (foundContact) {
           res.send(foundContact);
@@ -45,7 +46,7 @@ router
     );
   })
   // adding new contact
-  
+
   .patch(verifyToken, (req, res) => {
     Contact.updateOne(
       { username: req.params.username }, // condition
@@ -58,7 +59,6 @@ router
           },
         },
       },
-      { new: true },
       (err) => {
         if (!err) {
           res.send('Successfully added contact');
@@ -79,7 +79,6 @@ router
           },
         },
       },
-      { safe: true },
       (err) => {
         if (!err) {
           res.send('Successfully deleted Contact');
