@@ -1,9 +1,9 @@
 import express from 'express';
-import { getArticles, getArticleById } from '../controllers';
+import { getArticles, getArticleById, createArticle } from '../controllers';
 
 const router = express.Router();
 
-router.get('/articles', getArticles);
+router.route('/articles').get(getArticles).post(createArticle);
 
 router.get('/articles/:id', getArticleById);
 
