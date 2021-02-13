@@ -24,7 +24,7 @@ export const createArticle = async (req, res) => {
     author: req.body.author,
     text: req.body.text,
     url_to_image: req.body.url_to_image,
-    created_at: req.body.created_at,
+    created_at: new Date(),
   });
   try {
     await article.save();
