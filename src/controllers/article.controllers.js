@@ -23,6 +23,7 @@ export const createArticle = async (req, res) => {
     title: req.body.title,
     author: req.body.author,
     text: req.body.text,
+    violence_type: req.body.violence_type,
     url_to_image: req.body.url_to_image,
     created_at: new Date(),
   });
@@ -30,6 +31,16 @@ export const createArticle = async (req, res) => {
     await article.save();
 
     res.status(201).json({ success: true, data: article });
+  } catch (e) {
+    res.status(e);
+  }
+};
+
+export const deleteArticle = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await Article.findOneAndDelete({ _id: id });
+    await res.status(202).json({ message: 'Article was deleted!' });
   } catch (e) {
     res.status(e);
   }

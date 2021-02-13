@@ -4,6 +4,7 @@ import {
   getArticles,
   getArticleById,
   createArticle,
+  deleteArticle,
 } from './article.controllers';
 
 export {
@@ -12,4 +13,5 @@ export {
   getArticles,
   getArticleById,
   createArticle,
+  deleteArticle,
 };

@@ -1,10 +1,15 @@
 import express from 'express';
-import { getArticles, getArticleById, createArticle } from '../controllers';
+import {
+  getArticles,
+  getArticleById,
+  createArticle,
+  deleteArticle,
+} from '../controllers';
 
 const router = express.Router();
 
 router.route('/articles').get(getArticles).post(createArticle);
 
-router.get('/articles/:id', getArticleById);
+router.route('/articles/:id').get(getArticleById).delete(deleteArticle);
 
 export default router;
