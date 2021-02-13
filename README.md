@@ -96,7 +96,7 @@ cd backend
 2. Install dependencies:
 
 ```s
-npm install
+yarn install
 ```
 
 3. Create development.js file inside of config folder and add the following environment variables: 
@@ -111,14 +111,14 @@ module.exports = {
 4. Start environment
 
 ```s
-npm start
+yarn start
 ```
 5. Open http://localhost:3001 to view it in the browser.
 
 6. Before merging to master, check errors and prettier rules
 
 ```s
-npm lint
+yarn lint
 ```
 
 **The api uses Heroku for production**
