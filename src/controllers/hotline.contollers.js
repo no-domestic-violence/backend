@@ -3,7 +3,7 @@ const hotlines = require('../models/Hotline');
 
 const router = express.Router();
 
-router.get('/hotlines', async (req, res) => {
+export const searchHotline = async (req, res) => {
   try {
     const querySearch = req.query.searchTerm;
     const hotlinesResponse = await hotlines
@@ -18,6 +18,4 @@ router.get('/hotlines', async (req, res) => {
   } catch (error) {
     res.send(error);
   }
-});
-
-module.exports = router;
+};
