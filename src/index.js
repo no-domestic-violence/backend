@@ -1,31 +1,27 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const config = require('./config/key');
+import express from 'express';
+import mongoose from 'mongoose';
+import config from './config/key';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Importing routes
 const authRoutes = require('./routes/auth');
 // const verifyToken = require('./routes/verifyToken');
 const shelterRoutes = require('./routes/sheltersRoutes');
 const hotlinesRoutes = require('./routes/hotlinesRoutes');
 const sosContactRoutes = require('./routes/sosContactRoutes');
 const articlesRoutes = require('./routes/articlesRoutes');
-// Setting routes
+
 app.use(authRoutes);
 app.use(shelterRoutes);
 app.use(hotlinesRoutes);
 app.use(sosContactRoutes);
 app.use(articlesRoutes);
-// app.get('api/user/profile', verifyToken, (req, res) => {
-// res.send({success: true, data: req.user})
-// })
 
 app.get('/', (req, res) => {
-  res.send('Welcome to auth');
+  res.send('Welcome to Pool API');
 });
 
 mongoose
