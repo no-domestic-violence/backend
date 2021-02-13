@@ -18,8 +18,8 @@ app.use('/api', hotlineRoutes);
 app.use('/api', sosContactRoutes);
 app.use('/api', articleRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Welcome to Pool API');
+app.get('/api', (req, res) => {
+  res.send('Welcome to the "Pool" project API');
 });
 
 export const startServer = async () => {
