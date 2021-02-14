@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const hotlineSchema = new mongoose.Schema(
   {
@@ -23,4 +23,4 @@ const hotlineSchema = new mongoose.Schema(
   { collection: 'hotlines' },
 );
 
-module.exports = mongoose.model('hotlines', hotlineSchema);
+export const Hotline = mongoose.model('hotlines', hotlineSchema);
