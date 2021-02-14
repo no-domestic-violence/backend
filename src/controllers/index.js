@@ -1,4 +1,4 @@
-import { searchHotline } from './hotline.contollers';
+import { searchHotline } from './hotline.controllers';
 import { getShelters } from './shelter.controllers';
 import {
   getArticles,
