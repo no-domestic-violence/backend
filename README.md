@@ -11,9 +11,9 @@
 - [Setup](#setup)
 - [Authors of the project](#authors-of-the-project)
 
-
 ## Project Description
-POOL project is a mobile application that aims to help the survivors of domestic violence. The main features of the app are: resources in forms of curated articles, videos & podcasts about intimate partner violence, finding shelters and hotlines. Signed up users can have additional access to emergency contact features. 
+
+POOL project is a mobile application that aims to help the survivors of domestic violence. The main features of the app are: resources in forms of curated articles, videos & podcasts about intimate partner violence, finding shelters and hotlines. Signed up users can have additional access to emergency contact features.
 
 ## Tech Stack
 
@@ -29,16 +29,20 @@ POOL project is a mobile application that aims to help the survivors of domestic
 
 ![Architecture diagram](app_architecture.png)
 
-The components implements the following functionalities: 
+The components implements the following functionalities:
 
-- React Native: User registration, login, browse educational resources and add/delete bookmarks, search hotlines and shelters on map,  show/create/edit/remove emergency contacts.
+- React Native: User registration, login, browse educational resources and add/delete bookmarks, search hotlines and shelters on map, show/create/edit/remove emergency contacts.
 - Express/node.js server: Abstracts access to database for clients with RESTful API using Mongoose library: user management (login, register, delete), emergency contact management (read,add, edit, remove), bookmark management (add, remove, read), fetching resources, shelters, hotlines.
 - MongoDB database: stores the user related data (login credentials, emergency contacts, bookmarks, T&C acceptance history), geospatial data for shelters, resources, hotlines, and T&C.
 
 ## Data Model
+
 Why NoSQL ?
+
 ###
+
 The main reasons for choosing MongoDB in POOL project are as below:
+
 - Flexibility → Since the Pool project is in the development phase, it does not have fixed data models. Therefore, the database system may need to accommodate frequent design changes and new features.
 - Prioritizing scalability over consistency→ The project needs to store dynamic structured data at large scale
 - Performing Geolocation Operations → Map is one of the main features of the app which needs frequent and fast geospatial querying.
@@ -82,7 +86,8 @@ Each article, video, podcast has one or few violence type tags. The number of vi
     ├── .eslintrc
     ├── README.md
 ```
-## Setup 
+
+## Setup
 
 **To run locally**
 
@@ -99,7 +104,7 @@ cd backend
 yarn install
 ```
 
-3. Create development.js file inside of config folder and add the following environment variables: 
+3. Create development.js file inside of config folder and add the following environment variables:
 
 ```s
 module.exports = {
@@ -111,8 +116,9 @@ module.exports = {
 4. Start environment
 
 ```s
-yarn start
+yarn dev
 ```
+
 5. Open http://localhost:3001 to view it in the browser.
 
 6. Before merging to master, check errors and prettier rules
@@ -145,29 +151,33 @@ heroku builds
 ```s
 heroku build:cancel
 ```
+
 ---
 
 ## Routing for REST API
 
 API endpoints are set up on the server side for the client to be able to communicate with the database. The client can make a request to this route. On this route with a callback function, the server makes a request to the database and gets a response. Inside the callback, you can query the database by using different Mongoose helper functions.
 
-To query specific data with conditions, the client should specify the particular variable that needs to be fetched in the URL. This route parameter is passed onto the server inside req.params. With this parameter server looks for the matching data in the db. In order to perform this, the name of the variable should be assigned with a colon in the respective backend API endpoint. 
+To query specific data with conditions, the client should specify the particular variable that needs to be fetched in the URL. This route parameter is passed onto the server inside req.params. With this parameter server looks for the matching data in the db. In order to perform this, the name of the variable should be assigned with a colon in the respective backend API endpoint.
 
-Example backend code: 
+Example backend code:
+
 ```
 router
   .route('/users/:username/contacts')
-   /* This endpoint is for users who would like to add, edit and delete their 
-   emergency contact in the app. :username is retrieved from a list of users 
+   /* This endpoint is for users who would like to add, edit and delete their
+   emergency contact in the app. :username is retrieved from a list of users
    of the app */
 
 	.get((req, res) => {
     Contact.findOne(
-      { username: req.params.username }             
+      { username: req.params.username }
    ...
   })
 ```
+
 Example frontend code:
+
 ```
 const getContacts = async () => {
     try {

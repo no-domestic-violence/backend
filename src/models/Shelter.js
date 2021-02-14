@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const shelterSchema = new mongoose.Schema(
   {
@@ -34,4 +34,4 @@ const shelterSchema = new mongoose.Schema(
   { collection: 'shelters' },
 );
 
-module.exports = mongoose.model('shelters', shelterSchema);
+export default mongoose.model('shelters', shelterSchema);
