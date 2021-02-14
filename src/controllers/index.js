@@ -7,6 +7,13 @@ import {
   deleteArticle,
 } from './article.controllers';
 
+import {
+  editContact,
+  getContact,
+  addContact,
+  deleteContact,
+} from './sos.controllers';
+
 export {
   searchHotline,
   getShelters,
@@ -14,4 +21,8 @@ export {
   getArticleById,
   createArticle,
   deleteArticle,
+  editContact,
+  getContact,
+  addContact,
+  deleteContact,
 };
