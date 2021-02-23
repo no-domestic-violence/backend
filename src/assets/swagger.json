@@ -15,6 +15,10 @@
         {
             "name": "article-controller",
             "description": "Article Controller"
+        },
+        {
+            "name": "hotline-controller",
+            "description": "Hotline Controller"
         }
     ],
     "paths": {

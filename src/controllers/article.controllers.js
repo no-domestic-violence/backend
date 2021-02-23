@@ -32,7 +32,7 @@ export const createArticle = async (req, res) => {
 
     res.status(201).json({ success: true, data: article });
   } catch (e) {
-    res.status(e);
+    res.status(400).send({ success: false, error: e.message });
   }
 };
 
