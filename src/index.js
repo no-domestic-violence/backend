@@ -7,6 +7,10 @@ import {
   sosRoutes,
 } from './routes';
 import { connectToDatabase } from './utils/database';
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerDocument = require('./assets/swagger.json');
+
 
 const app = express();
 
@@ -26,6 +30,8 @@ app.use('/api', articleRoutes);
 app.get('/api', (req, res) => {
   res.send('Welcome to the "Pool" project API');
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 export const startServer = async () => {
   try {
