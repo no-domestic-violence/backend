@@ -221,6 +221,38 @@
                         }
                     }
     
+                },
+                "delete": {
+                    "tags": [
+                        "sos-controller"
+                    ],
+                    "summary": "delete sos contact by id",
+                    "operationId": "deleteContactByIdUsingDELETE",
+                    "produces": 
+                        "application/json",
+                    "parameters": [
+                        {
+                            "in": "path",
+                            "name": "username",
+                            "description": "username who deletes contact",
+                            "required": true,
+                            "type": "string"
+                        }
+                    ],
+                    "responses": {
+                        "202": {
+                            "description": "Contact successfully deleted"
+                        },
+                        "400": {
+                            "description": "Invalid contact Id"
+                        },
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Contact not Found"
+                        }
+                    }
                 }
 
             },
@@ -263,46 +295,8 @@
                         },
                         "405": {"description": "Validation exception" } }
                         
-                    },
-                    "delete": {
-                        "tags": [
-                            "sos-controller"
-                        ],
-                        "summary": "delete sos contact by id",
-                        "operationId": "deleteContactByIdUsingDELETE",
-                        "produces": 
-                            "application/json",
-                        "parameters": [
-                            {
-                                "in": "path",
-                                "name": "username",
-                                "description": "username who deletes contact",
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "in": "path",
-                                "name": "contactId",
-                                "description": "ContactId to delete",
-                                "required": true,
-                                "type": "string"
-                            }
-                        ],
-                        "responses": {
-                            "202": {
-                                "description": "Contact successfully deleted"
-                            },
-                            "400": {
-                                "description": "Invalid contact Id"
-                            },
-                            "401": {
-                                "description": "Unauthorized"
-                            },
-                            "404": {
-                                "description": "Contact not Found"
-                            }
-                        }
-                    }}
+                    }
+}
 
         
     },
