@@ -9,7 +9,7 @@
             "url": "https://github.com/no-domestic-violence"
         }
     },
-    "host": "fulfilment-management-api.bonial.global",
+    "host": "https://pool-api-mobile.herokuapp.com/api",
     "basePath": "/",
     "tags": [
         {
@@ -23,7 +23,7 @@
                 "tags": [
                     "article-controller"
                 ],
-                "summary": "createArticle",
+                "summary": "Create article",
                 "operationId": "createArticleUsingPOST",
                 "consumes": [
                     "application/json"
@@ -37,16 +37,56 @@
                         "name": "request",
                         "description": "request",
                         "required": true,
-                        "schema": {}
+                        "schema": {
+                            "$ref": "#/definitions/createArticleUsingPOST"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {}
+                        "description": "OK"
                     },
                     "201": {
-                        "description": "Created"
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/createdArticleResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/articles/{id}": {
+            "get": {
+                "tags": [
+                    "article-controller"
+                ],
+                "summary": "getArticleById",
+                "operationId": "getArticleByIdUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -61,5 +101,55 @@
                 "deprecated": false
             }
         }
-    }
+    },
+    "definitions": {
+        "createArticleUsingPOST": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "url_to_image": {
+                    "type": "string"
+                },
+                "violence_type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Sexual",
+                            "Financial",
+                            "Emotional"
+                        ]
+                    }
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "title": "createArticleUsingPOST"
+        },
+        "createdArticleResponse": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "object"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            },
+            "title": "createdArticleResponse"
+        }
+    },
+    "schemes": [
+        "https"
+    ]
 }
