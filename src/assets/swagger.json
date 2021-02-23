@@ -9,7 +9,7 @@
             "url": "https://github.com/no-domestic-violence"
         }
     },
-    "host": "https://pool-api-mobile.herokuapp.com/api",
+    "host": "pool-api-mobile.herokuapp.com/api",
     "basePath": "/",
     "tags": [
         {
@@ -19,6 +19,10 @@
         {
             "name": "hotline-controller",
             "description": "Hotline Controller"
+        },
+        {
+            "name": "sos-controller",
+            "description": "Sos Controller"
         }
     ],
     "paths": {
@@ -29,12 +33,10 @@
                 ],
                 "summary": "Create article",
                 "operationId": "createArticleUsingPOST",
-                "consumes": [
+                "consumes": 
                     "application/json"
-                ],
-                "produces": [
-                    "*/*"
-                ],
+                ,
+                "produces":  "application/json",
                 "parameters": [
                     {
                         "in": "body",
@@ -42,7 +44,7 @@
                         "description": "request",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/createArticleUsingPOST"
+                            "$ref": "#/definitions/Article"
                         }
                     }
                 ],
@@ -53,7 +55,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/createdArticleResponse"
+                            "$ref": "#/definitions/Article"
                         }
                     },
                     "401": {
@@ -67,47 +69,245 @@
                     }
                 },
                 "deprecated": false
-            }
-        },
-        "/articles/{id}": {
+            },
             "get": {
                 "tags": [
                     "article-controller"
                 ],
-                "summary": "getArticleById",
-                "operationId": "getArticleByIdUsingGET",
-                "produces": [
-                    "*/*"
-                ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
+                "summary": "Get all articles",
+                "operationId": "getAllArticlesUsingGET",
+                "produces": 
+                    "application/json"
+                ,
+                "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/articlesResponse"
+                        }
                     },
                     "404": {
                         "description": "Not Found"
                     }
                 },
                 "deprecated": false
+
             }
-        }
+        },
+        "/articles/{articleId}": {
+            "get": {
+                "tags": [
+                    "article-controller"
+                ],
+                "summary": "getArticleById",
+                "operationId": "getArticleByIdUsingGET",
+                "produces": 
+                    "application/json",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "description": "Id of article that needs to be fetched",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema":  {
+                            "$ref": "#/definitions/Article"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid article Id"
+                    },
+                    "404": {
+                        "description": "Article not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "article-controller"
+                ],
+                "summary": "deleteArticleById",
+                "operationId": "deleteArticleByIdUsingDELETE",
+                "produces": 
+                    "application/json",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "description": "Article id to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Article successfully deleted"
+                    },
+                    "400": {
+                        "description": "Invalid article Id"
+                    },
+                    "404": {
+                        "description": "Article not Found"
+                    }
+                }
+            }
+        },
+        "/users/{username}/contacts": {
+            "patch": {
+                "tags": [
+                    "sos-controller"
+                ],
+                "summary": "Add sos contact",
+                "operationId": "addContactUsingPATCH",
+                "consumes":
+                    "application/json",
+                "produces":  "application/json",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "description": "username who adds contact",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Updated"
+                        },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {"description": "Validation exception" }
+                    
+                } },
+                "get": {
+                    "tags": [
+                        "sos-controller"
+                    ],
+                    "summary": "Get contacts of a user",
+                    "operationId": "getContactsUsingGET",
+                    "produces": 
+                        "application/json"
+                    ,
+                    "parameters": [{
+                        "in": "path",
+                        "name": "username",
+                        "description": "username that fetches contact",
+                        "required": true,
+                        "type": "string"
+                    }],
+                    "responses": {
+                        "200": {
+                            "description": "OK",
+                            "schema": {
+                                "$ref": "#/definitions/User"
+                            }
+                        },
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Not Found"
+                        }
+                    }
+    
+                }
+
+            },
+            "/users/{username}/contacts/{contactId}": {
+                "patch": {
+                    "tags": [
+                        "sos-controller"
+                    ],
+                    "summary": "Edit sos contact",
+                    "operationId": "editContactUsingPATCH",
+                    "consumes":
+                        "application/json",
+                    "produces":  "application/json",
+                    "parameters": [
+                        {
+                            "in": "path",
+                            "name": "username",
+                            "description": "username who edits their contact",
+                            "required": true,
+                            "type": "string"
+                        },
+                        {
+                            "in": "path",
+                            "name": "contactId",
+                            "description": "ContactId to edit",
+                            "required": true,
+                            "type": "string"
+                        }
+                    ],
+                    "responses": {
+                        "201": {
+                            "description": "Updated"
+                            }
+                        ,
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Not Found"
+                        },
+                        "405": {"description": "Validation exception" } }
+                        
+                    },
+                    "delete": {
+                        "tags": [
+                            "sos-controller"
+                        ],
+                        "summary": "delete sos contact by id",
+                        "operationId": "deleteContactByIdUsingDELETE",
+                        "produces": 
+                            "application/json",
+                        "parameters": [
+                            {
+                                "in": "path",
+                                "name": "username",
+                                "description": "username who deletes contact",
+                                "required": true,
+                                "type": "string"
+                            },
+                            {
+                                "in": "path",
+                                "name": "contactId",
+                                "description": "ContactId to delete",
+                                "required": true,
+                                "type": "string"
+                            }
+                        ],
+                        "responses": {
+                            "202": {
+                                "description": "Contact successfully deleted"
+                            },
+                            "400": {
+                                "description": "Invalid contact Id"
+                            },
+                            "401": {
+                                "description": "Unauthorized"
+                            },
+                            "404": {
+                                "description": "Contact not Found"
+                            }
+                        }
+                    }}
+
+        
     },
     "definitions": {
-        "createArticleUsingPOST": {
+        "Article": {
             "type": "object",
             "properties": {
                 "title": {
@@ -138,19 +338,45 @@
                     "format": "date-time"
                 }
             },
-            "title": "createArticleUsingPOST"
+            "title": "Article"
         },
-        "createdArticleResponse": {
+        "articlesResponse": {
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "object"
+                    "type": "array",
+                    "$ref" : "#/definitions/Article"
                 },
                 "success": {
                     "type": "boolean"
                 }
             },
-            "title": "createdArticleResponse"
+            "title": "articlesResponse"
+        },
+        "User": {
+            "type" : "object",
+            "properties": {
+                "username": {
+                    "type" : "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password":{
+                    "type": "string"
+                },
+                "contacts": { "$ref" : "#/definitions/Contact"}
+            }
+        },
+        "Contact": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type" : "string"
+                },
+                "phone":{ "type" : "string"},
+                "message": { "type" : "string"}
+            }
         }
     },
     "schemes": [
