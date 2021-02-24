@@ -9,8 +9,8 @@ export const searchHotline = async (req, res) => {
         { organisation_name: { $regex: querySearch, $options: 'i' } },
       ],
     }).sort({ organisation_name: 1 });
-    res.send(hotlinesResponse);
+    res.status(200).send(hotlinesResponse);
   } catch (error) {
-    res.send(error);
+    res.status(404).send({ success: false, error: e.message });
   }
 };

@@ -21,6 +21,10 @@
             "description": "Hotline Controller"
         },
         {
+            "name": "shelter-controller",
+            "description": "Shelter Controller"
+        },
+        {
             "name": "sos-controller",
             "description": "Sos Controller"
         }
@@ -33,9 +37,7 @@
                 ],
                 "summary": "Create article",
                 "operationId": "createArticleUsingPOST",
-                "consumes": 
-                    "application/json"
-                ,
+                "consumes": "application/json",
                 "produces":  "application/json",
                 "parameters": [
                     {
@@ -49,13 +51,10 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/Article"
+                            "$ref": "#/definitions/articlesResponse"
                         }
                     },
                     "401": {
@@ -84,7 +83,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/articlesResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Article"
+                            }
                         }
                     },
                     "404": {
@@ -100,7 +102,7 @@
                 "tags": [
                     "article-controller"
                 ],
-                "summary": "getArticleById",
+                "summary": "Get article by Id",
                 "operationId": "getArticleByIdUsingGET",
                 "produces": 
                     "application/json",
@@ -132,7 +134,7 @@
                 "tags": [
                     "article-controller"
                 ],
-                "summary": "deleteArticleById",
+                "summary": "Delete article by Id",
                 "operationId": "deleteArticleByIdUsingDELETE",
                 "produces": 
                     "application/json",
@@ -156,6 +158,66 @@
                         "description": "Article not Found"
                     }
                 }
+            }
+        },
+        "/shelters": {
+            "get": {
+                "tags": [
+                    "shelter-controller"
+                ],
+                "summary": "Get all shelters",
+                "operationId": "getAllSheltersUsingGET",
+                "produces": "application/json",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Shelter"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/hotlines": {
+            "get": {
+                "tags": [
+                    "hotline-controller"
+                ],
+                "summary": "Get hotlines filtered by city or name",
+                "operationId": "filterHotlinesUsingGET",
+                "produces": "application/json",
+                "parameters": [
+                    {
+                        "name": "searchTerm",
+                        "in": "query",
+                        "description": "City or organisation name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Hotline"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
             }
         },
         "/users/{username}/contacts": {
@@ -334,18 +396,51 @@
             },
             "title": "Article"
         },
-        "articlesResponse": {
+        "Shelter": {
             "type": "object",
             "properties": {
-                "body": {
-                    "type": "array",
-                    "$ref" : "#/definitions/Article"
+                "place_name": {
+                    "type": "string"
                 },
-                "success": {
-                    "type": "boolean"
+                "address": {
+                    "type": "string"
+                },
+                "contact_person": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "locs": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "enum": [
+                            "latitude",
+                            "longitude"
+                        ]
+                    }
                 }
             },
-            "title": "articlesResponse"
+            "title": "Shelter"
+        },
+        "Hotline": {
+            "type": "object",
+            "properties": {
+                "organisation_name": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            },
+            "title": "Hotline"
         },
         "User": {
             "type" : "object",
@@ -371,6 +466,19 @@
                 "phone":{ "type" : "string"},
                 "message": { "type" : "string"}
             }
+        },
+        "articlesResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "$ref": "#/definitions/Article"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            },
+            "title": "articlesResponse"
         }
     },
     "schemes": [

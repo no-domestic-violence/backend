@@ -8,8 +8,8 @@ export const getShelters = async (req, res) => {
         place_name: 1, address: 1, contact_person: 1, phone: 1, locs: 1,
       },
     );
-    res.send(sheltersList);
-  } catch (error) {
-    res.send(error);
+    res.status(200).send(sheltersList);
+  } catch (e) {
+    res.status(400).send({ success: false, error: e.message });
   }
 };
