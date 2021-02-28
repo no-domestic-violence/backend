@@ -12,7 +12,7 @@ import {
   getContact,
   addContact,
   deleteContact,
-} from './sos.controllers';
+} from './user.controllers';
 
 export {
   searchHotline,

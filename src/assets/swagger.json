@@ -25,8 +25,8 @@
             "description": "Shelter Controller"
         },
         {
-            "name": "sos-controller",
-            "description": "Sos Controller"
+            "name": "user-controller",
+            "description": "User Controller"
         }
     ],
     "paths": {
@@ -223,9 +223,9 @@
         "/users/{username}/contacts": {
             "patch": {
                 "tags": [
-                    "sos-controller"
+                    "user-controller"
                 ],
-                "summary": "Add sos contact",
+                "summary": "Add emergency contact",
                 "operationId": "addContactUsingPATCH",
                 "consumes":
                     "application/json",
@@ -254,7 +254,7 @@
                 } },
                 "get": {
                     "tags": [
-                        "sos-controller"
+                        "user-controller"
                     ],
                     "summary": "Get contacts of a user",
                     "operationId": "getContactsUsingGET",
@@ -286,7 +286,7 @@
                 },
                 "delete": {
                     "tags": [
-                        "sos-controller"
+                        "user-controller"
                     ],
                     "summary": "delete sos contact by id",
                     "operationId": "deleteContactByIdUsingDELETE",
@@ -321,9 +321,9 @@
             "/users/{username}/contacts/{contactId}": {
                 "patch": {
                     "tags": [
-                        "sos-controller"
+                        "user-controller"
                     ],
-                    "summary": "Edit sos contact",
+                    "summary": "Edit emergency contact",
                     "operationId": "editContactUsingPATCH",
                     "consumes":
                         "application/json",
