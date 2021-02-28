@@ -1,0 +1,487 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Provides a REST API for the Pool Project",
+        "version": "1.0.0",
+        "title": "Pool REST API",
+        "contact": {
+            "name": "Pool project team",
+            "url": "https://github.com/no-domestic-violence"
+        }
+    },
+    "host": "pool-api-mobile.herokuapp.com/api",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "article-controller",
+            "description": "Article Controller"
+        },
+        {
+            "name": "hotline-controller",
+            "description": "Hotline Controller"
+        },
+        {
+            "name": "shelter-controller",
+            "description": "Shelter Controller"
+        },
+        {
+            "name": "user-controller",
+            "description": "User Controller"
+        }
+    ],
+    "paths": {
+        "/articles": {
+            "post": {
+                "tags": [
+                    "article-controller"
+                ],
+                "summary": "Create article",
+                "operationId": "createArticleUsingPOST",
+                "consumes": "application/json",
+                "produces":  "application/json",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request",
+                        "description": "request",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Article"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/articlesResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            },
+            "get": {
+                "tags": [
+                    "article-controller"
+                ],
+                "summary": "Get all articles",
+                "operationId": "getAllArticlesUsingGET",
+                "produces": 
+                    "application/json"
+                ,
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Article"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+
+            }
+        },
+        "/articles/{articleId}": {
+            "get": {
+                "tags": [
+                    "article-controller"
+                ],
+                "summary": "Get article by Id",
+                "operationId": "getArticleByIdUsingGET",
+                "produces": 
+                    "application/json",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "description": "Id of article that needs to be fetched",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema":  {
+                            "$ref": "#/definitions/Article"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid article Id"
+                    },
+                    "404": {
+                        "description": "Article not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "article-controller"
+                ],
+                "summary": "Delete article by Id",
+                "operationId": "deleteArticleByIdUsingDELETE",
+                "produces": 
+                    "application/json",
+                "parameters": [
+                    {
+                        "name": "articleId",
+                        "in": "path",
+                        "description": "Article id to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Article successfully deleted"
+                    },
+                    "400": {
+                        "description": "Invalid article Id"
+                    },
+                    "404": {
+                        "description": "Article not Found"
+                    }
+                }
+            }
+        },
+        "/shelters": {
+            "get": {
+                "tags": [
+                    "shelter-controller"
+                ],
+                "summary": "Get all shelters",
+                "operationId": "getAllSheltersUsingGET",
+                "produces": "application/json",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Shelter"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/hotlines": {
+            "get": {
+                "tags": [
+                    "hotline-controller"
+                ],
+                "summary": "Get hotlines filtered by city or name",
+                "operationId": "filterHotlinesUsingGET",
+                "produces": "application/json",
+                "parameters": [
+                    {
+                        "name": "searchTerm",
+                        "in": "query",
+                        "description": "City or organisation name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Hotline"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/users/{username}/contacts": {
+            "patch": {
+                "tags": [
+                    "user-controller"
+                ],
+                "summary": "Add emergency contact",
+                "operationId": "addContactUsingPATCH",
+                "consumes":
+                    "application/json",
+                "produces":  "application/json",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "description": "username who adds contact",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Updated"
+                        },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {"description": "Validation exception" }
+                    
+                } },
+                "get": {
+                    "tags": [
+                        "user-controller"
+                    ],
+                    "summary": "Get contacts of a user",
+                    "operationId": "getContactsUsingGET",
+                    "produces": 
+                        "application/json"
+                    ,
+                    "parameters": [{
+                        "in": "path",
+                        "name": "username",
+                        "description": "username that fetches contact",
+                        "required": true,
+                        "type": "string"
+                    }],
+                    "responses": {
+                        "200": {
+                            "description": "OK",
+                            "schema": {
+                                "$ref": "#/definitions/User"
+                            }
+                        },
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Not Found"
+                        }
+                    }
+    
+                },
+                "delete": {
+                    "tags": [
+                        "user-controller"
+                    ],
+                    "summary": "delete sos contact by id",
+                    "operationId": "deleteContactByIdUsingDELETE",
+                    "produces": 
+                        "application/json",
+                    "parameters": [
+                        {
+                            "in": "path",
+                            "name": "username",
+                            "description": "username who deletes contact",
+                            "required": true,
+                            "type": "string"
+                        }
+                    ],
+                    "responses": {
+                        "202": {
+                            "description": "Contact successfully deleted"
+                        },
+                        "400": {
+                            "description": "Invalid contact Id"
+                        },
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Contact not Found"
+                        }
+                    }
+                }
+
+            },
+            "/users/{username}/contacts/{contactId}": {
+                "patch": {
+                    "tags": [
+                        "user-controller"
+                    ],
+                    "summary": "Edit emergency contact",
+                    "operationId": "editContactUsingPATCH",
+                    "consumes":
+                        "application/json",
+                    "produces":  "application/json",
+                    "parameters": [
+                        {
+                            "in": "path",
+                            "name": "username",
+                            "description": "username who edits their contact",
+                            "required": true,
+                            "type": "string"
+                        },
+                        {
+                            "in": "path",
+                            "name": "contactId",
+                            "description": "ContactId to edit",
+                            "required": true,
+                            "type": "string"
+                        }
+                    ],
+                    "responses": {
+                        "201": {
+                            "description": "Updated"
+                            }
+                        ,
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Not Found"
+                        },
+                        "405": {"description": "Validation exception" } }
+                        
+                    }
+}
+
+        
+    },
+    "definitions": {
+        "Article": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "url_to_image": {
+                    "type": "string"
+                },
+                "violence_type": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Sexual",
+                            "Financial",
+                            "Emotional"
+                        ]
+                    }
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "title": "Article"
+        },
+        "Shelter": {
+            "type": "object",
+            "properties": {
+                "place_name": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "contact_person": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "locs": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "enum": [
+                            "latitude",
+                            "longitude"
+                        ]
+                    }
+                }
+            },
+            "title": "Shelter"
+        },
+        "Hotline": {
+            "type": "object",
+            "properties": {
+                "organisation_name": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            },
+            "title": "Hotline"
+        },
+        "User": {
+            "type" : "object",
+            "properties": {
+                "username": {
+                    "type" : "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password":{
+                    "type": "string"
+                },
+                "contacts": { "$ref" : "#/definitions/Contact"}
+            }
+        },
+        "Contact": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type" : "string"
+                },
+                "phone":{ "type" : "string"},
+                "message": { "type" : "string"}
+            }
+        },
+        "articlesResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "$ref": "#/definitions/Article"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            },
+            "title": "articlesResponse"
+        }
+    },
+    "schemes": [
+        "https"
+    ]
+}

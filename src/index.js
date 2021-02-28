@@ -4,9 +4,12 @@ import {
   hotlineRoutes,
   shelterRoutes,
   articleRoutes,
-  sosRoutes,
+  userRoutes,
 } from './routes';
 import { connectToDatabase } from './utils/database';
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerDocument = require('./assets/swagger.json');
 
 const app = express();
 
@@ -20,12 +23,14 @@ const authRoutes = require('./routes/auth');
 app.use('/api', authRoutes);
 app.use('/api', shelterRoutes);
 app.use('/api', hotlineRoutes);
-app.use('/api', sosRoutes);
+app.use('/api', userRoutes);
 app.use('/api', articleRoutes);
 
 app.get('/api', (req, res) => {
   res.send('Welcome to the "Pool" project API');
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 export const startServer = async () => {
   try {

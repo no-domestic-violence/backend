@@ -1,4 +1,4 @@
-import User from '../models/User';
+import User from '../models/user.model';
 
 export const editContact = async (req, res) => {
   try {
@@ -17,8 +17,7 @@ export const editContact = async (req, res) => {
         arrayFilters: [{ 'contact._id': req.params._id }],
       },
     );
-
-    res.send('Successfully edited contact');
+    res.status(201).json({ message: 'Successfully edited contact' });
   } catch (e) {
     res.send(e);
   }
@@ -32,7 +31,7 @@ export const getContact = async (req, res) => {
       },
       ['contacts'],
     );
-    res.send(foundContact);
+    res.status(200).send(foundContact);
   } catch (e) {
     res.send(e);
   }
@@ -52,7 +51,7 @@ export const addContact = async (req, res) => {
         },
       },
     );
-    res.send('Successfully added contact');
+    res.status(201).json({ message: 'Successfully added contact' });
   } catch (e) {
     res.send(e);
   }
@@ -70,7 +69,7 @@ export const deleteContact = async (req, res) => {
         },
       },
     );
-    res.send('Successfully deleted Contact');
+    res.status(202).json({ message: 'Successfully deleted contact' });
   } catch (e) {
     res.send(e);
   }

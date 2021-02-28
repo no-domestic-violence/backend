@@ -1,11 +1,11 @@
-import Article from '../models/Article';
+import Article from '../models/article.model';
 
 export const getArticles = async (req, res) => {
   try {
     const articles = await Article.find({});
-    res.send(articles);
+    res.status(200).send(articles);
   } catch (e) {
-    res.send(e);
+    res.status(400).send({ success: false, error: e.message });
   }
 };
 
@@ -14,7 +14,7 @@ export const getArticleById = async (req, res) => {
     const article = await Article.findById(req.params.id);
     res.send(article);
   } catch (e) {
-    res.send(e);
+    res.status(400).send({ success: false, error: e.message });
   }
 };
 
@@ -32,7 +32,7 @@ export const createArticle = async (req, res) => {
 
     res.status(201).json({ success: true, data: article });
   } catch (e) {
-    res.status(e);
+    res.status(400).send({ success: false, error: e.message });
   }
 };
 
@@ -42,6 +42,6 @@ export const deleteArticle = async (req, res) => {
     const response = await Article.findOneAndDelete({ _id: id });
     await res.status(202).json({ message: 'Article was deleted!' });
   } catch (e) {
-    res.status(e);
+    res.status(400).send({ success: false, error: e.message });
   }
 };
