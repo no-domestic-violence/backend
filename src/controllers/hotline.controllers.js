@@ -1,4 +1,4 @@
-import { Hotline } from '../models/Hotline';
+import { Hotline } from '../models/hotline.model';
 
 export const searchHotline = async (req, res) => {
   try {

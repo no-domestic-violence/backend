@@ -1,4 +1,4 @@
-import User from '../models/User';
+import User from '../models/user.model';
 
 export const editContact = async (req, res) => {
   try {
