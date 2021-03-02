@@ -7,9 +7,9 @@ import {
   userRoutes,
 } from './routes';
 import { connectToDatabase } from './utils/database';
-const swaggerUi = require('swagger-ui-express');
+import swaggerUi from 'swagger-ui-express';
 
-const swaggerDocument = require('./assets/swagger.json');
+import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
