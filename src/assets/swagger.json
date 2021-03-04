@@ -438,6 +438,12 @@
                 },
                 "phone": {
                     "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
                 }
             },
             "title": "Hotline"
