@@ -8,7 +8,7 @@ import {
 } from './routes';
 import { connectToDatabase } from './utils/database';
 import swaggerUi from 'swagger-ui-express';
-
+import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
 
 const app = express();
@@ -20,13 +20,13 @@ app.use(express.urlencoded({ extended: true }));
 // TODO refactor authRoutes - split controller logic
 const authRoutes = require('./routes/auth');
 
-app.use('/api', authRoutes);
-app.use('/api', shelterRoutes);
-app.use('/api', hotlineRoutes);
-app.use('/api', userRoutes);
-app.use('/api', articleRoutes);
+app.use(BASE_URI, authRoutes);
+app.use(BASE_URI, shelterRoutes);
+app.use(BASE_URI, hotlineRoutes);
+app.use(BASE_URI, userRoutes);
+app.use(BASE_URI, articleRoutes);
 
-app.get('/api', (req, res) => {
+app.get(BASE_URI, (req, res) => {
   res.send('Welcome to the "Pool" project API');
 });
 
