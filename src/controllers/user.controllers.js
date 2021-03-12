@@ -17,7 +17,7 @@ export const editContact = async (req, res) => {
         arrayFilters: [{ 'contact._id': req.params._id }],
       },
     );
-    res.status(201).json({ message: 'Successfully edited contact' });
+    res.status(201).json(req.body);
   } catch (e) {
     res.send(e);
   }
@@ -39,7 +39,7 @@ export const getContact = async (req, res) => {
 
 export const addContact = async (req, res) => {
   try {
-    await User.updateOne(
+    const contact = await User.updateOne(
       { username: req.params.username }, // condition
       {
         $push: {
@@ -51,7 +51,7 @@ export const addContact = async (req, res) => {
         },
       },
     );
-    res.status(201).json({ message: 'Successfully added contact' });
+    res.status(201).send(contact);
   } catch (e) {
     res.send(e);
   }
@@ -69,7 +69,9 @@ export const deleteContact = async (req, res) => {
         },
       },
     );
-    res.status(202).json({ message: 'Successfully deleted contact' });
+    res
+      .status(202)
+      .json({ message: 'Successfully deleted contact', id: req.query.id });
   } catch (e) {
     res.send(e);
   }
