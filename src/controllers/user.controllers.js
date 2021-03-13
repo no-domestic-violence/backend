@@ -19,11 +19,7 @@ export const editContact = async (req, res) => {
         new: true,
       },
     );
-    const editedContact = user.contacts.filter(
-      (contact) => contact._id === editedContactId,
-    );
-    console.log(editedContact);
-    res.status(201).json(req.body);
+    res.status(201).json(user.contacts);
   } catch (e) {
     res.send(e);
   }
