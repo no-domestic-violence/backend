@@ -2,7 +2,8 @@ import User from '../models/user.model';
 
 export const editContact = async (req, res) => {
   try {
-    await User.findOneAndUpdate(
+    const editedContactId = req.params._id;
+    const user = await User.findOneAndUpdate(
       {
         username: req.params.username,
       },
@@ -14,9 +15,14 @@ export const editContact = async (req, res) => {
         },
       },
       {
-        arrayFilters: [{ 'contact._id': req.params._id }],
+        arrayFilters: [{ 'contact._id': editedContactId }],
+        new: true,
       },
     );
+    const editedContact = user.contacts.filter(
+      (contact) => contact._id === editedContactId,
+    );
+    console.log(editedContact);
     res.status(201).json(req.body);
   } catch (e) {
     res.send(e);
@@ -37,9 +43,11 @@ export const getContact = async (req, res) => {
   }
 };
 
+// https://stackoverflow.com/questions/54944980/updateone-returns-a-mongoose-object-and-not-document
+
 export const addContact = async (req, res) => {
   try {
-    const contact = await User.updateOne(
+    const user = await User.findOneAndUpdate(
       { username: req.params.username }, // condition
       {
         $push: {
@@ -50,8 +58,10 @@ export const addContact = async (req, res) => {
           },
         },
       },
+      { new: true },
     );
-    res.status(201).send(contact);
+    const { contacts } = user;
+    res.status(201).json(contacts);
   } catch (e) {
     res.send(e);
   }
