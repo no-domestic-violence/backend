@@ -69,7 +69,7 @@ export const addContact = async (req, res) => {
 
 export const deleteContact = async (req, res) => {
   try {
-    await User.updateOne(
+    const user = await User.findOneAndUpdate(
       { username: req.params.username },
       {
         $pull: {
@@ -78,10 +78,10 @@ export const deleteContact = async (req, res) => {
           },
         },
       },
+      { new: true },
     );
-    res
-      .status(202)
-      .json({ message: 'Successfully deleted contact', id: req.query.id });
+    const { contacts } = user;
+    res.status(202).json(contacts);
   } catch (e) {
     res.send(e);
   }
