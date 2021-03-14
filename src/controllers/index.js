@@ -6,6 +6,7 @@ import {
   createArticle,
   deleteArticle,
 } from './article.controllers';
+import { createVideo, getVideos } from './video.controllers';
 
 import {
   editContact,
@@ -25,4 +26,6 @@ export {
   getContact,
   addContact,
   deleteContact,
+  getVideos,
+  createVideo,
 };
