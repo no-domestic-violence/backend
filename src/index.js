@@ -7,6 +7,7 @@ import {
   userRoutes,
 } from './routes';
 import { connectToDatabase } from './utils/database';
+
 const swaggerUi = require('swagger-ui-express');
 
 const swaggerDocument = require('./assets/swagger.json');
@@ -32,7 +33,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-export const startServer = async () => {
+const startServer = async () => {
   try {
     await connectToDatabase();
     const port = process.env.PORT || 3001;
