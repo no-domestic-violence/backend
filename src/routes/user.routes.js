@@ -1,5 +1,5 @@
 import express from 'express';
-import verifyToken from '../utils/verifyToken';
+import verifyToken from '../middleware/verifyToken';
 
 import {
   getContact,
