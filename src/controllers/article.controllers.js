@@ -1,20 +1,22 @@
 import Article from '../models/article.model';
 
-export const getArticles = async (req, res) => {
+export const getArticles = async (req, res, next) => {
   try {
     const articles = await Article.find({});
     res.status(200).send(articles);
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    // res.status(400).send({ success: false, error: e.message });
+    next(e);
   }
 };
 
-export const getArticleById = async (req, res) => {
+export const getArticleById = async (req, res, next) => {
   try {
     const article = await Article.findById(req.params.id);
     res.send(article);
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    // res.status(400).send({ success: false, error: e.message });
+    next(e);
   }
 };
 

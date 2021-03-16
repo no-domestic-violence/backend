@@ -25,7 +25,7 @@ export const editContact = async (req, res) => {
   }
 };
 
-export const getContact = async (req, res) => {
+export const getContact = async (req, res, next) => {
   try {
     const foundContact = await User.findOne(
       {
@@ -33,15 +33,16 @@ export const getContact = async (req, res) => {
       },
       ['contacts'],
     );
+    console.log(foundContact);
     res.status(200).send(foundContact);
   } catch (e) {
-    res.send(e);
+    next(e);
   }
 };
 
 // https://stackoverflow.com/questions/54944980/updateone-returns-a-mongoose-object-and-not-document
 
-export const addContact = async (req, res) => {
+export const addContact = async (req, res, next) => {
   try {
     const user = await User.findOneAndUpdate(
       { username: req.params.username }, // condition
@@ -59,7 +60,7 @@ export const addContact = async (req, res) => {
     const { contacts } = user;
     res.status(201).json(contacts);
   } catch (e) {
-    res.send(e);
+    next(e);
   }
 };
 

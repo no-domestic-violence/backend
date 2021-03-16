@@ -6,7 +6,8 @@ import {
   articleRoutes,
   userRoutes,
 } from './routes';
-import { connectToDatabase } from './utils/database';
+import connectToDatabase from './utils/database';
+import errorHandlerMiddleware from './utils/errorHandler';
 
 const swaggerUi = require('swagger-ui-express');
 
@@ -32,6 +33,7 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(errorHandlerMiddleware);
 
 const startServer = async () => {
   try {
