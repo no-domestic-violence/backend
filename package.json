@@ -8,6 +8,7 @@
     "dev": "nodemon --exec babel-node src/index.js",
     "lint": "eslint \"src/**/*.js\"",
     "lint --fix": "eslint \"src/**/*.js\" --fix",
+    "format": "prettier-eslint 'src/**/*.{js,json}' --write",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s --extensions \".ts,.js\" --copy-files",
     "build": "npm run clean && npm run build-babel",
@@ -38,6 +39,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.9",
     "multer": "^1.4.2",
+    "prettier-eslint-cli": "^5.0.1",
     "regenerator-runtime": "^0.13.7",
     "rimraf": "^3.0.2",
     "swagger-ui-express": "^4.1.6"

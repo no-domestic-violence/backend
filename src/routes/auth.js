@@ -11,19 +11,20 @@ const validate = [
   check('username')
     .isLength({ min: 2 })
     .withMessage('Your username is required'),
-  check('email').isEmail().withMessage('Please provide a valid email address'),
+  check('email')
+    .isEmail()
+    .withMessage('Please provide a valid email address'),
   check('password')
     .isLength({ min: 8 })
     .withMessage('Your password must be at least eight charachters'),
 ];
 
-const generateToken = (user) => jwt.sign(
-  { _id: user._id, email: user.email, username: user.username },
-  'SECRET_KEY',
-);
+const generateToken = (user) => jwt.sign({ _id: user._id, email: user.email, username: user.username }, 'SECRET_KEY');
 
 const loginValidation = [
-  check('email').isEmail().withMessage('Please provide a valid email address'),
+  check('email')
+    .isEmail()
+    .withMessage('Please provide a valid email address'),
   check('password')
     .isLength({ min: 8 })
     .withMessage('Your password must be at least eight charachters'),
@@ -38,9 +39,7 @@ router.post('/signup', validate, async (req, res) => {
 
   const userExist = await User.findOne({ email: req.body.email });
   if (userExist) {
-    return res
-      .status(400)
-      .send({ success: false, message: 'Email already exists' });
+    return res.status(400).send({ success: false, message: 'Email already exists' });
   }
 
   const salt = await bcrypt.genSalt();
@@ -76,16 +75,12 @@ router.post('/login', loginValidation, async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-    return res
-      .status(404)
-      .send({ success: false, message: 'User is not signed up' });
+    return res.status(404).send({ success: false, message: 'User is not signed up' });
   }
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) {
-    return res
-      .status(404)
-      .send({ success: false, message: 'Invalid Email or Password' });
+    return res.status(404).send({ success: false, message: 'Invalid Email or Password' });
   }
 
   const token = generateToken(user);

@@ -2,11 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import {
-  hotlineRoutes,
-  shelterRoutes,
-  articleRoutes,
-  userRoutes,
-  videoRoutes,
+  hotlineRoutes, shelterRoutes, articleRoutes, userRoutes, videoRoutes,
 } from './routes';
 import connectToDatabase from './utils/database';
 import { BASE_URI } from './constants';
