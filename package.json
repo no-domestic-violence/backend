@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node src/index.js",
     "lint": "eslint \"src/**/*.js\"",
+    "lint --fix": "eslint \"src/**/*.js\" --fix",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s --extensions \".ts,.js\" --copy-files",
     "build": "npm run clean && npm run build-babel",
@@ -16,10 +17,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^7.12.1",
-    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-promise": "^4.3.1",
     "nodemon": "^2.0.6"
   },
   "dependencies": {
