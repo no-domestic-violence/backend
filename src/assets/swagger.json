@@ -27,6 +27,10 @@
         {
             "name": "user-controller",
             "description": "User Controller"
+        },
+        {
+            "name": "video-controller",
+            "description": "Video Controller"
         }
     ],
     "paths": {
@@ -210,6 +214,70 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/Hotline"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/videos": {
+            "post": {
+                "tags": [
+                    "video-controller"
+                ],
+                "summary": "Create video",
+                "operationId": "createVideoUsingPOST",
+                "consumes": "application/json",
+                "produces": "application/json",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request",
+                        "description": "request",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Video"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/videoResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            },
+            "get": {
+                "tags": [
+                    "video-controller"
+                ],
+                "summary": "Get all videos",
+                "operationId": "getAllVideosUsingGET",
+                "produces": "application/json",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Video"
                             }
                         }
                     },
@@ -448,6 +516,21 @@
             },
             "title": "Hotline"
         },
+        "Video": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "url_to_video": {
+                    "type": "string"
+                },
+                "imageData": {
+                    "type": "string"
+                }
+            },
+            "title": "Video"
+        },
         "User": {
             "type" : "object",
             "properties": {
@@ -485,6 +568,19 @@
                 }
             },
             "title": "articlesResponse"
+        },
+        "videosResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "$ref": "#/definitions/Video"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            },
+            "title": "videosResponse"
         }
     },
     "schemes": [

@@ -10,7 +10,7 @@ export const createVideo = async (req, res, next) => {
     const result = await newVideo.save();
     res.status(201).json({
       success: true,
-      document: result,
+      data: result,
     });
   } catch (error) {
     res.status(400).send(error.message);
