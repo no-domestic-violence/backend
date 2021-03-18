@@ -4,6 +4,11 @@
     "node": true,
     "es6": true
   },
+  "rules": {
+    "global-require": 0,  
+    "no-underscore-dangle": 0,
+    "consistent-return": 0
+   },
   "plugins": [
     "import"
   ]

@@ -26,9 +26,8 @@ const hotlineSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    
   },
   { collection: 'hotlines' },
 );
 
-export const Hotline = mongoose.model('hotlines', hotlineSchema);
+export default mongoose.model('hotlines', hotlineSchema);

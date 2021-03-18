@@ -1,14 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import {
-  hotlineRoutes,
-  shelterRoutes,
-  articleRoutes,
-  userRoutes,
-  videoRoutes,
-} from './routes';
-import { connectToDatabase } from './utils/database';
 import swaggerUi from 'swagger-ui-express';
+import {
+  hotlineRoutes, shelterRoutes, articleRoutes, userRoutes, videoRoutes,
+} from './routes';
+import connectToDatabase from './utils/database';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
 
@@ -20,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // TODO refactor authRoutes - split controller logic
 const authRoutes = require('./routes/auth');
+
 app.use(BASE_URI, express.static('./src/assets/images'));
 app.use(BASE_URI, authRoutes);
 app.use(BASE_URI, shelterRoutes);
@@ -34,11 +31,12 @@ app.get(BASE_URI, (req, res) => {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-export const startServer = async () => {
+const startServer = async () => {
   try {
     await connectToDatabase();
     const port = process.env.PORT || 3001;
     app.listen(port, () => {
+      /* eslint-disable no-console */
       console.log(`Server is running on http://localhost:${port}/api`);
     });
   } catch (e) {
