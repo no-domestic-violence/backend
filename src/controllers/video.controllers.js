@@ -1,6 +1,6 @@
 import Video from '../models/video.model';
 
-export const createVideo = async (req, res, next) => {
+export const createVideo = async (req, res) => {
   try {
     const newVideo = new Video({
       title: req.body.title,

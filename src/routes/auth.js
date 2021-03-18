@@ -17,11 +17,10 @@ const validate = [
     .withMessage('Your password must be at least eight charachters'),
 ];
 
-const generateToken = (user) =>
-  jwt.sign(
-    { _id: user._id, email: user.email, username: user.username },
-    'SECRET_KEY',
-  );
+const generateToken = (user) => jwt.sign(
+  { _id: user._id, email: user.email, username: user.username },
+  'SECRET_KEY',
+);
 
 const loginValidation = [
   check('email').isEmail().withMessage('Please provide a valid email address'),

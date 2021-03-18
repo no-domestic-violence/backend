@@ -1,5 +1,6 @@
-import { Hotline } from '../models/hotline.model';
+import Hotline from '../models/hotline.model';
 
+/* eslint-disable  import/prefer-default-export */
 export const searchHotline = async (req, res) => {
   try {
     const querySearch = req.query.searchTerm;
@@ -10,7 +11,7 @@ export const searchHotline = async (req, res) => {
       ],
     }).sort({ organisation_name: 1 });
     res.status(200).send(hotlinesResponse);
-  } catch (error) {
+  } catch (e) {
     res.status(404).send({ success: false, error: e.message });
   }
 };
