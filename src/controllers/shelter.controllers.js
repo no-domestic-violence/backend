@@ -1,6 +1,6 @@
 import shelters from '../models/shelter.model';
 
-export const getShelters = async (req, res) => {
+export const getShelters = async (req, res, next) => {
   try {
     const sheltersList = await shelters.find(
       {},
@@ -14,6 +14,6 @@ export const getShelters = async (req, res) => {
     );
     res.status(200).send(sheltersList);
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    next(e);
   }
 };

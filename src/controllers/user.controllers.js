@@ -1,7 +1,15 @@
 import User from '../models/user.model';
+import Error from '../utils/error/ErrorHandler';
 
-export const editContact = async (req, res) => {
+export const editContact = async (req, res, next) => {
   try {
+    const { name, phone, message } = req.body;
+    if (!name || !phone || !message) {
+      next(
+        Error.badRequest('All the fields are required and must be non blank!'),
+      );
+      return;
+    }
     const editedContactId = req.params._id;
     const user = await User.findOneAndUpdate(
       {
@@ -21,7 +29,7 @@ export const editContact = async (req, res) => {
     );
     res.status(201).json(user.contacts);
   } catch (e) {
-    res.send(e);
+    next(e);
   }
 };
 
@@ -33,7 +41,6 @@ export const getContact = async (req, res, next) => {
       },
       ['contacts'],
     );
-    console.log(foundContact);
     res.status(200).send(foundContact);
   } catch (e) {
     next(e);
@@ -44,6 +51,13 @@ export const getContact = async (req, res, next) => {
 
 export const addContact = async (req, res, next) => {
   try {
+    const { name, phone, message } = req.body;
+    if (!name || !phone || !message) {
+      next(
+        Error.badRequest('All the fields are required and must be non blank!'),
+      );
+      return;
+    }
     const user = await User.findOneAndUpdate(
       { username: req.params.username }, // condition
       {
