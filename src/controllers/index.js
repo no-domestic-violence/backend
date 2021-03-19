@@ -1,17 +1,12 @@
 import { searchHotline } from './hotline.controllers';
 import { getShelters } from './shelter.controllers';
 import {
-  getArticles,
-  getArticleById,
-  createArticle,
-  deleteArticle,
+  getArticles, getArticleById, createArticle, deleteArticle,
 } from './article.controllers';
+import { createVideo, getVideos } from './video.controllers';
 
 import {
-  editContact,
-  getContact,
-  addContact,
-  deleteContact,
+  editContact, getContact, addContact, deleteContact,
 } from './user.controllers';
 
 export {
@@ -25,4 +20,6 @@ export {
   getContact,
   addContact,
   deleteContact,
+  getVideos,
+  createVideo,
 };

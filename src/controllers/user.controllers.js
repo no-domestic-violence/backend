@@ -1,5 +1,5 @@
 import User from '../models/user.model';
-import Error from '../utils/error/ErrorHandler';
+import Error from '../middleware/error/ErrorHandler';
 
 export const editContact = async (req, res, next) => {
   try {

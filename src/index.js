@@ -1,18 +1,18 @@
 import express from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import {
   hotlineRoutes,
   shelterRoutes,
   articleRoutes,
   userRoutes,
+  videoRoutes,
 } from './routes';
-import { connectToDatabase } from './utils/database';
-import handleError from './utils/error/handleError';
-import Error from './utils/error/ErrorHandler';
-
-const swaggerUi = require('swagger-ui-express');
-
-const swaggerDocument = require('./assets/swagger.json');
+import handleError from './middleware/error/handleError';
+import Error from './middleware/error/ErrorHandler';
+import connectToDatabase from './utils/database';
+import { BASE_URI } from './constants';
+import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
@@ -23,13 +23,15 @@ app.use(express.urlencoded({ extended: true }));
 // TODO refactor authRoutes - split controller logic
 const authRoutes = require('./routes/auth');
 
-app.use('/api', authRoutes);
-app.use('/api', shelterRoutes);
-app.use('/api', hotlineRoutes);
-app.use('/api', userRoutes);
-app.use('/api', articleRoutes);
+app.use(BASE_URI, express.static('./src/assets/images'));
+app.use(BASE_URI, authRoutes);
+app.use(BASE_URI, shelterRoutes);
+app.use(BASE_URI, hotlineRoutes);
+app.use(BASE_URI, userRoutes);
+app.use(BASE_URI, articleRoutes);
+app.use(BASE_URI, videoRoutes);
 
-app.get('/api', (req, res) => {
+app.get(BASE_URI, (req, res) => {
   res.send('Welcome to the "Pool" project API');
 });
 
@@ -46,6 +48,7 @@ const startServer = async () => {
     await connectToDatabase();
     const port = process.env.PORT || 3001;
     app.listen(port, () => {
+      /* eslint-disable no-console */
       console.log(`Server is running on http://localhost:${port}/api`);
     });
   } catch (e) {

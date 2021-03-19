@@ -1,5 +1,5 @@
 import Article from '../models/article.model';
-import Error from '../utils/error/ErrorHandler';
+import Error from '../middleware/error/ErrorHandler';
 
 export const getArticles = async (req, res, next) => {
   try {
