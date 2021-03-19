@@ -1,27 +1,35 @@
 import Video from '../models/video.model';
+import Error from '../middleware/error/ErrorHandler';
 
-export const createVideo = async (req, res) => {
+export const createVideo = async (req, res, next) => {
   try {
     const newVideo = new Video({
       title: req.body.title,
       url_to_video: req.body.url_to_video,
       imageData: req.file.filename,
     });
+    const { title, url_to_video, imageData } = req.body;
+    if (!title || !url_to_video || !imageData) {
+      next(
+        Error.badRequest('All the fields are required and must be non blank!'),
+      );
+      return;
+    }
     const result = await newVideo.save();
     res.status(201).json({
       success: true,
       data: result,
     });
-  } catch (error) {
-    res.status(400).send(error.message);
+  } catch (e) {
+    next(e);
   }
 };
 
-export const getVideos = async (req, res) => {
+export const getVideos = async (req, res, next) => {
   try {
     const videos = await Video.find({});
     res.status(200).send(videos);
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    next(e);
   }
 };
