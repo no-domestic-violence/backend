@@ -1,14 +1,19 @@
 import jwt from 'jsonwebtoken';
+import Error from './error/ErrorHandler';
 
 const verifyToken = (req, res, next) => {
   const token = req.header('auth-token');
-  if (!token) return res.status(401).send('Access denied');
+  if (!token) {
+    next(Error.unauthorized('Access denied'));
+    return;
+  }
   try {
     const verified = jwt.verify(token, 'SECRET_KEY');
     req.user = verified;
     next();
-  } catch (e) {
-    res.status(400).send('Invalid token');
+  } catch (error) {
+    next(Error.badRequest('Invalid token'));
+    // res.status(400).send('Invalid token');
   }
 };
 

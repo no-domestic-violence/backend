@@ -2,8 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import {
-  hotlineRoutes, shelterRoutes, articleRoutes, userRoutes, videoRoutes,
+  hotlineRoutes,
+  shelterRoutes,
+  articleRoutes,
+  userRoutes,
+  videoRoutes,
 } from './routes';
+import handleError from './middleware/error/handleError';
+import Error from './middleware/error/ErrorHandler';
 import connectToDatabase from './utils/database';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
@@ -30,6 +36,12 @@ app.get(BASE_URI, (req, res) => {
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('*', (req, res, next) => {
+  setImmediate(() => {
+    next(Error.notFound('Not found.'));
+  });
+});
+app.use(handleError);
 
 const startServer = async () => {
   try {

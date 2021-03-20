@@ -1,7 +1,15 @@
 import User from '../models/user.model';
+import Error from '../middleware/error/ErrorHandler';
 
-export const editContact = async (req, res) => {
+export const editContact = async (req, res, next) => {
   try {
+    const { name, phone, message } = req.body;
+    if (!name || !phone || !message) {
+      next(
+        Error.badRequest('All the fields are required and must be non blank!'),
+      );
+      return;
+    }
     const editedContactId = req.params._id;
     const user = await User.findOneAndUpdate(
       {
@@ -21,11 +29,11 @@ export const editContact = async (req, res) => {
     );
     res.status(201).json(user.contacts);
   } catch (e) {
-    res.send(e);
+    next(e);
   }
 };
 
-export const getContact = async (req, res) => {
+export const getContact = async (req, res, next) => {
   try {
     const foundContact = await User.findOne(
       {
@@ -35,14 +43,21 @@ export const getContact = async (req, res) => {
     );
     res.status(200).send(foundContact);
   } catch (e) {
-    res.send(e);
+    next(e);
   }
 };
 
 // https://stackoverflow.com/questions/54944980/updateone-returns-a-mongoose-object-and-not-document
 
-export const addContact = async (req, res) => {
+export const addContact = async (req, res, next) => {
   try {
+    const { name, phone, message } = req.body;
+    if (!name || !phone || !message) {
+      next(
+        Error.badRequest('All the fields are required and must be non blank!'),
+      );
+      return;
+    }
     const user = await User.findOneAndUpdate(
       { username: req.params.username }, // condition
       {
@@ -59,7 +74,7 @@ export const addContact = async (req, res) => {
     const { contacts } = user;
     res.status(201).json(contacts);
   } catch (e) {
-    res.send(e);
+    next(e);
   }
 };
 

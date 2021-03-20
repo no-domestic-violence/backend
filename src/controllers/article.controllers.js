@@ -1,24 +1,25 @@
 import Article from '../models/article.model';
+import Error from '../middleware/error/ErrorHandler';
 
-export const getArticles = async (req, res) => {
+export const getArticles = async (req, res, next) => {
   try {
     const articles = await Article.find({});
     res.status(200).send(articles);
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    next(e);
   }
 };
 
-export const getArticleById = async (req, res) => {
+export const getArticleById = async (req, res, next) => {
   try {
     const article = await Article.findById(req.params.id);
     res.send(article);
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    next(Error.notFound('Article not found.'));
   }
 };
 
-export const createArticle = async (req, res) => {
+export const createArticle = async (req, res, next) => {
   const article = new Article({
     title: req.body.title,
     author: req.body.author,
@@ -28,20 +29,41 @@ export const createArticle = async (req, res) => {
     created_at: new Date(),
   });
   try {
+    const {
+      title,
+      author,
+      text,
+      violence_type,
+      url_to_image,
+      created_at,
+    } = req.body;
+    if (
+      !title ||
+      !author ||
+      !text ||
+      !violence_type ||
+      !url_to_image ||
+      !created_at
+    ) {
+      next(
+        Error.badRequest('All the fields are required and must be non blank!'),
+      );
+      return;
+    }
     await article.save();
 
     res.status(201).json({ success: true, data: article });
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    next(e);
   }
 };
 
-export const deleteArticle = async (req, res) => {
+export const deleteArticle = async (req, res, next) => {
   const { id } = req.params;
   try {
     await Article.findOneAndDelete({ _id: id });
     await res.status(202).json({ message: 'Article was deleted!' });
   } catch (e) {
-    res.status(400).send({ success: false, error: e.message });
+    next(Error.notFound('Article not found.'));
   }
 };

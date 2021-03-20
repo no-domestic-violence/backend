@@ -1,9 +1,12 @@
 import Hotline from '../models/hotline.model';
+import Error from '../middleware/error/ErrorHandler';
 
-/* eslint-disable  import/prefer-default-export */
-export const searchHotline = async (req, res) => {
+export const searchHotline = async (req, res, next) => {
+  /* eslint-disable  import/prefer-default-export */
+
   try {
     const querySearch = req.query.searchTerm;
+
     const hotlinesResponse = await Hotline.find({
       $or: [
         { city: { $regex: querySearch, $options: 'i' } },
@@ -11,7 +14,7 @@ export const searchHotline = async (req, res) => {
       ],
     }).sort({ organisation_name: 1 });
     res.status(200).send(hotlinesResponse);
-  } catch (e) {
-    res.status(404).send({ success: false, error: e.message });
+  } catch (error) {
+    next(Error.badRequest('Bad request.'));
   }
 };
