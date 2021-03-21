@@ -1,5 +1,5 @@
 import connectToDatabase from './utils/database';
-import { app } from './app';
+import app from './app';
 
 const startServer = async () => {
   try {
@@ -15,5 +15,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-export { app };

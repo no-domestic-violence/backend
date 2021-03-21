@@ -42,4 +42,4 @@ app.get('*', (req, res, next) => {
 });
 app.use(handleError);
 
-export { app };
+export default app;

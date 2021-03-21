@@ -1,5 +1,6 @@
 import shelters from '../models/shelter.model';
 
+/* eslint-disable  import/prefer-default-export */
 export const getShelters = async (req, res, next) => {
   try {
     const sheltersList = await shelters.find(
