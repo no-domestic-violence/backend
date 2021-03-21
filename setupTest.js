@@ -7,3 +7,5 @@ afterEach(async done => {
 afterAll(done => {
   return done();
 });
+
+jest.setTimeout(30000);

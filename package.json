@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npm run jest",
     "jest": "jest src/**/__tests__/*.test.js",
+    "test:watch": "jest --watch",
     "jest-cov": "jest --coverage src/**/__tests__/*.test.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "lint": "eslint \"src/**/*.js\"",
