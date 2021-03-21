@@ -10,7 +10,7 @@ describe('Shelter schema has all required fields', () => {
   });
 
   test('should have description', () => {
-    const description = Shelter.schema.obj.description;
+    const { description } = Shelter.schema.obj;
     expect(description).toEqual({
       type: String,
       required: true,
@@ -18,12 +18,12 @@ describe('Shelter schema has all required fields', () => {
   });
 
   test('should have latitude', () => {
-    const latitude = Shelter.schema.obj.latitude;
+    const { latitude } = Shelter.schema.obj;
     expect(latitude).toEqual({ type: Number, required: true });
   });
 
   test('should have longitude', () => {
-    const longitude = Shelter.schema.obj.longitude;
+    const { longitude } = Shelter.schema.obj;
     expect(longitude).toEqual({ type: Number, required: true });
   });
 });

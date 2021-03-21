@@ -2,7 +2,7 @@ import Video from '../video.model';
 
 describe('Video schema has all required fields', () => {
   test('should have title', () => {
-    const title = Video.schema.obj.title;
+    const { title } = Video.schema.obj;
     expect(title).toEqual({
       type: String,
       required: true,
@@ -18,7 +18,7 @@ describe('Video schema has all required fields', () => {
   });
 
   test('should have imageData', () => {
-    const imageData = Video.schema.obj.imageData;
+    const { imageData } = Video.schema.obj;
     expect(imageData).toEqual({ type: String, required: true });
   });
 });

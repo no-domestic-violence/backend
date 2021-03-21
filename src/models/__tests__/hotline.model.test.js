@@ -10,7 +10,7 @@ describe('Hotline schema has all required fields', () => {
   });
 
   test('should have description', () => {
-    const description = Hotline.schema.obj.description;
+    const { description } = Hotline.schema.obj;
     expect(description).toEqual({
       type: String,
       required: true,
@@ -18,20 +18,20 @@ describe('Hotline schema has all required fields', () => {
   });
 
   test('should have country', () => {
-    const country = Hotline.schema.obj.country;
+    const { country } = Hotline.schema.obj;
     expect(country).toEqual({ type: String, required: true });
   });
 
   test('should have city', () => {
-    const city = Hotline.schema.obj.city;
+    const { city } = Hotline.schema.obj;
     expect(city).toEqual({ type: String, required: true });
   });
   test('should have website', () => {
-    const website = Hotline.schema.obj.website;
+    const { website } = Hotline.schema.obj;
     expect(website).toEqual({ type: String, required: true });
   });
   test('should have phone', () => {
-    const phone = Hotline.schema.obj.phone;
+    const { phone } = Hotline.schema.obj;
     expect(phone).toEqual({ type: String, required: true });
   });
 });
