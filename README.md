@@ -127,9 +127,9 @@ yarn dev
 yarn lint
 ```
 
-**The test  api**
+**Testing**
 
-- We use jest and supertest
+- testing framework - Jest, HTTP assertions library - supertest
 - Run tests
 
 ```s
