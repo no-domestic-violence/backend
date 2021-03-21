@@ -52,7 +52,6 @@ describe('Aricle endpoints', () => {
   test('should delete specific article with DELETE request to specific id', async () => {
     const article = await Article.create(articleData);
     let res = await request(app).delete('/api/articles/' + article.id);
-    console.log(res);
     expect(res.statusCode).toEqual(202);
     expect(res.body.message).toEqual('Article was deleted!');
   });
