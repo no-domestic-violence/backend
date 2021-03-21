@@ -127,6 +127,15 @@ yarn dev
 yarn lint
 ```
 
+**The test  api**
+
+- We use jest and supertest
+- Run tests
+
+```s
+yarn test
+```
+
 **The api uses Heroku for production**
 
 - Production URL: https://pool-api-mobile.herokuapp.com/
