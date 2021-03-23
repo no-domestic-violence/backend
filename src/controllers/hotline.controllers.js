@@ -1,9 +1,8 @@
 import Hotline from '../models/hotline.model';
 import Error from '../middleware/error/ErrorHandler';
 
+/* eslint-disable  import/prefer-default-export */
 export const searchHotline = async (req, res, next) => {
-  /* eslint-disable  import/prefer-default-export */
-
   try {
     const querySearch = req.query.searchTerm;
 
