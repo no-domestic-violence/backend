@@ -10,6 +10,7 @@ const articleSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     text: {
       type: String,
       required: true,
@@ -27,6 +28,7 @@ const articleSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { collection: 'articles' },
 );
