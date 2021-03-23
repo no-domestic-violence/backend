@@ -22,5 +22,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 
   contacts: [contactSchema],
+  role: String,
 });
 module.exports = mongoose.model('User', userSchema);
