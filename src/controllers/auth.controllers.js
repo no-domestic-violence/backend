@@ -1,0 +1,111 @@
+import { generateToken} from '../utils/authentication'
+const { validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const User = require('../models/user.model');
+
+
+export const signup = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  const userExist = await User.findOne({ email: req.body.email });
+  if (userExist) {
+    return res
+      .status(400)
+      .send({ success: false, message: 'Email already exists' });
+  }
+
+  const salt = await bcrypt.genSalt();
+  const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+  const user = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: hashPassword,
+  });
+
+  try {
+    await user.save();
+    // create and assign a token
+    const token = generateToken(user);
+    res.send({
+      success: true,
+      user,
+      token,
+    });
+  } catch (error) {
+    res.status(400).send({ success: false, error });
+  }
+};
+
+export const login = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return res
+      .status(404)
+      .send({ success: false, message: 'User is not signed up' });
+  }
+
+  const validPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!validPassword) {
+    return res
+      .status(404)
+      .send({ success: false, message: 'Invalid Email or Password' });
+  }
+
+  const token = generateToken(user);
+
+  res.header('auth-token', token).send({
+    success: true,
+    message: 'Logged in successfully !',
+    token,
+    user,
+  });
+};
+
+export const changePassword = async (req, res) => {
+  const { email, oldPassword, password } = req.body;
+  if (!email || !oldPassword) {
+    return res.status(422).json({ message: 'Provide email and password!' });
+  }
+  const user = await User.findOne({ email });
+  const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+  if (!isPasswordCorrect) {
+    return res.status(400).json({ message: 'Old password is not correct' });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedNewPassword = await bcrypt.hash(password, salt);
+
+  user.password = hashedNewPassword;
+  await user.save();
+  res.send('You updated the password');
+};
+
+export const deleteUser = async (req, res) => {
+  const { username } = req.query;
+  User.findOneAndDelete({ username })
+    .then((user) => {
+      if (!user) return res.status(404).send('User not found');
+      res.status(202).json({
+        user,
+        message: 'User was deleted!',
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+
+

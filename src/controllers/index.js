@@ -9,6 +9,8 @@ import {
   editContact, getContact, addContact, deleteContact,
 } from './user.controllers';
 
+import { signup, login, changePassword, deleteUser } from './auth.controllers';
+
 export {
   searchHotline,
   getShelters,
@@ -22,4 +24,8 @@ export {
   deleteContact,
   getVideos,
   createVideo,
+  signup,
+  login,
+  changePassword,
+  deleteUser,
 };
