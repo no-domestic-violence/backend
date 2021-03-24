@@ -1,5 +1,6 @@
 import Article from '../models/article.model';
 import Error from '../middleware/error/ErrorHandler';
+import User from '../models/user.model';
 
 export const getArticles = async (req, res, next) => {
   try {
@@ -27,6 +28,7 @@ export const createArticle = async (req, res, next) => {
     violence_type: req.body.violence_type,
     url_to_image: req.body.url_to_image,
     created_at: new Date(),
+    user_id: req.body.user_id,
   });
   try {
     const { title, author, text, violence_type, url_to_image } = req.body;
@@ -37,7 +39,6 @@ export const createArticle = async (req, res, next) => {
       return;
     }
     await article.save();
-    console.log(article);
     res.status(201).json({ success: true, data: article });
   } catch (e) {
     next(e);

@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   { collection: 'articles' },
 );
