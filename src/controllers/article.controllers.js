@@ -29,29 +29,15 @@ export const createArticle = async (req, res, next) => {
     created_at: new Date(),
   });
   try {
-    const {
-      title,
-      author,
-      text,
-      violence_type,
-      url_to_image,
-      created_at,
-    } = req.body;
-    if (
-      !title
-      || !author
-      || !text
-      || !violence_type
-      || !url_to_image
-      || !created_at
-    ) {
+    const { title, author, text, violence_type, url_to_image } = req.body;
+    if (!title || !author || !text || !violence_type || !url_to_image) {
       next(
         Error.badRequest('All the fields are required and must be non blank!'),
       );
       return;
     }
     await article.save();
-
+    console.log(article);
     res.status(201).json({ success: true, data: article });
   } catch (e) {
     next(e);
