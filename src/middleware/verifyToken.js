@@ -13,7 +13,6 @@ const verifyToken = (req, res, next) => {
     next();
   } catch (error) {
     next(Error.badRequest('Invalid token'));
-    // res.status(400).send('Invalid token');
   }
 };
 
