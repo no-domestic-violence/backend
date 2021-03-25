@@ -1,7 +1,7 @@
 import { generateToken} from '../utils/authentication'
-const { validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
-const User = require('../models/user.model');
+import { validationResult } from 'express-validator';
+import bcrypt from 'bcryptjs';
+import User from '../models/user.model';
 
 
 export const signup = async (req, res) => {

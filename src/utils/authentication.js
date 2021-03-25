@@ -23,4 +23,4 @@ check('password')
     .withMessage('Your password must be at least eight charachters'),
 ];
 
-export default {signupValidation, loginValidation, generateToken};
+export {signupValidation, loginValidation, generateToken};
