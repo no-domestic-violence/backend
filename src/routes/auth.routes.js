@@ -14,6 +14,6 @@ const router = express.Router();
 router.route('/signup').post(signupValidation, signup);
 router.route('/login').post(loginValidation, login);
 router.route('/changePassword').post(changePassword);
-router.delete('/deleteUser').delete(deleteUser);
+router.route('/deleteUser').delete(deleteUser);
 
 export default router;
