@@ -38,12 +38,12 @@ export const createArticle = async (req, res, next) => {
       created_at,
     } = req.body;
     if (
-      !title ||
-      !author ||
-      !text ||
-      !violence_type ||
-      !url_to_image ||
-      !created_at
+      !title
+      || !author
+      || !text
+      || !violence_type
+      || !url_to_image
+      || !created_at
     ) {
       next(
         Error.badRequest('All the fields are required and must be non blank!'),

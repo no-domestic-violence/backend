@@ -5,3 +5,4 @@ development.js
 node_modules/
 build
 yarn-error.log
+coverage

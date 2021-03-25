@@ -1,0 +1,44 @@
+import express from 'express';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import {
+  hotlineRoutes,
+  shelterRoutes,
+  articleRoutes,
+  userRoutes,
+  videoRoutes,
+  authRoutes,
+} from './routes';
+import handleError from './middleware/error/handleError';
+import Error from './middleware/error/ErrorHandler';
+import { BASE_URI } from './constants';
+import swaggerDocument from './assets/swagger.json';
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+app.use(BASE_URI, express.static('./src/assets/images'));
+app.use(BASE_URI, authRoutes);
+app.use(BASE_URI, shelterRoutes);
+app.use(BASE_URI, hotlineRoutes);
+app.use(BASE_URI, userRoutes);
+app.use(BASE_URI, articleRoutes);
+app.use(BASE_URI, videoRoutes);
+
+app.get(BASE_URI, (req, res) => {
+  res.send('Welcome to the "Pool" project API');
+});
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('*', (req, res, next) => {
+  setImmediate(() => {
+    next(Error.notFound('Not found.'));
+  });
+});
+app.use(handleError);
+
+export default app;

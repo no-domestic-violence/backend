@@ -1,6 +1,6 @@
 import Error from './ErrorHandler';
 
-function handleError(err, req, res, next) {
+function handleError(err, req, res) {
   if (err instanceof Error) {
     res.status(err.statusCode).json(err.message);
     return;
