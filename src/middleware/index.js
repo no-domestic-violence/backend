@@ -1,9 +1,13 @@
-import authRole from './authRole';
 import verifyToken from './verifyToken';
 import multer from './multer';
-import authDeleteArticle from './authDeleteArticle';
-import authCreateArticle from './authCreateArticle';
+import {
+  checkCreateArticlePermission,
+  checkDeleteArticlePermission,
+} from './authorization';
 
 export {
-  authRole, verifyToken, multer, authDeleteArticle, authCreateArticle,
+  verifyToken,
+  multer,
+  checkCreateArticlePermission,
+  checkDeleteArticlePermission,
 };
