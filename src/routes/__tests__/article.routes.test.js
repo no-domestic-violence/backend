@@ -13,8 +13,14 @@ const articleData = {
   created_at: new Date(),
 };
 
+jest.mock('../../middleware/verifyToken', () =>
+  jest.fn((req, res, next) => {
+    next();
+  }),
+);
+
 describe('Aricle endpoints', () => {
-  //TODO: reuse it or leave here
+
   beforeEach(async done => {
     await mongoose.connect(
       'mongodb://localhost:27017/test-db',
@@ -22,6 +28,7 @@ describe('Aricle endpoints', () => {
       () => done(),
     );
   });
+
   afterEach(async done => {
     await mongoose.connection.db.dropDatabase(() => {
       mongoose.connection.close(() => done());
