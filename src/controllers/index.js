@@ -1,15 +1,19 @@
 import { searchHotline } from './hotline.controllers';
 import { getShelters } from './shelter.controllers';
+
 import {
   getArticles, getArticleById, createArticle, deleteArticle,
 } from './article.controllers';
+
 import { createVideo, getVideos } from './video.controllers';
 
 import {
   editContact, getContact, addContact, deleteContact,
 } from './user.controllers';
 
-import { signup, login, changePassword, deleteUser } from './auth.controllers';
+import {
+  signup, login, changePassword, deleteUser,
+} from './auth.controllers';
 
 export {
   searchHotline,

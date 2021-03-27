@@ -20,7 +20,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use(BASE_URI, express.static('./src/assets/images'));
 app.use(BASE_URI, authRoutes);
 app.use(BASE_URI, shelterRoutes);

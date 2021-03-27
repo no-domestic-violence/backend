@@ -1,8 +1,7 @@
-import { generateToken} from '../utils/authentication'
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
+import { generateToken } from '../utils/authentication';
 import User from '../models/user.model';
-
 
 export const signup = async (req, res) => {
   const errors = validationResult(req);
@@ -106,6 +105,3 @@ export const deleteUser = async (req, res) => {
       res.status(500).send(err);
     });
 };
-
-
-

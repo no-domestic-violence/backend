@@ -1,13 +1,12 @@
+import express from 'express';
 import { signupValidation, loginValidation } from '../utils/authentication';
 
-import express from 'express';
 import {
   signup,
   login,
   changePassword,
   deleteUser,
 } from '../controllers';
-
 
 const router = express.Router();
 
