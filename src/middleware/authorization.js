@@ -2,17 +2,20 @@ import {
   hasCreateArticlePermission,
   hasDeleteArticlePermission,
 } from '../utils/permissions';
+import Error from './error/ErrorHandler';
 
 const checkCreateArticlePermission = (req, res, next) => {
   if (!hasCreateArticlePermission(req.user)) {
-    return res.status(401).json({ message: 'Not allowed' });
+    next(Error.unauthorized('Not allowed.'));
+    return;
   }
   next();
 };
 
 const checkDeleteArticlePermission = (req, res, next) => {
   if (!hasDeleteArticlePermission(req.user, req.body.author_id)) {
-    return res.status(401).json({ message: 'Not allowed' });
+    next(Error.unauthorized('Not allowed.'));
+    return;
   }
   next();
 };
