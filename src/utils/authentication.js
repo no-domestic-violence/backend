@@ -5,7 +5,7 @@ const signupValidation = [
   check('username')
     .isLength({ min: 2 })
     .withMessage('Your username is required'),
-  check('email').isEmail().withMessage('Please provide a valid email address'),
+  check('email').isEmail().normalizeEmail().withMessage('Please provide a valid email address'),
   check('password')
     .isLength({ min: 8 })
     .withMessage('Your password must be at least eight charachters'),
@@ -17,7 +17,7 @@ const generateToken = (user) => jwt.sign(
 );
 
 const loginValidation = [
-  check('email').isEmail().withMessage('Please provide a valid email address'),
+  check('email').isEmail().normalizeEmail().withMessage('Please provide a valid email address'),
   check('password')
     .isLength({ min: 8 })
     .withMessage('Your password must be at least eight charachters'),
