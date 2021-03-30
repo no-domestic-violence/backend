@@ -8,4 +8,4 @@ if (process.env.NODE_ENV === 'development') {
   logger = buildProdLogger();
 }
 
-export { logger };
+export default logger;

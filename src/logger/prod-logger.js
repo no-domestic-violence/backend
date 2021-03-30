@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { format, createLogger, transports } from 'winston';
 
 const { timestamp, combine, errors, json } = format;
