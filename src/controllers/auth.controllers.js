@@ -43,7 +43,9 @@ export const signup = async (req, res, next) => {
       token,
     });
   } catch (e) {
-    res.status(400).send({ success: false, e });
+    next(
+      Error.badRequest('The server can’t return a response due to an error'),
+    );
   }
 };
 
@@ -66,7 +68,7 @@ export const login = async (req, res, next) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
       next(
-        Error.notFound('Invalid Email or Password'),
+        Error.unauthorized('Invalid Email or Password'),
       );
       return;
     }
@@ -95,7 +97,7 @@ export const changePassword = async (req, res, next) => {
     const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
     if (!isPasswordCorrect) {
       next(
-        Error.notFound('Old password is not correct'),
+        Error.unauthorized('Old password is not correct'),
       );
       return;
     }
@@ -117,7 +119,7 @@ export const deleteUser = async (req, res, next) => {
     );
     if (!user) {
       next(
-        Error.badRequest('User not found'),
+        Error.notFound('User not found'),
       );
       return;
     }
