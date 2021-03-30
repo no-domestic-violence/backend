@@ -40,6 +40,8 @@ app.get('*', (req, res, next) => {
     next(Error.notFound('Not found.'));
   });
 });
-app.use(handleError);
+app.use((err, req, res, next) => {
+  handleError(err, req, res);
+});
 
 export default app;
