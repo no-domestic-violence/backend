@@ -1,8 +1,11 @@
+import { logger } from '../../logger';
+
 class ErrorHandler extends Error {
   constructor(statusCode, message) {
     super();
     this.statusCode = statusCode;
     this.message = message;
+    logger.error(message);
   }
 
   static badRequest(message) {
