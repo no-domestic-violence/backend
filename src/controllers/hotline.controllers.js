@@ -16,12 +16,10 @@ client.on('error', (err) => {
 export const searchHotline = async (req, res, next) => {
   try {
     const querySearch = req.query.searchTerm;
-
-    client.get(querySearch, async (err, hotlines) => {
+    client.get(querySearch, async (err, hotlinesCache) => {
       if (err) throw err;
-
-      if (hotlines) {
-        res.status(200).send(hotlines);
+      if (hotlinesCache) {
+        res.status(200).send(hotlinesCache);
       } else {
         const hotlinesResponse = await Hotline.find({
           $or: [
