@@ -8,7 +8,7 @@
     "jest": "jest src/**/__tests__/*.test.js",
     "test:watch": "jest --watch",
     "jest-cov": "jest --coverage src/**/__tests__/*.test.js",
-    "dev": "nodemon --exec babel-node src/index.js",
+    "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
     "lint": "eslint \"src/**/*.js\"",
     "lint --fix": "eslint \"src/**/*.js\" --fix",
     "format": "prettier-eslint 'src/**/*.{js,json}' --write",
@@ -48,7 +48,8 @@
     "redis": "^3.0.2",
     "regenerator-runtime": "^0.13.7",
     "rimraf": "^3.0.2",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "winston": "^3.3.3"
   },
   "eslintIgnore": [
     "*.spec.ts",

@@ -1,5 +1,6 @@
 import connectToDatabase from './utils/database';
 import app from './app';
+import { logger } from './logger';
 
 const startServer = async () => {
   try {
