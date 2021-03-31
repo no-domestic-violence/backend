@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
   contacts: [contactSchema],
   role: {
     type: String,
+    required: true,
     default: ROLE.BASIC,
     enum: [ROLE.BASIC, ROLE.EDITOR, ROLE.ADMIN],
   },
