@@ -27,31 +27,19 @@ export const createArticle = async (req, res, next) => {
     violence_type: req.body.violence_type,
     url_to_image: req.body.url_to_image,
     created_at: new Date(),
+    author_id: req.body.author_id,
   });
   try {
     const {
-      title,
-      author,
-      text,
-      violence_type,
-      url_to_image,
-      created_at,
+      title, author, text, violence_type, url_to_image,
     } = req.body;
-    if (
-      !title
-      || !author
-      || !text
-      || !violence_type
-      || !url_to_image
-      || !created_at
-    ) {
+    if (!title || !author || !text || !violence_type || !url_to_image) {
       next(
         Error.badRequest('All the fields are required and must be non blank!'),
       );
       return;
     }
     await article.save();
-
     res.status(201).json({ success: true, data: article });
   } catch (e) {
     next(e);
@@ -62,8 +50,8 @@ export const deleteArticle = async (req, res, next) => {
   const { id } = req.params;
   try {
     await Article.findOneAndDelete({ _id: id });
-    await res.status(202).json({ message: 'Article was deleted!' });
+    return res.status(202).json({ message: 'Article was deleted!' });
   } catch (e) {
-    next(Error.notFound('Article not found.'));
+    next(e);
   }
 };
