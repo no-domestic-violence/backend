@@ -4,19 +4,7 @@ import {
   hasEditArticlePermission,
 } from '../permissions';
 
-const mockedUser = {
-  _id: 'test_user_id_1',
-  role: 'basic',
-};
-const mockedAuthor = {
-  _id: 'test_user_id_2',
-  role: 'basic',
-};
-const mockedAdmin = {
-  _id: 'test_admin_id',
-  role: 'admin',
-};
-const mockedAuthorId = 'test_user_id_2';
+import { mockedUser, mockedAuthor, mockedAdmin, mockedAuthorId } from '../../test-setup/mocks';
 
 describe('permissions', () => {
   test('should check if the user has permission to create article', () => {
