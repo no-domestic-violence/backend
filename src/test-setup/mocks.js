@@ -6,7 +6,7 @@ export const mockedUser = {
   contacts: [{
     name: 'test_contact',
     phone: '012345787933',
-    message: 'test'
+    message: 'test',
   }],
   role: 'basic',
 };
@@ -18,7 +18,7 @@ export const mockedAuthor = {
   contacts: [{
     name: 'test_contact',
     phone: '012345787933',
-    message: 'test'
+    message: 'test',
   }],
   role: 'editor',
 };
