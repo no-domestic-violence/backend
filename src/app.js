@@ -13,8 +13,16 @@ import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
 
+import promMid from 'express-prometheus-middleware';
+ 
 const app = express();
-
+app.use(
+  promMid({
+    metricsPath: '/metrics',
+    collectDefaultMetrics: true,
+    requestDurationBuckets: [0.1, 0.5, 1, 1.5],
+  }),
+);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
