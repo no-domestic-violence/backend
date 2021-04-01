@@ -40,7 +40,7 @@ app.get('*', (req, res, next) => {
     next(Error.notFound('Not found.'));
   });
 });
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   handleError(err, req, res);
 });
 

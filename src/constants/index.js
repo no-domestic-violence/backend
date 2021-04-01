@@ -6,3 +6,6 @@ export const ROLE = {
   EDITOR: 'editor',
   BASIC: 'basic',
 };
+
+export const REDIS_PORT = process.env.REDIS_PORT || 6379;
+export const PORT = process.env.PORT || 3001;
