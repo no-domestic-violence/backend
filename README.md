@@ -127,6 +127,27 @@ yarn dev
 yarn lint
 ```
 
+**Caching**
+
+1. Install Redis
+
+- On Mac:
+```s
+brew install redis
+```
+
+2. Launch Redis before you run the server
+
+```s
+brew services start redis
+```
+
+3. Stop Redis
+
+```s
+brew services stop redis
+```
+
 **Testing**
 
 - testing framework - Jest, HTTP assertions library - supertest

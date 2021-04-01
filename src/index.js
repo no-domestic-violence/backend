@@ -1,6 +1,6 @@
 import connectToDatabase from './utils/database';
 import app from './app';
-import { logger } from './logger';
+import logger from './logger';
 
 const startServer = async () => {
   try {
@@ -11,7 +11,7 @@ const startServer = async () => {
       logger.info(`Server is running on http://localhost:${port}/api`);
     });
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 };
 
