@@ -20,6 +20,10 @@ class ErrorHandler extends Error {
   static notFound(message) {
     return new ErrorHandler(404, message);
   }
+
+  static unprocessableEntity(message) {
+    return new ErrorHandler(422, message);
+  }
 }
 
 module.exports = ErrorHandler;

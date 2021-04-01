@@ -7,6 +7,7 @@ import {
   articleRoutes,
   userRoutes,
   videoRoutes,
+  authRoutes,
 } from './routes';
 import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
@@ -18,9 +19,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// TODO refactor authRoutes - split controller logic
-const authRoutes = require('./routes/auth');
 
 app.use(BASE_URI, express.static('./src/assets/images'));
 app.use(BASE_URI, authRoutes);
