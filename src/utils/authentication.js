@@ -12,7 +12,9 @@ const signupValidation = [
 ];
 
 const generateToken = (user) => jwt.sign(
-  { _id: user._id, email: user.email, username: user.username },
+  {
+    _id: user._id, email: user.email, username: user.username, role: user.role,
+  },
   'SECRET_KEY',
 );
 
