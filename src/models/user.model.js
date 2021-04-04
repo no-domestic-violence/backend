@@ -30,4 +30,4 @@ const userSchema = new mongoose.Schema({
     enum: [ROLE.BASIC, ROLE.EDITOR, ROLE.ADMIN],
   },
 });
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);
