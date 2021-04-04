@@ -13,13 +13,14 @@ const options = {
   },
 };
 
-const { timestamp, combine, errors, json } = format;
+const {
+  timestamp, combine, errors, json,
+} = format;
 
-const buildProdLogger = () =>
-  createLogger({
-    format: combine(timestamp(), errors({ stack: true }), json()),
-    defaultMeta: { service: 'user-service' },
-    transports: [new transports.File(options.file)],
-  });
+const buildProdLogger = () => createLogger({
+  format: combine(timestamp(), errors({ stack: true }), json()),
+  defaultMeta: { service: 'user-service' },
+  transports: [new transports.File(options.file)],
+});
 
 export { buildProdLogger };

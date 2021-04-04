@@ -16,14 +16,12 @@ import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
+
 const app = express();
 
-const accessLogStream = fs.createWriteStream(
-  `${appRoot}/logs/app.log`,
-  {
-    flags: 'a',
-  },
-);
+const accessLogStream = fs.createWriteStream(`${appRoot}/logs/app.log`, {
+  flags: 'a',
+});
 app.use(morgan('tiny', { stream: accessLogStream }));
 app.use(morgan('dev')); // to show in console
 
