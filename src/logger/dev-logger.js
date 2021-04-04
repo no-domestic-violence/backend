@@ -7,7 +7,7 @@ const { combine, printf, errors } = format;
 const options = {
   file: {
     level: 'info',
-    filename: `${appRoot}/logs/development.log`,
+    filename: `${appRoot}/logs/app.log`,
     handleExceptions: true,
     json: true,
     maxsize: 5242880,

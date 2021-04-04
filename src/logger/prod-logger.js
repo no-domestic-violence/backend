@@ -1,15 +1,25 @@
 /* eslint-disable import/prefer-default-export */
 import { format, createLogger, transports } from 'winston';
+import appRoot from 'app-root-path';
 
-const {
-  timestamp, combine, errors, json,
-} = format;
+const options = {
+  file: {
+    level: 'info',
+    filename: `${appRoot}/logs/app.log`,
+    handleExceptions: true,
+    json: true,
+    maxsize: 5242880,
+    maxFiles: 5,
+  },
+};
 
-const buildProdLogger = () => createLogger({
-  format: combine(timestamp(), errors({ stack: true }), json()),
-  defaultMeta: { service: 'user-service' },
-  transports: [new transports.Console()],
-  // new file with logging data here
-});
+const { timestamp, combine, errors, json } = format;
+
+const buildProdLogger = () =>
+  createLogger({
+    format: combine(timestamp(), errors({ stack: true }), json()),
+    defaultMeta: { service: 'user-service' },
+    transports: [new transports.File(options.file)],
+  });
 
 export { buildProdLogger };
