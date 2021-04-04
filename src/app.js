@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
+import morgan from 'morgan';
+import promMid from 'express-prometheus-middleware';
+import fs from 'fs';
+import appRoot from 'app-root-path';
 import {
   hotlineRoutes,
   shelterRoutes,
@@ -12,10 +16,6 @@ import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
-import morgan from 'morgan';
-import promMid from 'express-prometheus-middleware';
-import fs from 'fs';
-import appRoot from 'app-root-path';
 
 const app = express();
 
