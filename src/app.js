@@ -12,10 +12,18 @@ import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
-
+import morgan from 'morgan';
 import promMid from 'express-prometheus-middleware';
- 
+import fs from 'fs';
+import appRoot from 'app-root-path';
+
 const app = express();
+
+const accessLogStream = fs.createWriteStream(`${appRoot}/logs/app.log`, {
+  flags: 'a',
+});
+app.use(morgan('combined', { stream: accessLogStream }));
+
 app.use(
   promMid({
     metricsPath: '/metrics',
