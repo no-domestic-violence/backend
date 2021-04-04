@@ -162,6 +162,25 @@ yarn test
 - Production URL: https://pool-api-mobile.herokuapp.com/
 - Not protected endpoints: /shelters, /hotlines
 
+**Metrics**
+
+Metrics are running on http://localhost:3001/metrics
+
+To run the prometheus and grafana dashboards:
+
+```s
+docker-compose up
+```
+Prometheus running on:
+
+```s
+http://localhost:9090
+```
+Grafana running on:
+```s
+http://localhost:3000
+```
+
 **To use Heroku for development**
 
 1. Check that app is running
