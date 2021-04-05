@@ -1,11 +1,19 @@
-import mongoose from 'mongoose';
+import {
+  connectToDatabase,
+  closeDatabase,
+  clearDatabase,
+} from './src/utils/database';
 
-afterEach(async done => {
-  await mongoose.disconnect();
-  return done();
+beforeAll(() => {
+  return connectToDatabase();
 });
-afterAll(done => {
-  return done();
+
+afterEach(() => {
+  return clearDatabase();
+});
+
+afterAll(() => {
+  return closeDatabase();
 });
 
 jest.setTimeout(30000);

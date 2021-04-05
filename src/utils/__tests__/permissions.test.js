@@ -4,7 +4,12 @@ import {
   hasEditArticlePermission,
 } from '../permissions';
 
-import { mockedUser, mockedAuthor, mockedAdmin, mockedAuthorId } from '../../test-setup/mocks';
+import {
+  mockedUser,
+  mockedAuthor,
+  mockedAdmin,
+  mockedAuthorId,
+} from '../../models/__mocks__/user';
 
 describe('permissions', () => {
   test('should check if the user has permission to create article', () => {
