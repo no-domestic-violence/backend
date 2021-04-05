@@ -22,8 +22,10 @@ const devHttpLogger = morgan('tiny', {
 
 const prodHttpLogger = morgan(format, {
   stream: {
-    write: message => {
-      const { method, url, status, contentLength, responseTime } = JSON.parse(
+    write: (message) => {
+      const {
+        method, url, status, contentLength, responseTime,
+      } = JSON.parse(
         message,
       );
 
