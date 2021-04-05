@@ -2,7 +2,7 @@
 import { format, createLogger, transports } from 'winston';
 import appRoot from 'app-root-path';
 
-const { combine, printf, errors } = format;
+const { combine, printf, errors, json } = format;
 
 const options = {
   file: {
