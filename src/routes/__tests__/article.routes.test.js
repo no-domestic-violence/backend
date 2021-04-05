@@ -7,6 +7,7 @@ import {
 } from '../../middleware/authorization';
 import verifyToken from '../../middleware/verifyToken';
 import Article from '../../models/article.model';
+import { connectTestDb, closeTestDb, clearTestDb } from '../../test-setup/db-handler';
 
 jest.mock('../../middleware/verifyToken', () =>
   jest.fn((req, res, next) => {
@@ -33,20 +34,27 @@ const articleData = {
   created_at: new Date(),
 };
 
-describe('Aricle endpoints', () => {
-  beforeEach(async done => {
-    await mongoose.connect(
-      'mongodb://localhost:27017/test-db',
-      { useNewUrlParser: true },
-      () => done(),
-    );
-  });
+beforeAll(async() => await connectTestDb());
 
-  afterEach(async done => {
-    await mongoose.connection.db.dropDatabase(() => {
-      mongoose.connection.close(() => done());
-    });
-  });
+afterEach(async() => await clearTestDb());
+
+afterAll(async() => await closeTestDb());
+
+
+describe('Aricle endpoints', () => {
+  // beforeEach(async done => {
+  //   await mongoose.connect(
+  //     'mongodb://localhost:27017/test-db',
+  //     { useNewUrlParser: true },
+  //     () => done(),
+  //   );
+  // });
+
+  // afterEach(async done => {
+  //   await mongoose.connection.db.dropDatabase(() => {
+  //     mongoose.connection.close(() => done());
+  //   });
+  // });
 
   test('should create a new article with POST request', async () => {
     await Article.create(articleData);
