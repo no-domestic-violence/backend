@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run jest",
-    "jest": "jest --runInBand src/**/__tests__/*.test.js",
+    "test": "NODE_ENV=test npm run jest",
+    "jest": "jest --runInBand --detectOpenHandles src/**/__tests__/*.test.js",
     "test:watch": "jest --watch",
     "jest-cov": "jest --coverage src/**/__tests__/*.test.js",
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
@@ -60,8 +60,5 @@
   "eslintIgnore": [
     "*.spec.ts",
     "*.test.js"
-  ],
-  "jest": {
-    "testEnvironment": "node"
-  }
+  ]
 }
