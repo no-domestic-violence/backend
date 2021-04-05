@@ -1,16 +1,17 @@
 import connectToDatabase from './utils/database';
 import app from './app';
+import logger from './logger';
+import { PORT } from './constants';
 
 const startServer = async () => {
   try {
     await connectToDatabase();
-    const port = process.env.PORT || 3001;
-    app.listen(port, () => {
+    app.listen(PORT, () => {
       /* eslint-disable no-console */
-      console.log(`Server is running on http://localhost:${port}/api`);
+      logger.info(`Server is running on http://localhost:${PORT}/api`);
     });
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 };
 

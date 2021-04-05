@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
+import morgan from 'morgan';
+import promMid from 'express-prometheus-middleware';
+import fs from 'fs';
+import appRoot from 'app-root-path';
 import {
   hotlineRoutes,
   shelterRoutes,
@@ -16,6 +20,19 @@ import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
+const accessLogStream = fs.createWriteStream(`${appRoot}/logs/app.log`, {
+  flags: 'a',
+});
+app.use(morgan('tiny', { stream: accessLogStream }));
+app.use(morgan('dev')); // to show in console
+
+app.use(
+  promMid({
+    metricsPath: '/metrics',
+    collectDefaultMetrics: true,
+    requestDurationBuckets: [0.1, 0.5, 1, 1.5],
+  }),
+);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,6 +55,8 @@ app.get('*', (req, res, next) => {
     next(Error.notFound('Not found.'));
   });
 });
-app.use(handleError);
+app.use((err, req, res) => {
+  handleError(err, req, res);
+});
 
 export default app;

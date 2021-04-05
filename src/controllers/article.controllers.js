@@ -1,5 +1,6 @@
 import Article from '../models/article.model';
 import Error from '../middleware/error/ErrorHandler';
+import { redisClient } from '../utils/redisClient';
 
 export const getArticles = async (req, res, next) => {
   try {
@@ -11,9 +12,11 @@ export const getArticles = async (req, res, next) => {
 };
 
 export const getArticleById = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const article = await Article.findById(req.params.id);
-    res.send(article);
+    const articleData = await Article.findById(id);
+    redisClient.setex(id, 3600, JSON.stringify(articleData));
+    res.status(200).send(articleData);
   } catch (e) {
     next(Error.notFound('Article not found.'));
   }

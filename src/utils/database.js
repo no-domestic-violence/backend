@@ -1,7 +1,10 @@
 import mongoose from 'mongoose';
 import config from '../config/key';
+import logger from '../logger';
 
-const connectToDatabase = async (url = config.mongoURI || process.env.mongoURI) => {
+const connectToDatabase = async (
+  url = config.mongoURI || process.env.mongoURI,
+) => {
   try {
     await mongoose.set('useCreateIndex', true);
     await mongoose.connect(url, {
@@ -9,9 +12,9 @@ const connectToDatabase = async (url = config.mongoURI || process.env.mongoURI) 
       useUnifiedTopology: true,
     });
     /* eslint-disable no-console */
-    console.log('MongoDB is connected!');
+    logger.info('MongoDB is connected!');
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 };
 

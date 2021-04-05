@@ -1,17 +1,18 @@
 import Hotline from '../models/hotline.model';
 import Error from '../middleware/error/ErrorHandler';
+import { redisClient } from '../utils/redisClient';
 
 /* eslint-disable  import/prefer-default-export */
 export const searchHotline = async (req, res, next) => {
+  const { searchTerm } = req.query;
   try {
-    const querySearch = req.query.searchTerm;
-
     const hotlinesResponse = await Hotline.find({
       $or: [
-        { city: { $regex: querySearch, $options: 'i' } },
-        { organisation_name: { $regex: querySearch, $options: 'i' } },
+        { city: { $regex: searchTerm, $options: 'i' } },
+        { organisation_name: { $regex: searchTerm, $options: 'i' } },
       ],
     }).sort({ organisation_name: 1 });
+    redisClient.setex(searchTerm, 3600, JSON.stringify(hotlinesResponse));
     res.status(200).send(hotlinesResponse);
   } catch (error) {
     next(Error.badRequest('Bad request.'));

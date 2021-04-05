@@ -127,6 +127,27 @@ yarn dev
 yarn lint
 ```
 
+**Caching**
+
+1. Install Redis
+
+- On Mac:
+```s
+brew install redis
+```
+
+2. Launch Redis before you run the server
+
+```s
+brew services start redis
+```
+
+3. Stop Redis
+
+```s
+brew services stop redis
+```
+
 **Testing**
 
 - testing framework - Jest, HTTP assertions library - supertest
@@ -140,6 +161,25 @@ yarn test
 
 - Production URL: https://pool-api-mobile.herokuapp.com/
 - Not protected endpoints: /shelters, /hotlines
+
+**Metrics**
+
+Metrics are running on http://localhost:3001/metrics
+
+To run the prometheus and grafana dashboards:
+
+```s
+docker-compose up
+```
+Prometheus running on:
+
+```s
+http://localhost:9090
+```
+Grafana running on:
+```s
+http://localhost:3000
+```
 
 **To use Heroku for development**
 
