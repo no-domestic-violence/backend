@@ -3,8 +3,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import promMid from 'express-prometheus-middleware';
-import fs from 'fs';
-import appRoot from 'app-root-path';
+import httpLogger from './logger/http-logger';
 import {
   hotlineRoutes,
   shelterRoutes,
@@ -20,10 +19,7 @@ import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
-const accessLogStream = fs.createWriteStream(`${appRoot}/logs/app.log`, {
-  flags: 'a',
-});
-app.use(morgan('tiny', { stream: accessLogStream }));
+app.use(httpLogger);
 app.use(morgan('dev')); // to show in console
 
 app.use(
