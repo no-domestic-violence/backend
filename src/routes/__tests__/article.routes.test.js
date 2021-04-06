@@ -7,6 +7,23 @@ import {
 } from '../../middleware/authorization';
 import verifyToken from '../../middleware/verifyToken';
 import Article from '../../models/article.model';
+import {
+  connectToDatabase,
+  closeDatabase,
+  clearDatabase,
+} from '../../utils/database';
+
+beforeAll(() => {
+  return connectToDatabase();
+});
+
+afterEach(() => {
+  return clearDatabase();
+});
+
+afterAll(() => {
+  return closeDatabase();
+});
 
 jest.mock('../../middleware/verifyToken', () =>
   jest.fn((req, res, next) => {

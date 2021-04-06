@@ -1,6 +1,23 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../../app';
+import {
+  connectToDatabase,
+  closeDatabase,
+  clearDatabase,
+} from '../../utils/database';
+
+beforeAll(() => {
+  return connectToDatabase();
+});
+
+afterEach(() => {
+  return clearDatabase();
+});
+
+afterAll(() => {
+  return closeDatabase();
+});
 
 describe('Hotlines endpoints', () => {
   test('should get all shelters as array with GET request', async () => {
