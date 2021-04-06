@@ -16,7 +16,7 @@ const format = json({
   responseTime: ':response-time',
 });
 
-const devHttpLogger = morgan('tiny', {
+const devHttpLogger = morgan(':date[iso] :method :url :status :res[content-length] - :response-time ms', {
   stream: accessLogStream,
 });
 
