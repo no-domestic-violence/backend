@@ -16,16 +16,17 @@ const format = json({
   responseTime: ':response-time',
 });
 
-const devHttpLogger = morgan(':date[iso] :method :url :status :res[content-length] - :response-time ms', {
-  stream: accessLogStream,
-});
+const devHttpLogger = morgan(
+  ':date[iso] :method :url :status :res[content-length] - :response-time ms',
+  {
+    stream: accessLogStream,
+  },
+);
 
 const prodHttpLogger = morgan(format, {
   stream: {
-    write: (message) => {
-      const {
-        method, url, status, contentLength, responseTime,
-      } = JSON.parse(
+    write: message => {
+      const { method, url, status, contentLength, responseTime } = JSON.parse(
         message,
       );
 
@@ -43,7 +44,7 @@ const prodHttpLogger = morgan(format, {
 
 // eslint-disable-next-line import/no-mutable-exports
 let httpLogger = null;
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
   httpLogger = devHttpLogger;
 } else {
   httpLogger = prodHttpLogger;
