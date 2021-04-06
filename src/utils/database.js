@@ -19,7 +19,7 @@ export const connectToDatabase = async (
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
     opts,
-    err => {
+    (err) => {
       if (err) {
         logger.error(err);
       }
@@ -37,8 +37,5 @@ export const closeDatabase = async () => {
 
 export const clearDatabase = async () => {
   const { collections } = mongoose.connection;
-  for (const key in collections) {
-    const collection = collections[key];
-    await collection.deleteMany();
-  }
+  Object.keys(collections).map((collection) => mongoose.connection.collection(collection).deleteMany({}));
 };
