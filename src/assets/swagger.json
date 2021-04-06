@@ -31,6 +31,10 @@
     {
       "name": "video-controller",
       "description": "Video Controller"
+    },
+    {
+      "name": "auth-controller",
+      "description": "Authentication controller"
     }
   ],
   "paths": {
@@ -413,8 +417,156 @@
           }
         }
       }
+    },
+    "/signup": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "summary": "Create a new user",
+        "operationId": "signupUsingPOST",
+        "consumes": "application/json",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/usersResponse"
+            }
+          },
+          "400": {
+            "description": "All fields are required"
+          },
+          "422": {
+            "description" :"Please provide a valid username or password"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "summary": "Login the user",
+        "operationId": "loginUsingPOST",
+        "consumes": "application/json",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Logged in successfully",
+            "schema": {
+              "$ref": "#/definitions/usersResponse"
+            }
+          },
+          "404": {
+            "description": "User is not signed up"
+          },
+          "422": {
+            "description" :"Please provide a valid username or password"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/changePassword": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "summary": "update password",
+        "operationId": "changePasswordUsingPOST",
+        "consumes": "application/json",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "You updated the password",
+            "schema": {
+              "$ref": "#/definitions/usersResponse"
+            }
+          },
+          "422": {
+            "description" :"Please provide a valid username or password"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/deleteUser": {
+      "delete": {
+        "tags": [
+          "auth-controller"
+        ],
+        "summary": "Delete user account",
+        "operationId": "deleteUserUsingDELETE",
+        "consumes": "application/json",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "user was deleted",
+            "schema": {
+              "$ref": "#/definitions/usersResponse"
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "deprecated": false
+      }
     }
-  },
+  },   
   "definitions": {
     "Article": {
       "type": "object",
@@ -572,6 +724,19 @@
         }
       },
       "title": "videosResponse"
+    },
+    "usersResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "$ref": "#/definitions/User"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "title": "usersResponse"
     }
   },
   "schemes": [
