@@ -1,18 +1,10 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../../app';
-import {
-  connectToDatabase,
-  closeDatabase,
-  clearDatabase,
-} from '../../utils/database';
+import { connectToDatabase, closeDatabase } from '../../utils/database';
 
 beforeAll(() => {
   return connectToDatabase();
-});
-
-afterEach(() => {
-  return clearDatabase();
 });
 
 afterAll(() => {
