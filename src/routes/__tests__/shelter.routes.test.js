@@ -1,17 +1,17 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../../app';
-import connectToDatabase from '../../utils/database';
+import { connectToDatabase, closeDatabase } from '../../utils/database';
+
+beforeAll(() => {
+  return connectToDatabase();
+});
+
+afterAll(() => {
+  return closeDatabase();
+});
 
 describe('Hotlines endpoints', () => {
-  // TODO: is mocking DB here needed?
-  beforeEach(async () => {
-    await connectToDatabase();
-  });
-
-  afterEach(async () => {
-    await mongoose.connection.close();
-  });
   test('should get all shelters as array with GET request', async () => {
     const res = await request(app).get('/api/shelters');
     expect(res.statusCode).toEqual(200);

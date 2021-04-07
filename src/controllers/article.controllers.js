@@ -1,6 +1,6 @@
 import Article from '../models/article.model';
 import Error from '../middleware/error/ErrorHandler';
-import { redisClient } from '../utils/redisClient';
+import redisClient from '../utils/redisClient';
 
 export const getArticles = async (req, res, next) => {
   try {

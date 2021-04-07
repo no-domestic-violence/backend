@@ -1,6 +1,6 @@
 import Hotline from '../models/hotline.model';
 import Error from '../middleware/error/ErrorHandler';
-import { redisClient } from '../utils/redisClient';
+import redisClient from '../utils/redisClient';
 
 /* eslint-disable  import/prefer-default-export */
 export const searchHotline = async (req, res, next) => {

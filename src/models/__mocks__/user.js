@@ -3,11 +3,13 @@ export const mockedUser = {
   username: 'test_user_1',
   email: 'testuser1@test.com',
   password: 'testpassword',
-  contacts: [{
-    name: 'test_contact',
-    phone: '012345787933',
-    message: 'test',
-  }],
+  contacts: [
+    {
+      name: 'test_contact',
+      phone: '012345787933',
+      message: 'test',
+    },
+  ],
   role: 'basic',
 };
 export const mockedAuthor = {
@@ -15,11 +17,13 @@ export const mockedAuthor = {
   username: 'test_user_2',
   email: 'testuser2@test.com',
   password: 'testpassword',
-  contacts: [{
-    name: 'test_contact',
-    phone: '012345787933',
-    message: 'test',
-  }],
+  contacts: [
+    {
+      name: 'test_contact',
+      phone: '012345787933',
+      message: 'test',
+    },
+  ],
   role: 'editor',
 };
 export const mockedAdmin = {

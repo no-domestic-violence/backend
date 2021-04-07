@@ -1,4 +1,4 @@
-import { redisClient } from '../utils/redisClient';
+import redisClient from '../utils/redisClient';
 
 const hotlinesCache = (req, res, next) => {
   const { searchTerm } = req.query;

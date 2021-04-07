@@ -1,4 +1,4 @@
-import connectToDatabase from './utils/database';
+import { connectToDatabase } from './utils/database';
 import app from './app';
 import logger from './logger';
 import { PORT } from './constants';
