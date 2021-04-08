@@ -37,7 +37,7 @@ export const closeDatabase = async () => {
 
 export const clearDatabase = async () => {
   const { collections } = mongoose.connection;
-  Object.keys(collections).forEach( async collection =>
-    await mongoose.connection.collection(collection).deleteMany({}),
+  Object.keys(collections).forEach(collection =>
+  mongoose.connection.collection(collection).deleteMany({}),
   );
 };
