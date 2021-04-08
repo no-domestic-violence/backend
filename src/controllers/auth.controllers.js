@@ -15,7 +15,9 @@ export const signup = async (req, res, next) => {
     }
     const userExist = await User.findOne({ email: req.body.email });
     if (userExist) {
+      console.log(userExist)
       next(
+
         Error.badRequest('Email already exists'),
       );
       return;
@@ -37,7 +39,7 @@ export const signup = async (req, res, next) => {
     await user.save();
     // create and assign a token
     const token = generateToken(user);
-    res.send({
+    res.status(201).send({
       success: true,
       user,
       token,
