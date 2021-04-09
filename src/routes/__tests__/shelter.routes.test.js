@@ -3,27 +3,30 @@ import app from '../../app';
 import { connectToDatabase, clearDatabase, closeDatabase } from '../../utils/database';
 import Shelter from '../../models/shelter.model';
 
-const shelters = [{
-  place_name: 'Test name',
-  address: 'Berlin, Turmstrasse, 0',
-  contact_person: "Test",
-  phone: '+497777777777',
-  longitude: 12.12,
-  latitude: 13.13,
-  description: 'Test description'
-}, {
-  place_name: 'Test name2',
-  address: 'Berlin, Wicherstr, 10',
-  contact_person: "Test contact",
-  phone: '+497777779999',
-  longitude: 12.12,
-  latitude: 13.13,
-  description: 'Test description'
-}];
+const sheltersData = [
+  {
+    place_name: 'Test name',
+    address: 'Berlin, Turmstrasse, 0',
+    contact_person: 'Test',
+    phone: '+497777777777',
+    longitude: 12.12,
+    latitude: 13.13,
+    description: 'Test description',
+  },
+  {
+    place_name: 'Test name2',
+    address: 'Berlin, Wicherstr, 10',
+    contact_person: 'Test contact',
+    phone: '+497777779999',
+    longitude: 12.12,
+    latitude: 13.13,
+    description: 'Test description',
+  },
+];
 
 beforeEach(async () => {
-  const shelterTest1 = new Shelter(shelters[0]);
-  const shelterTest2 = new Shelter(shelters[1]);
+  const shelterTest1 = new Shelter(sheltersData[0]);
+  const shelterTest2 = new Shelter(sheltersData[1]);
   await shelterTest1.save();
   await shelterTest2.save();
 });

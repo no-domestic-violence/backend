@@ -7,7 +7,7 @@ import {
   closeDatabase,
 } from '../../utils/database';
 
-const hotline = {
+const hotlineData = {
   organisation_name: 'Test name',
   country: 'Germany',
   city: 'Berlin',
@@ -17,7 +17,7 @@ const hotline = {
 };
 
 beforeEach(async () => {
-  const hotlineTest = new Hotline(hotline);
+  const hotlineTest = new Hotline(hotlineData);
   await hotlineTest.save();
 });
 beforeAll(() => {

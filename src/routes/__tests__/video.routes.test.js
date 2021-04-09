@@ -20,7 +20,7 @@ jest.mock('multer', () => {
           filename: '1615747990888video1',
           mimetype: 'png',
           path: '/assets/images/1615747990888video1.png',
-          buffer: Buffer.from('whatever'), // this is required since `formData` needs access to the buffer
+          buffer: Buffer.from('imageData'),
         };
         return next();
       };
@@ -53,7 +53,7 @@ describe('Videos endpoint', () => {
     expect(res.body).toHaveProperty('success');
   });
   test('should get all videos as array with GET request', async () => {
-    const videos = [
+    const videosData = [
       {
         title: 'Test title',
         url_to_video: 'www.youtube.com',
@@ -71,9 +71,9 @@ describe('Videos endpoint', () => {
       },
     ];
 
-    const videoTest1 = new Video(videos[0]);
-    const videoTest2 = new Video(videos[1]);
-    const videoTest3 = new Video(videos[2]);
+    const videoTest1 = new Video(videosData[0]);
+    const videoTest2 = new Video(videosData[1]);
+    const videoTest3 = new Video(videosData[2]);
     await videoTest1.save();
     await videoTest2.save();
     await videoTest3.save();

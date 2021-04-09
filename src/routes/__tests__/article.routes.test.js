@@ -58,6 +58,7 @@ describe('Aricle endpoints', () => {
     const res = await request(app).get('/api/articles');
     expect(res.statusCode).toEqual(200);
     expect(Array.isArray(res.body)).toBeTruthy();
+    expect(res.body.length).toBe(1);
   });
 
   test('should get specific article with GET request to specific id', async () => {
