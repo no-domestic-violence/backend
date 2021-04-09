@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test npm run jest",
-    "jest": "jest --runInBand --detectOpenHandles src/**/__tests__/*.test.js",
+    "jest": "jest --runInBand --detectOpenHandles --coverage",
     "test:watch": "jest --watch",
-    "jest-cov": "jest --coverage src/**/__tests__/*.test.js",
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
     "lint": "eslint \"src/**/*.js\"",
     "lint --fix": "eslint \"src/**/*.js\" --fix",
