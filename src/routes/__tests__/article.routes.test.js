@@ -53,6 +53,12 @@ describe('Aricle endpoints', () => {
     expect(res.body).toHaveProperty('data');
     expect(res.body).toHaveProperty('success');
   });
+  test('should send the right error status code in case not all reqired fields are sent', async () => {
+    const res = await request(app)
+      .post('/api/articles')
+      .send({});
+    expect(res.statusCode).toEqual(400);
+  });
   test('should get all articles as an array with GET request', async () => {
     await Article.create(articleData);
     const res = await request(app).get('/api/articles');
