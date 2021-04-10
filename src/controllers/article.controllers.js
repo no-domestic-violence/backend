@@ -18,7 +18,7 @@ export const getArticleById = async (req, res, next) => {
     redisClient.setex(id, 3600, JSON.stringify(articleData));
     res.status(200).send(articleData);
   } catch (e) {
-    next(Error.notFound('Article not found.'));
+    next(e);
   }
 };
 

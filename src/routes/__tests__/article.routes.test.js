@@ -88,11 +88,12 @@ describe('Aricle endpoints', () => {
     const article = await Article.create(articleData);
     let res = await request(app).get('/api/articles/' + article._id);
     expect(res.statusCode).toEqual(200);
+    expect(res.body.title).toBe(article.title);
   });
 
   test('should respond with not found error when the article does not exists', async () => {
-    const id = '1223';
-    let res = await request(app).get('/api/articles/' + id);
+    const article = await Article.create(articleData);
+    let res = await request(app).get(`/api/articles/${article}test`);
     expect(res.statusCode).toEqual(404);
   });
 
