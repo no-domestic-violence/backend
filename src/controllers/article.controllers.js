@@ -55,6 +55,6 @@ export const deleteArticle = async (req, res, next) => {
     await Article.findOneAndDelete({ _id: id });
     return res.status(202).json({ message: 'Article was deleted!' });
   } catch (e) {
-    next(e);
+    next(Error.notFound('Article not found.'));
   }
 };
