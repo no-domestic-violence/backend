@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import config from '../config/key';
+import dotenv from 'dotenv';
 import logger from '../logger';
+
+dotenv.config();
 
 const mongoServer = new MongoMemoryServer();
 
@@ -12,14 +14,12 @@ const opts = {
   useCreateIndex: true,
 };
 
-export const connectToDatabase = async (
-  url = config.mongoURI || process.env.mongoURI,
-) => {
+export const connectToDatabase = async (url = process.env.MONGODB_URI) => {
   const testDbUri = await mongoServer.getUri();
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
     opts,
-    err => {
+    (err) => {
       if (err) {
         logger.error(err);
       }
@@ -37,7 +37,7 @@ export const closeDatabase = async () => {
 
 export const clearDatabase = async () => {
   const { collections } = mongoose.connection;
-  Object.keys(collections).forEach(collection =>
-    mongoose.connection.collection(collection).deleteMany({}),
-  );
+  Object.keys(collections).forEach((collection) => {
+    mongoose.connection.collection(collection).deleteMany({});
+  });
 };
