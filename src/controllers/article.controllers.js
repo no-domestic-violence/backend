@@ -52,9 +52,13 @@ export const createArticle = async (req, res, next) => {
 export const deleteArticle = async (req, res, next) => {
   const { id } = req.params;
   try {
-    await Article.findOneAndDelete({ _id: id });
+    await Article.findOneAndDelete({ _id: id }, (err, doc) => {
+      if (err || doc == null) {
+        res.status(204).send('Article not found.');
+      }
+    });
     return res.status(202).json({ message: 'Article was deleted!' });
   } catch (e) {
-    next(Error.notFound('Article not found.'));
+    next(e);
   }
 };

@@ -104,9 +104,9 @@ describe('Aricle endpoints', () => {
     expect(res.body.message).toEqual('Article was deleted!');
   });
   test('should respond with an error when id is wrong', async () => {
-    const id = '1223';
+    const id = '6062e6501e80a94test40522';
     let res = await request(app).delete('/api/articles/' + id);
-    expect(res.statusCode).toEqual(404);
+    expect(res.statusCode).toEqual(204);
   });
   test('should call verifyToken and checkDeleteArticlePermission middleware with DELETE request', async () => {
     const article = await Article.create(articleData);
