@@ -103,7 +103,7 @@ describe('Aricle endpoints', () => {
     expect(res.statusCode).toEqual(202);
     expect(res.body.message).toEqual('Article was deleted!');
   });
-  test('should respond with an error when id is wrong', async () => {
+  test('should respond with an error when id is wrong with DELETE request', async () => {
     const id = '6062e6501e80a94test40522';
     let res = await request(app).delete('/api/articles/' + id);
     expect(res.statusCode).toEqual(204);
