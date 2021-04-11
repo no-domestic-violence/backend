@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import logger from '../logger';
 import dotenv from 'dotenv';
+import logger from '../logger';
+
 dotenv.config();
 
 const mongoServer = new MongoMemoryServer();
@@ -18,7 +19,7 @@ export const connectToDatabase = async (url = process.env.MONGODB_URI) => {
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
     opts,
-    err => {
+    (err) => {
       if (err) {
         logger.error(err);
       }
