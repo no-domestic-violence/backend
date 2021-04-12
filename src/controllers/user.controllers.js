@@ -12,17 +12,12 @@ export const editContact = async (req, res, next) => {
     }
 
     const contactId = req.params._id;
-    let foundUser;
-
+    let user;
     // check if id is valid ObjectId - to resolve mongoose castError
-    if (contactId.match(/^[0-9a-fA-F]{24}$/)) {
-      foundUser = await User.findOne({ 'contacts._id': contactId });
-    } else {
+    if (!contactId.match(/^[0-9a-fA-F]{24}$/)) {
       next(Error.notFound('Contact does not exist'));
-    }
-
-    if (foundUser) {
-      const updatedUser = await User.findOneAndUpdate(
+    } else {
+      user = await User.findOneAndUpdate(
         {
           'contacts._id': contactId,
         },
@@ -38,9 +33,11 @@ export const editContact = async (req, res, next) => {
           new: true,
         },
       );
-      res.status(201).json(updatedUser.contacts);
-    } else {
-      next(Error.notFound('Contact does not exist'));
+      if (!user) {
+        next(Error.notFound('Contact does not exist'));
+      } else {
+        res.status(201).json(user.contacts);
+      }
     }
   } catch (e) {
     next(e);
@@ -102,15 +99,12 @@ export const addContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const contactId = req.params._id;
-    let foundUser;
-    if (contactId.match(/^[0-9a-fA-F]{24}$/)) {
-      foundUser = await User.findOne({ 'contacts._id': contactId });
-    } else {
+    let user;
+    if (!contactId.match(/^[0-9a-fA-F]{24}$/)) {
       next(Error.notFound('Contact does not exist'));
-    }
-    if (foundUser) {
-      const updatedUser = await User.findOneAndUpdate(
-        { username: req.params.username },
+    } else {
+      user = await User.findOneAndUpdate(
+        { 'contacts._id': contactId },
         {
           $pull: {
             contacts: {
@@ -120,9 +114,11 @@ export const deleteContact = async (req, res, next) => {
         },
         { new: true },
       );
-      res.status(202).json(updatedUser.contacts);
-    } else {
+    }
+    if (!user) {
       next(Error.notFound('Contact does not exist'));
+    } else {
+      res.status(202).json(user.contacts);
     }
   } catch (e) {
     next(e);
