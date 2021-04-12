@@ -115,8 +115,9 @@ describe('User endpoints', () => {
   });
 
   test('should respond with an error when editing not existing contact', async () => {
-    await request(app)
-      .patch(`/api/users/${username}/contacts/invalidContactId`)
+    const invalidContactId = '6062e6501e80a94test40522';
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts/${invalidContactId}`)
       .send(mockedContact)
       .expect(404);
   });
@@ -133,8 +134,9 @@ describe('User endpoints', () => {
   });
 
   test('should respond with an error when deleting not existing contact', async () => {
+    const invalidContactId = '6062e6501e80a94test40522';
     await request(app)
-      .delete(`/api/users/${username}/contacts/invalidContactId`)
+      .delete(`/api/users/${username}/contacts/${invalidContactId}`)
       .expect(404);
   });
 });

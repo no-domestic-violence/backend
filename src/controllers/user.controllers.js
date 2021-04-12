@@ -10,27 +10,40 @@ export const editContact = async (req, res, next) => {
       );
       return;
     }
-    const editedContactId = req.params._id;
-    const updatedUser = await User.findOneAndUpdate(
-      {
-        // find the user that contains the contactId
-        'contacts._id': editedContactId,
-      },
-      {
-        $set: {
-          'contacts.$[contact].name': req.body.name,
-          'contacts.$[contact].phone': req.body.phone,
-          'contacts.$[contact].message': req.body.message,
+
+    const contactId = req.params._id;
+    let foundUser;
+
+    // check if id is valid ObjectId - to resolve mongoose castError
+    if (contactId.match(/^[0-9a-fA-F]{24}$/)) {
+      foundUser = await User.findOne({ 'contacts._id': contactId });
+    } else {
+      next(Error.notFound('Contact does not exist'));
+    }
+
+    if (foundUser) {
+      const updatedUser = await User.findOneAndUpdate(
+        {
+          'contacts._id': contactId,
         },
-      },
-      {
-        arrayFilters: [{ 'contact._id': editedContactId }],
-        new: true,
-      },
-    );
-    return res.status(201).json(updatedUser.contacts);
+        {
+          $set: {
+            'contacts.$[contact].name': req.body.name,
+            'contacts.$[contact].phone': req.body.phone,
+            'contacts.$[contact].message': req.body.message,
+          },
+        },
+        {
+          arrayFilters: [{ 'contact._id': contactId }],
+          new: true,
+        },
+      );
+      res.status(201).json(updatedUser.contacts);
+    } else {
+      next(Error.notFound('Contact does not exist'));
+    }
   } catch (e) {
-    next(Error.notFound('Contact does not exist'));
+    next(e);
   }
 };
 
@@ -88,20 +101,30 @@ export const addContact = async (req, res, next) => {
 
 export const deleteContact = async (req, res, next) => {
   try {
-    const user = await User.findOneAndUpdate(
-      { username: req.params.username },
-      {
-        $pull: {
-          contacts: {
-            _id: req.params._id,
+    const contactId = req.params._id;
+    let foundUser;
+    if (contactId.match(/^[0-9a-fA-F]{24}$/)) {
+      foundUser = await User.findOne({ 'contacts._id': contactId });
+    } else {
+      next(Error.notFound('Contact does not exist'));
+    }
+    if (foundUser) {
+      const updatedUser = await User.findOneAndUpdate(
+        { username: req.params.username },
+        {
+          $pull: {
+            contacts: {
+              _id: req.params._id,
+            },
           },
         },
-      },
-      { new: true },
-    );
-    const { contacts } = user;
-    return res.status(202).json(contacts);
+        { new: true },
+      );
+      res.status(202).json(updatedUser.contacts);
+    } else {
+      next(Error.notFound('Contact does not exist'));
+    }
   } catch (e) {
-    next(Error.notFound('Contact does not exist'));
+    next(e);
   }
 };
