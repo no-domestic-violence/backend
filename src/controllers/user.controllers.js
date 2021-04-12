@@ -1,6 +1,5 @@
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
-import handleError from '../middleware/error/handleError';
 
 export const editContact = async (req, res, next) => {
   try {
@@ -12,9 +11,10 @@ export const editContact = async (req, res, next) => {
       return;
     }
     const editedContactId = req.params._id;
-    const user = await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       {
-        username: req.params.username,
+        // find the user that contains the contactId
+        'contacts._id': editedContactId,
       },
       {
         $set: {
@@ -27,16 +27,9 @@ export const editContact = async (req, res, next) => {
         arrayFilters: [{ 'contact._id': editedContactId }],
         new: true,
       },
-      (err, updatedUser) => {
-        if (!updatedUser || err) {
-          next(handleError(err));
-        }
-      },
     );
-    return res.status(201).json(user.contacts);
+    return res.status(201).json(updatedUser.contacts);
   } catch (e) {
-    // need to throw 404 error here because mongoose set does not throw error when
-    // arrayfilter does not match
     next(Error.notFound('Contact does not exist'));
   }
 };
@@ -48,13 +41,12 @@ export const getContact = async (req, res, next) => {
         username: req.params.username,
       },
       ['contacts'],
-      (err, foundUser) => {
-        if (!foundUser || err) {
-          res.status(404).send('User does not exist!');
-        }
-      },
     );
-    return res.status(200).send(user);
+    if (!user) {
+      await next(Error.notFound('User does not exist'));
+    } else {
+      return res.status(200).send(user);
+    }
   } catch (e) {
     next(e);
   }
@@ -83,12 +75,10 @@ export const addContact = async (req, res, next) => {
         },
       },
       { new: true },
-      (err, updatedUser) => {
-        if (!updatedUser || err) {
-          next(Error.notFound('User does not exist'));
-        }
-      },
     );
+    if (!user) {
+      await next(Error.notFound('User does not exist'));
+    }
     const { contacts } = user;
     return res.status(201).json(contacts);
   } catch (e) {
@@ -104,20 +94,14 @@ export const deleteContact = async (req, res, next) => {
         $pull: {
           contacts: {
             _id: req.params._id,
-            // todo: change this on frontend
           },
         },
       },
       { new: true },
-      (err, updatedUser) => {
-        if (!updatedUser || err) {
-          next(Error.notFound('Contact does not exist'));
-        }
-      },
     );
     const { contacts } = user;
     return res.status(202).json(contacts);
   } catch (e) {
-    next(e);
+    next(Error.notFound('Contact does not exist'));
   }
 };

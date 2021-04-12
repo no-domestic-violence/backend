@@ -81,6 +81,7 @@ describe('User endpoints', () => {
         expect(res.body[1].name).toBe(mockedContact.name);
         expect(res.body[1].phone).toBe(mockedContact.phone);
         expect(res.body[1].message).toBe(mockedContact.message);
+        expect(res.body.length).toBe(2);
       });
   });
 
