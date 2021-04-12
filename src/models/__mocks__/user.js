@@ -36,3 +36,43 @@ export const mockedAdmin = {
 };
 
 export const mockedAuthorId = 'test_user_id_2';
+
+export const normalUser = {
+  username: 'testname',
+  email: 'thisistest@test.com',
+  password: 'testpassword',
+};
+
+export const userWithoutUsername = {
+  email: 'testemail@email.com',
+  password: 'testpassword',
+};
+
+export const userWithoutEmail = {
+  username: 'hello',
+  password: 'testpassword',
+};
+
+export const userWithoutPassword = {
+  username: 'tester',
+  email: 'testemail1@email.com',
+};
+
+export const normalUserWithContact = {
+  username: 'seedUser',
+  email: 'seeduser1@test.com',
+  password: 'testpassword',
+  contacts: [
+    {
+      name: 'test_contact',
+      phone: '012345787933',
+      message: 'test',
+    },
+  ],
+};
+
+export const mockedContact = {
+  name: 'contact',
+  phone: '12341234123',
+  message: 'help me',
+};
