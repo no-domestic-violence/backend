@@ -29,22 +29,16 @@ describe('Normal user', () => {
 
   beforeEach(async () => {
     user = await User.create(normalUser);
-    return user.save();
   });
 
   test('can be created correctly', async () => {
     expect(user).toBeTruthy();
     expect(user.username).toBe(normalUser.username);
-  });
-
-  test('should have basic role as default', async () => {
-    const { role } = user;
-    expect(role).toEqual('basic');
-  });
-
-  test('should contain mongoDB _id field', async () => {
-    const { _id } = user;
-    expect(_id).toBeTruthy();
+    expect(user.email).toBe(normalUser.email);
+    expect(user.password).toBe(normalUser.password);
+    expect(Array.isArray(user.contacts)).toBeTruthy();
+    expect(user.role).toEqual('basic');
+    expect(user._id).toBeTruthy();
   });
 });
 
