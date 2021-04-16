@@ -132,6 +132,7 @@ yarn lint
 1. Install Redis
 
 - On Mac:
+
 ```s
 brew install redis
 ```
@@ -157,6 +158,13 @@ brew services stop redis
 yarn test
 ```
 
+- Naming convention for mocks : mock\*\*\*\*
+  example)
+
+```s
+mockuser
+```
+
 **The api uses Heroku for production**
 
 - Production URL: https://pool-api-mobile.herokuapp.com/
@@ -171,12 +179,15 @@ To run the prometheus and grafana dashboards:
 ```s
 docker-compose up
 ```
+
 Prometheus running on:
 
 ```s
 http://localhost:9090
 ```
+
 Grafana running on:
+
 ```s
 http://localhost:3000
 ```
