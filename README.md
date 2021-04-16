@@ -159,10 +159,11 @@ yarn test
 ```
 
 - Naming convention for mocks : mock\*\*\*\*
-  example)
+
+  example) user ->
 
 ```s
-mockuser
+mockUser
 ```
 
 **The api uses Heroku for production**
