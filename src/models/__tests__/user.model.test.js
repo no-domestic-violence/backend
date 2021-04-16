@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import {
-  normalUser,
-  userWithoutUsername,
-  userWithoutEmail,
-  userWithoutPassword,
+  mockUser,
+  mockUserWithoutUsername,
+  mockUserWithoutEmail,
+  mockUserWithoutPassword,
 } from '../__mocks__/user';
 import User from '../user.model';
 import {
@@ -24,18 +24,18 @@ afterAll(() => {
   closeDatabase();
 });
 
-describe('Normal user', () => {
+describe('User', () => {
   let user;
 
   beforeEach(async () => {
-    user = await User.create(normalUser);
+    user = await User.create(mockUser);
   });
 
   test('can be created correctly', async () => {
     expect(user).toBeTruthy();
-    expect(user.username).toBe(normalUser.username);
-    expect(user.email).toBe(normalUser.email);
-    expect(user.password).toBe(normalUser.password);
+    expect(user.username).toBe(mockUser.username);
+    expect(user.email).toBe(mockUser.email);
+    expect(user.password).toBe(mockUser.password);
     expect(Array.isArray(user.contacts)).toBeTruthy();
     expect(user.role).toEqual('basic');
     expect(user._id).toBeTruthy();
@@ -44,13 +44,13 @@ describe('Normal user', () => {
 
 describe('User model', () => {
   test('should require username, email, and password', async () => {
-    await expect(User.create(userWithoutUsername)).rejects.toThrow(
+    await expect(User.create(mockUserWithoutUsername)).rejects.toThrow(
       mongoose.Error.ValidationError,
     );
-    await expect(User.create(userWithoutEmail)).rejects.toThrow(
+    await expect(User.create(mockUserWithoutEmail)).rejects.toThrow(
       mongoose.Error.ValidationError,
     );
-    await expect(User.create(userWithoutPassword)).rejects.toThrow(
+    await expect(User.create(mockUserWithoutPassword)).rejects.toThrow(
       mongoose.Error.ValidationError,
     );
   });

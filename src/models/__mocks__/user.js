@@ -1,4 +1,4 @@
-export const mockedUser = {
+export const mockBasicUser = {
   _id: 'test_user_id_1',
   username: 'test_user_1',
   email: 'testuser1@test.com',
@@ -12,7 +12,7 @@ export const mockedUser = {
   ],
   role: 'basic',
 };
-export const mockedAuthor = {
+export const mockAuthor = {
   _id: 'test_user_id_2',
   username: 'test_user_2',
   email: 'testuser2@test.com',
@@ -26,7 +26,7 @@ export const mockedAuthor = {
   ],
   role: 'editor',
 };
-export const mockedAdmin = {
+export const mockAdmin = {
   _id: 'test_admin_id',
   username: 'test_admin',
   email: 'testadmin@test.com',
@@ -35,30 +35,30 @@ export const mockedAdmin = {
   role: 'admin',
 };
 
-export const mockedAuthorId = 'test_user_id_2';
+export const mockAuthorId = 'test_user_id_2';
 
-export const normalUser = {
+export const mockUser = {
   username: 'testname',
   email: 'thisistest@test.com',
   password: 'testpassword',
 };
 
-export const userWithoutUsername = {
+export const mockUserWithoutUsername = {
   email: 'testemail@email.com',
   password: 'testpassword',
 };
 
-export const userWithoutEmail = {
+export const mockUserWithoutEmail = {
   username: 'hello',
   password: 'testpassword',
 };
 
-export const userWithoutPassword = {
+export const mockUserWithoutPassword = {
   username: 'tester',
   email: 'testemail1@email.com',
 };
 
-export const normalUserWithContact = {
+export const mockUserWithContact = {
   username: 'seedUser',
   email: 'seeduser1@test.com',
   password: 'testpassword',
@@ -71,7 +71,7 @@ export const normalUserWithContact = {
   ],
 };
 
-export const mockedContact = {
+export const mockContact = {
   name: 'contact',
   phone: '12341234123',
   message: 'help me',
