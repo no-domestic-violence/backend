@@ -4,6 +4,29 @@ import { generateToken } from '../utils/authentication';
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
 
+//signup endpoint
+export const assertUserExists = async (email, next) =>  {
+  const userExist = await User.findOne({ email });
+  if (userExist) {
+    next(
+      Error.badRequest('Email already exists'),
+    );
+    return;
+  }  
+}
+
+export const createUser = async (username, email, password) => {
+  const salt = await bcrypt.genSalt();
+  const hashPassword = await bcrypt.hash(password, salt);
+  const user = new User({
+    username: username,
+    email: email,
+    password: hashPassword,
+  });
+
+  return user
+}
+
 export const signup = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -13,20 +36,15 @@ export const signup = async (req, res, next) => {
       );
       return;
     }
-    const userExist = await User.findOne({ email: req.body.email });
-    if (userExist) {
-      next(
-        Error.badRequest('Email already exists'),
-      );
-      return;
-    }
-    const salt = await bcrypt.genSalt();
-    const hashPassword = await bcrypt.hash(req.body.password, salt);
-    const user = new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: hashPassword,
-    });
+
+    await assertUserExists(req.body.email, next)
+
+    const user = await createUser(
+      req.body.username,
+      req.body.email,
+      req.body.password,
+    )
+    
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
       next(
@@ -37,6 +55,7 @@ export const signup = async (req, res, next) => {
     await user.save();
     // create and assign a token
     const token = generateToken(user);
+    res.status(201);
     res.send({
       success: true,
       user,
@@ -49,6 +68,18 @@ export const signup = async (req, res, next) => {
   }
 };
 
+//login endpoint
+export const getUser = async (email, next) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    next(
+      Error.notFound('User is not signed up'),
+    );
+    return;
+  }
+
+  return user
+}
 export const login = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -58,13 +89,8 @@ export const login = async (req, res, next) => {
       );
       return;
     }
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      next(
-        Error.notFound('User is not signed up'),
-      );
-      return;
-    }
+    const user = await getUser(req.body.email, next)
+
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
       next(
@@ -115,7 +141,7 @@ export const changePassword = async (req, res, next) => {
 export const deleteUser = async (req, res, next) => {
   try {
     const user = await User.findOneAndDelete(
-      { username: req.query },
+      { username: req.query.username },
     );
     if (!user) {
       next(
