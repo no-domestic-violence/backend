@@ -23,7 +23,7 @@ const articleSchema = new mongoose.Schema(
     violence_type: {
       type: [String],
       required: true,
-      validate: (v) => v == null || (v.length > 0),
+      validate: (validation) => validation == null || (validation.length > 0),
     },
     created_at: {
       type: Date,
