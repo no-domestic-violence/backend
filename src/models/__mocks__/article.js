@@ -1,4 +1,4 @@
-export const normalArticle = {
+export const mockDefaultArticle = {
   title: 'Test title',
   author: 'Test User',
   text: 'Lorem ipsum',
@@ -6,7 +6,7 @@ export const normalArticle = {
   url_to_image: '"https://www.google.com/',
   created_at: new Date(),
 };
-export const articleWithoutTitle = {
+export const mockArticleWithoutTitle = {
   author: 'Test User1',
   text: 'Lorem ipsumm',
   violence_type: ['financial'],
@@ -14,7 +14,7 @@ export const articleWithoutTitle = {
   created_at: new Date(),
 };
 
-export const articleWithoutAuthor = {
+export const mockArticleWithoutAuthor = {
   title: 'here is title',
   text: 'Lorem ipsumm',
   violence_type: ['sexual'],
@@ -22,14 +22,14 @@ export const articleWithoutAuthor = {
   created_at: new Date(),
 };
 
-export const articleWithoutText = {
+export const mockArticleWithoutText = {
   title: 'here is title',
   author: 'The user',
   violence_type: ['financial'],
   url_to_image: '"https://www.cnn.com/',
   created_at: new Date(),
 };
-export const articleWithoutViolenceType = {
+export const mockArticleWithoutViolenceType = {
   title: 'here is title',
   text: 'Lorem ipsummm',
   author: 'The user',
@@ -37,7 +37,7 @@ export const articleWithoutViolenceType = {
   created_at: new Date(),
 };
 
-export const articleWithoutUrlToImage = {
+export const mockArticleWithoutUrlToImage = {
   title: 'here is title',
   text: 'Lorem ipsummm',
   violence_type: ['sexual'],
@@ -45,7 +45,7 @@ export const articleWithoutUrlToImage = {
   created_at: new Date(),
 };
 
-export const articleWithoutCreatedAt = {
+export const mockArticleWithoutCreatedAt = {
   title: 'here is title',
   text: 'Lorem ipsummm',
   violence_type: ['sexual'],
