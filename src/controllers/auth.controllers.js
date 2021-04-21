@@ -77,9 +77,21 @@ export const getUser = async (email, next) => {
     );
     return;
   }
-
   return user
 }
+
+export const validatePassword = async (password, next) => {
+  const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      next(
+        Error.unauthorized('Invalid Email or Password'),
+      );
+      return;
+    }
+  return validPassword
+}
+
+
 export const login = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -90,14 +102,8 @@ export const login = async (req, res, next) => {
       return;
     }
     const user = await getUser(req.body.email, next)
-
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) {
-      next(
-        Error.unauthorized('Invalid Email or Password'),
-      );
-      return;
-    }
+    const validPassword = await validatePassword(req.body.password, next)
+    
     const token = generateToken(user);
     res.header('auth-token', token).send({
       success: true,
@@ -138,17 +144,21 @@ export const changePassword = async (req, res, next) => {
   }
 };
 
+export const getUserforDeletion = async (username, next) => {
+  const user = await User.findOneAndDelete({ username });
+  if (!user) {
+    next(
+      Error.notFound('User not found'),
+    );
+    return;
+  }
+  return user
+}
+
 export const deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findOneAndDelete(
-      { username: req.query.username },
-    );
-    if (!user) {
-      next(
-        Error.notFound('User not found'),
-      );
-      return;
-    }
+    const user = await getUserforDeletion(req.query.username, next)
+    
     res.status(202).json({ user, message: 'User was deleted!' });
   } catch (e) {
     res.send(e);
