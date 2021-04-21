@@ -11,7 +11,7 @@ const opts = {
   useCreateIndex: true,
 };
 
-export const connectToDatabase = async (url = process.env.MONGODB_URI) => {
+export const connectToDatabase = async (url = process.env.mongoURI) => {
   const testDbUri = await mongoServer.getUri();
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
