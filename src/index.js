@@ -2,6 +2,9 @@ import { connectToDatabase } from './utils/database';
 import app from './app';
 import logger from './logger';
 import { PORT } from './constants';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const startServer = async () => {
   try {
