@@ -5,6 +5,16 @@ import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
 
 //signup endpoint
+export const validationErrors = async (req, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    next(
+      Error.unprocessableEntity('Please provide a valid username or password'),
+    );
+    return;
+  }
+}
+
 export const assertUserExists = async (email, next) =>  {
   const userExist = await User.findOne({ email });
   if (userExist) {
@@ -23,22 +33,13 @@ export const createUser = async (username, email, password) => {
     email: email,
     password: hashPassword,
   });
-
   return user
 }
 
 export const signup = async (req, res, next) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      next(
-        Error.unprocessableEntity('Please provide a valid username or password'),
-      );
-      return;
-    }
-
+  try {    
+    await validationErrors(req, next)
     await assertUserExists(req.body.email, next)
-
     const user = await createUser(
       req.body.username,
       req.body.email,
@@ -82,13 +83,12 @@ export const getUser = async (email, next) => {
 
 export const validatePassword = async (password, next) => {
   const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      next(
-        Error.unauthorized('Invalid Email or Password'),
-      );
-      return;
-    }
-  return validPassword
+  if (!validPassword) {
+    next(
+      Error.unauthorized('Invalid Email or Password'),
+    );
+    return;
+  }
 }
 
 
@@ -102,8 +102,7 @@ export const login = async (req, res, next) => {
       return;
     }
     const user = await getUser(req.body.email, next)
-    const validPassword = await validatePassword(req.body.password, next)
-    
+    await validatePassword(req.body.password, next)
     const token = generateToken(user);
     res.header('auth-token', token).send({
       success: true,
@@ -116,6 +115,28 @@ export const login = async (req, res, next) => {
   }
 };
 
+export const assertPasswordExist = async (email, next) => {
+  const user = await User.findOne({ email });
+  const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordCorrect) {
+      next(
+        Error.unauthorized('Old password is not correct'),
+      );
+      return;
+    }
+}
+
+
+
+export const createNewPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  const hashedNewPassword = await bcrypt.hash(password, salt);
+  const user = new User({
+    password: hashedNewPassword,
+  });
+  return user
+}
+
 export const changePassword = async (req, res, next) => {
   try {
     const { email, oldPassword, password } = req.body;
@@ -125,18 +146,8 @@ export const changePassword = async (req, res, next) => {
       );
       return;
     }
-    const user = await User.findOne({ email });
-    const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
-    if (!isPasswordCorrect) {
-      next(
-        Error.unauthorized('Old password is not correct'),
-      );
-      return;
-    }
-    const salt = await bcrypt.genSalt(10);
-    const hashedNewPassword = await bcrypt.hash(password, salt);
-
-    user.password = hashedNewPassword;
+    await assertPasswordExist(req.body.email, next)
+    const user = await createNewPassword (req.body.password)
     await user.save();
     res.send('You updated the password');
   } catch (e) {
@@ -144,6 +155,7 @@ export const changePassword = async (req, res, next) => {
   }
 };
 
+//deleting account endpoint
 export const getUserforDeletion = async (username, next) => {
   const user = await User.findOneAndDelete({ username });
   if (!user) {
@@ -157,8 +169,7 @@ export const getUserforDeletion = async (username, next) => {
 
 export const deleteUser = async (req, res, next) => {
   try {
-    const user = await getUserforDeletion(req.query.username, next)
-    
+    const user = await getUserforDeletion(req.query.username, next)   
     res.status(202).json({ user, message: 'User was deleted!' });
   } catch (e) {
     res.send(e);
