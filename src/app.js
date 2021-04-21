@@ -16,11 +16,30 @@ import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 
 const app = express();
 
 app.use(httpLogger);
 app.use(morgan('dev')); // to show in console
+
+Sentry.init({
+  dsn: "https://bf32dca8de9142f485b866bee7fa28e4@o576454.ingest.sentry.io/5730018",
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({ app }),
+  ],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(
   promMid({
@@ -46,6 +65,10 @@ app.get(BASE_URI, (req, res) => {
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// The error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
+
 app.get('*', (req, res, next) => {
   setImmediate(() => {
     next(Error.notFound('Not found.'));

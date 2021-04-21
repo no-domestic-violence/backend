@@ -22,7 +22,7 @@ POOL project is a mobile application that aims to help the survivors of domestic
 - Mongoose
 - Mongo DB
 - Json Web Token
-- Bcryptjs
+- Jest
 - Heroku
 
 ## Application Architecture Diagram
@@ -58,34 +58,7 @@ A user can add as many bookmarks as they want (one-to-many relationship). As a l
 
 Each article, video, podcast has one or few violence type tags. The number of violence types are limited, thus another collection is not needed.
 
-## Folder Structure
-
-```s
-└── src
-    ├── config
-    │   ├── development.js
-    │   ├── key.js
-    │   └── production.js
-    ├── index.js
-    ├── models
-        ├── Article.js
-    │   ├── Hotline.js
-    │   ├── Shelter.js
-    │   └── User.js
-    └── routes
-        ├── auth.js
-        ├── articlesRoutes.js
-        ├── hotlinesRoutes.js
-        ├── sheltersRoutes.js
-        ├── sosContactRoutes.js
-        └── verifyToken.js
-    ├── package-lock.json
-    ├── package.json
-    ├── .gitignore
-    ├── .Procfile
-    ├── .eslintrc
-    ├── README.md
-```
+## API 
 
 ## Setup
 
