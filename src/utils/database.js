@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import dotenv from 'dotenv';
 import logger from '../logger';
-
-dotenv.config();
 
 const mongoServer = new MongoMemoryServer();
 
