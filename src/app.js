@@ -16,6 +16,9 @@ import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
