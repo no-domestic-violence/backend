@@ -9,7 +9,7 @@ dotenv.config();
 const startServer = async () => {
   try {
     await connectToDatabase();
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       /* eslint-disable no-console */
       logger.info(`Server is running on http://localhost:${PORT}/api`);
     });
