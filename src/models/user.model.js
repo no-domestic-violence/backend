@@ -13,16 +13,16 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
     unique: true,
-    sparse:true,
+    sparse: true,
   },
   email: {
     type: String,
     required: true,
     trim: true,
     unique: true,
-    sparse:true,
+    sparse: true,
   },
-  password: { type: String, required: true, sparse:true },
+  password: { type: String, required: true, sparse: true },
 
   contacts: [contactSchema],
   role: {
