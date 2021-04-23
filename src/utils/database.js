@@ -20,7 +20,7 @@ const setTestURI = async () => {
 };
 
 export const connectToDatabase = async (url = process.env.mongoURI) => {
-  (process.env.NODE_ENV === 'test') && setTestURI();
+  (process.env.NODE_ENV === 'test') && await setTestURI();
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
     opts,
