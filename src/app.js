@@ -16,11 +16,36 @@ import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
+import dotenv from 'dotenv';
 
 const app = express();
 
 app.use(httpLogger);
 app.use(morgan('dev')); // to show in console
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+dotenv.config();
+console.log(process.env.SENTRY)
+Sentry.init({
+  dsn: process.env.SENTRY,
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({ app }),
+  ],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(
   promMid({
@@ -29,9 +54,6 @@ app.use(
     requestDurationBuckets: [0.1, 0.5, 1, 1.5],
   }),
 );
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use(BASE_URI, express.static('./src/assets/images'));
 app.use(BASE_URI, authRoutes);
@@ -46,6 +68,21 @@ app.get(BASE_URI, (req, res) => {
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use(
+  Sentry.Handlers.errorHandler({
+    shouldHandleError(error) {
+      // Capture all 404 and 500 errors
+      if (error.status === 404 || error.status === 500) {
+        return true;
+      }
+      return false;
+    },
+  })
+);
+// The error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
+
 app.get('*', (req, res, next) => {
   setImmediate(() => {
     next(Error.notFound('Not found.'));
