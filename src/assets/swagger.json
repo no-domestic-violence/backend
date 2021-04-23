@@ -75,7 +75,11 @@
             "description": "Not Found"
           }
         },
-        "deprecated": false
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "get": {
         "tags": [
@@ -157,7 +161,12 @@
           "404": {
             "description": "Article Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/shelters": {
@@ -315,7 +324,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "get": {
         "tags": [
@@ -346,7 +360,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -374,7 +393,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/users/{username}/contacts/{contactId}": {
@@ -415,7 +439,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/signup": {
@@ -449,7 +478,7 @@
             "description": "All fields are required"
           },
           "422": {
-            "description" :"Please provide a valid username or password"
+            "description": "Please provide a valid username or password"
           }
         },
         "deprecated": false
@@ -486,7 +515,7 @@
             "description": "User is not signed up"
           },
           "422": {
-            "description" :"Please provide a valid username or password"
+            "description": "Please provide a valid username or password"
           },
           "401": {
             "description": "Unauthorized"
@@ -523,14 +552,23 @@
             }
           },
           "422": {
-            "description" :"Please provide a valid username or password"
+            "description": "Please provide a valid username or password"
           },
           "401": {
             "description": "Unauthorized"
           }
         },
-        "deprecated": false
-      }
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ]
     },
     "/deleteUser": {
       "delete": {
@@ -563,10 +601,23 @@
             "description": "User not found"
           }
         },
-        "deprecated": false
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
-  },   
+  },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    },
   "definitions": {
     "Article": {
       "type": "object",
