@@ -622,11 +622,18 @@
     "Article": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "title": {
           "type": "string"
         },
         "author": {
           "type": "string"
+        },
+        "author_id": {
+          "$ref": "#/definitions/User/properties/_id"
         },
         "text": {
           "type": "string"
@@ -655,6 +662,10 @@
     "Shelter": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "place_name": {
           "type": "string"
         },
@@ -683,6 +694,10 @@
     "Hotline": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "organisation_name": {
           "type": "string"
         },
@@ -707,6 +722,10 @@
     "Video": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "title": {
           "type": "string"
         },
@@ -722,6 +741,10 @@
     "User": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "username": {
           "type": "string"
         },
@@ -732,13 +755,26 @@
           "type": "string"
         },
         "contacts": {
-          "$ref": "#/definitions/Contact"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "role": {
+          "type": "string",
+          "enum": { "0": "basic",
+            "1":"editor",
+            "2": "admin"}         
         }
       }
     },
     "Contact": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "name": {
           "type": "string"
         },
