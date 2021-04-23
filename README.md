@@ -77,13 +77,13 @@ cd backend
 yarn install
 ```
 
-3. Create development.js file inside of config folder and add the following environment variables:
+3. Create .env file and add following information:
 
 ```s
-module.exports = {
-  mongoURI: 'your mongodb atlas uri',
-  JWTSecret: 'your JWTSecret uri',
-};
+
+  mongoURI = mongodb atlas uri
+  JWTSecret = JWTSecret uri
+  SENTRY = team sentry link
 ```
 
 4. Start environment
@@ -92,12 +92,18 @@ module.exports = {
 yarn dev
 ```
 
-5. Open http://localhost:3001 to view it in the browser.
+5. Open http://localhost:3001/api to view it in the browser.
 
-6. Before merging to master, check errors and prettier rules
+6. Before merging to master
+- check lint and prettier rules
 
 ```s
 yarn lint
+```
+- run tests
+
+```s
+yarn test
 ```
 
 **Caching**
@@ -124,16 +130,15 @@ brew services stop redis
 
 **Testing**
 
-- testing framework - Jest, HTTP assertions library - supertest
+We use Jest and supertest (HTTP assertions library)
+
 - Run tests
 
 ```s
 yarn test
 ```
 
-- Naming convention for mocks : mock\*\*\*\*
-
-  example) user ->
+- Naming convention for mocks : mock\*\*\*\*, for example:
 
 ```s
 mockUser
