@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import logger from '../logger';
 
-const mongoServer = new MongoMemoryServer();
 
 const opts = {
   useNewUrlParser: true,
@@ -11,12 +10,21 @@ const opts = {
   useCreateIndex: true,
 };
 
+let testDbUri;
+let mongoServer;
+
+const setTestURI = async () => {
+    mongoServer = new MongoMemoryServer();
+    testDbUri = await mongoServer.getUri();
+    return testDbUri;
+};
+
 export const connectToDatabase = async (url = process.env.mongoURI) => {
-  const testDbUri = await mongoServer.getUri();
+  (process.env.NODE_ENV === 'test') && await setTestURI();
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
     opts,
-    (err) => {
+    err => {
       if (err) {
         logger.error(err);
       }
@@ -34,7 +42,7 @@ export const closeDatabase = async () => {
 
 export const clearDatabase = async () => {
   const { collections } = mongoose.connection;
-  Object.keys(collections).forEach((collection) => {
+  Object.keys(collections).forEach(collection => {
     mongoose.connection.collection(collection).deleteMany({});
   });
 };
