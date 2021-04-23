@@ -15,7 +15,7 @@ export const getArticleById = async (req, res, next) => {
   const { id } = req.params;
   try {
     const articleData = await Article.findById(id);
-    redisClient.setex(id, 3600, JSON.stringify(articleData));
+    process.env.NODE_ENV === 'development' && redisClient.setex(id, 3600, JSON.stringify(articleData));
     res.status(200).send(articleData);
   } catch (e) {
     next(e);
