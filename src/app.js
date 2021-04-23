@@ -19,6 +19,8 @@ import swaggerDocument from './assets/swagger.json';
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 import dotenv from 'dotenv';
+import compression from 'compression';
+import helmet from 'helmet';
 
 const app = express();
 
@@ -46,7 +48,8 @@ Sentry.init({
 
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
-
+app.use(compression());
+app.use(helmet());
 app.use(
   promMid({
     metricsPath: '/metrics',
