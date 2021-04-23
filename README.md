@@ -50,15 +50,16 @@ The main reasons for choosing MongoDB in POOL project are as below:
 
 ![DB Model](db_model.png)
 
-Users can perform CRUD operations on contacts and bookmarks. Other data such as articles, videos and podcasts are read only.
+Basic users can perform CRUD operations on contacts and bookmarks. Authorized user with editor or admin role can perform CRUD operations on articles, videos, and podcasts.
 
 Contacts document is embedded in the users collection for optimal querying. Since a user can have maximum 2 emergency contacts (one-to-few relationship), the document size would not exceed the limit.
 
-A user can add as many bookmarks as they want (one-to-many relationship). As a lot of data is updated frequently in the bookmarks collection, referencing was chosen for better performance.
-
 Each article, video, podcast has one or few violence type tags. The number of violence types are limited, thus another collection is not needed.
 
-## API 
+## API
+
+We use Swagger to document our APIs.
+http://pool-api-mobile.herokuapp.com/api-docs/
 
 ## Setup
 
@@ -95,11 +96,13 @@ yarn dev
 5. Open http://localhost:3001/api to view it in the browser.
 
 6. Before merging to master
+
 - check lint and prettier rules
 
 ```s
 yarn lint
 ```
+
 - run tests
 
 ```s
@@ -193,41 +196,8 @@ heroku build:cancel
 
 ---
 
-## Routing for REST API
-
-API endpoints are set up on the server side for the client to be able to communicate with the database. The client can make a request to this route. On this route with a callback function, the server makes a request to the database and gets a response. Inside the callback, you can query the database by using different Mongoose helper functions.
-
-To query specific data with conditions, the client should specify the particular variable that needs to be fetched in the URL. This route parameter is passed onto the server inside req.params. With this parameter server looks for the matching data in the db. In order to perform this, the name of the variable should be assigned with a colon in the respective backend API endpoint.
-
-Example backend code:
-
-```
-router
-  .route('/users/:username/contacts')
-   /* This endpoint is for users who would like to add, edit and delete their
-   emergency contact in the app. :username is retrieved from a list of users
-   of the app */
-
-	.get((req, res) => {
-    Contact.findOne(
-      { username: req.params.username }
-   ...
-  })
-```
-
-Example frontend code:
-
-```
-const getContacts = async () => {
-    try {
-      const response = await appApiClient.get(
-        `/users/${username}/contacts`);
-    ...
-  };
-```
-
 ## Authors of the project:
 
-- Soyoon Choi: Update user, CRUD Contacts of user
-- Irina Baeva: Delete /Update user, Create /Read Shelters and Hotlines
-- Behnaz Derakhshani: Create /Read user, Create /Read Articles
+- Soyoon Choi
+- Irina Baeva
+- Behnaz Derakhshani
