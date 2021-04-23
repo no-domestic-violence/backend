@@ -118,7 +118,7 @@
           {
             "name": "articleId",
             "in": "path",
-            "description": "Id of article that needs to be fetched",
+            "description": " Particular article object's ID (Automatically assigned by MongoDB) that needs to be fetched",
             "required": true,
             "type": "string"
           }
@@ -146,7 +146,7 @@
           {
             "name": "articleId",
             "in": "path",
-            "description": "Article id to delete",
+            "description": "Particular article object's ID (Automatically assigned by MongoDB) that needs to be deleted",
             "required": true,
             "type": "string"
           }
@@ -366,39 +366,6 @@
             "bearerAuth": []
           }
         ]
-      },
-      "delete": {
-        "tags": [
-          "user-controller"
-        ],
-        "summary": "delete sos contact by id",
-        "operationId": "deleteContactByIdUsingDELETE",
-        "produces": "application/json",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "username",
-            "description": "username who deletes contact",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Contact successfully deleted"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
       }
     },
     "/users/{username}/contacts/{contactId}": {
@@ -421,7 +388,7 @@
           {
             "in": "path",
             "name": "contactId",
-            "description": "ContactId to edit",
+            "description": "Particular contact object's ID (Automatically assigned by MongoDB) that needs to be edited",
             "required": true,
             "type": "string"
           }
@@ -432,6 +399,46 @@
           },
           "400": {
             "description": "All fields are required"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "delete sos contact by id",
+        "operationId": "deleteContactByIdUsingDELETE",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username who deletes contact",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "contactId",
+            "description": "Particular contact object's ID (Automatically assigned by MongoDB) that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Contact successfully deleted"
           },
           "401": {
             "description": "Unauthorized"
