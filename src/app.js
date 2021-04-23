@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 dotenv.config();
-console.log(process.env.SENTRY)
+
 Sentry.init({
   dsn: process.env.SENTRY,
   integrations: [
