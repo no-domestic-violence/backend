@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../app';
 import Article from '../../models/article.model';
-import { mockDefaultArticle } from '../../models/__mocks__/article'
+import { mockDefaultArticle } from '../../models/__mocks__/article';
 import {
   connectToDatabase,
   closeDatabase,
@@ -39,7 +39,6 @@ jest.mock('../../middleware/authorization', () => ({
     next();
   }),
 }));
-
 
 describe('Aricle endpoints', () => {
   test('should create a new article with POST request', async () => {
@@ -80,7 +79,13 @@ describe('Aricle endpoints', () => {
     const createdMockArticle = await Article.create(mockDefaultArticle);
     let res = await request(app).get('/api/articles/' + createdMockArticle._id);
     expect(res.statusCode).toEqual(200);
-    expect(res.body.title).toBe(createdMockArticle.title);
+    expect(res.body).toMatchObject({
+      title: 'Test title',
+      author: 'Test User',
+      text: 'Lorem ipsum',
+      violence_type: ['emotional'],
+      url_to_image: 'https://www.google.com/',
+    });
   });
 
   test('should respond with an error when objectId of article is wrong with GET', async () => {
@@ -91,7 +96,9 @@ describe('Aricle endpoints', () => {
 
   test('should delete specific article with DELETE request to specific id', async () => {
     const createdMockArticle = await Article.create(mockDefaultArticle);
-    let res = await request(app).delete('/api/articles/' + createdMockArticle._id);
+    let res = await request(app).delete(
+      '/api/articles/' + createdMockArticle._id,
+    );
     expect(res.statusCode).toEqual(202);
     expect(res.body.message).toEqual('Article was deleted!');
   });

@@ -1,24 +1,52 @@
+import mongoose from 'mongoose';
+import {
+  mockVideoWithoutTitle,
+  mockVideoWithoutUrl,
+  mockVideoWithoutImg,
+  mockVideos
+} from '../__mocks__/video';
+import {
+  connectToDatabase,
+  closeDatabase,
+  clearDatabase,
+} from '../../utils/database';
 import Video from '../video.model';
 
-describe('Video schema has all required fields', () => {
-  test('should have title', () => {
-    const { title } = Video.schema.obj;
-    expect(title).toEqual({
-      type: String,
-      required: true,
-    });
+beforeAll(() => {
+  connectToDatabase();
+});
+
+afterEach(() => {
+  clearDatabase();
+});
+
+afterAll(() => {
+  closeDatabase();
+});
+
+describe('User', () => {
+  let createrMockVideo;
+
+  beforeEach(async () => {
+    createrMockVideo = await Video.create(mockVideos[0]);
   });
 
-  test('should have url_to_video', () => {
-    const urlVideo = Video.schema.obj.url_to_video;
-    expect(urlVideo).toEqual({
-      type: String,
-      required: true,
-    });
+  test('can be created correctly', async () => {
+    expect(createrMockVideo).toBeTruthy();
+    expect(createrMockVideo).toMatchObject(mockVideos[0]);
   });
+});
 
-  test('should have imageData', () => {
-    const { imageData } = Video.schema.obj;
-    expect(imageData).toEqual({ type: String, required: true });
+describe('Video model', () => {
+  test('should require title, url_to_video', async () => {
+    await expect(Video.create(mockVideoWithoutTitle)).rejects.toThrow(
+      mongoose.Error.ValidationError,
+    );
+    await expect(Video.create(mockVideoWithoutUrl)).rejects.toThrow(
+      mongoose.Error.ValidationError,
+    );
+    await expect(Video.create(mockVideoWithoutImg)).rejects.toThrow(
+      mongoose.Error.ValidationError,
+    );
   });
 });

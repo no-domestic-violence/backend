@@ -1,5 +1,3 @@
-/* eslint-disable  import/prefer-default-export */
-
 export const mockVideos = [
   {
     title: 'Test title',
@@ -17,3 +15,18 @@ export const mockVideos = [
     imageData: 'src/assests/image3.png',
   },
 ];
+
+export const mockVideoWithoutTitle = {
+  url_to_video: 'www.youtube.com',
+  imageData: 'src/assests/image1.png',
+};
+
+export const mockVideoWithoutImg = {
+  url_to_video: 'www.youtube.com',
+  title: 'Test title',
+};
+
+export const mockVideoWithoutUrl = {
+  title: 'Test title',
+  imageData: 'src/assests/image1.png',
+};
