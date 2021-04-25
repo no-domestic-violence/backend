@@ -1,3 +1,4 @@
+/* eslint-disable arrow-parens */
 import request from 'supertest';
 import bcrypt from 'bcryptjs';
 import { v4 as uuid4 } from 'uuid';
@@ -10,17 +11,11 @@ import {
 } from '../../utils/database';
 import { createUser } from '../../controllers/auth.controllers';
 
-beforeAll(() => {
-  return connectToDatabase();
-});
+beforeAll(() => connectToDatabase());
 
-afterEach(() => {
-  return clearDatabase();
-});
+afterEach(() => clearDatabase());
 
-afterAll(() => {
-  return closeDatabase();
-});
+afterAll(() => closeDatabase());
 
 const getUserGenerator = () => {
   let counter = 0;
@@ -79,6 +74,7 @@ const LOGIN_INVALID_USERS = {
 
 describe('signup endpoint', () => {
   describe('should save the user in database after signup', () => {
+    // eslint-disable-next-line arrow-parens
     Object.entries(VALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
@@ -166,6 +162,7 @@ describe('login endpoint', () => {
             .post('/api/login')
             .send(payload);
           expect(res.statusCode).toEqual(200);
+          expect(res.body.message).toEqual('Logged in successfully !');
         });
       });
     });
@@ -230,10 +227,11 @@ describe('changePassword endpoint', () => {
           await user.delete();
         });
         test(key, async () => {
-          let res = await request(app)
+          const res = await request(app)
             .post('/api/changePassword')
             .send(payload);
 
+          expect(res.body.message).toEqual('You updated the password');
           const actual = await User.findOne({ email: payload.email });
           const isPasswordCorrect = await bcrypt.compare(
             payload.password,
@@ -266,7 +264,7 @@ describe('deleteUser endpoint', () => {
         });
         test(key, async () => {
           const res = await request(app).delete(
-            '/api/deleteUser/?username=' + payload.username,
+            `/api/deleteUser/?username=${payload.username}`,
           );
           expect(res.statusCode).toEqual(202);
           expect(res.body.message).toEqual('User was deleted!');
