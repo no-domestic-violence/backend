@@ -74,17 +74,7 @@ app.get('*', (req, res, next) => {
     next(Error.notFound('Not found.'));
   });
 });
-app.use(
-  Sentry.Handlers.errorHandler({
-    shouldHandleError(error) {
-      // Capture all 404 and 500 errors
-      if (error.status === 404 || error.status === 500) {
-        return true;
-      }
-      return false;
-    },
-  }),
-);
+app.use(Sentry.Handlers.errorHandler());
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   handleError(err, req, res);
