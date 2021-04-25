@@ -1,3 +1,4 @@
+/* eslint-disable arrow-parens */
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/authentication';
@@ -130,7 +131,7 @@ export const changePassword = async (req, res, next) => {
     const hashedNewPassword = await createNewPassword(req.body.password);
     user.password = hashedNewPassword;
     await user.save();
-    res.send('You updated the password');
+    res.send({ message: 'You updated the password' });
   } catch (e) {
     next(e);
   }
