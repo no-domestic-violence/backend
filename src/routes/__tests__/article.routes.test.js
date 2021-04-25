@@ -55,20 +55,20 @@ describe('Aricle endpoints', () => {
     expect(res.body.data.text).toBe(createdMockArticle.text);
     expect(res.body.data.url_to_image).toBe(createdMockArticle.url_to_image);
   });
-  test('should call checkCreateArticlePermission middleware with POST request', async () => {
+  test('should call checkCreateArticlePermission middleware with POST', async () => {
     await request(app)
       .post('/api/articles')
       .send(mockDefaultArticle);
     expect(checkCreateArticlePermission).toBeCalledTimes(1);
     expect(verifyToken).toBeCalledTimes(1);
   });
-  test('should send the right error status code in case not all reqired fields are sent', async () => {
+  test('should send the right error status code in case not all reqired fields are sent with POST', async () => {
     const res = await request(app)
       .post('/api/articles')
       .send({});
     expect(res.statusCode).toEqual(400);
   });
-  test('should get all articles as an array with GET request', async () => {
+  test('should get all articles as an array with GET', async () => {
     await Article.create(mockDefaultArticle);
     const res = await request(app).get('/api/articles');
     expect(res.statusCode).toEqual(200);

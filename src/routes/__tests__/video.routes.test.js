@@ -6,6 +6,7 @@ import {
   closeDatabase,
 } from '../../utils/database';
 import Video from '../../models/video.model';
+import { mockVideos } from '../../models/__mocks__/video';
 
 jest.mock('multer', () => {
   const multer = () => ({
@@ -35,6 +36,12 @@ beforeAll(() => {
   return connectToDatabase();
 });
 
+beforeEach(async () => {
+  await Video.create(mockVideos[0]);
+  await Video.create(mockVideos[1]);
+  await Video.create(mockVideos[2]);
+});
+
 afterEach(() => {
   return clearDatabase();
 });
@@ -53,30 +60,6 @@ describe('Videos endpoint', () => {
     expect(res.body).toHaveProperty('success');
   });
   test('should get all videos as array with GET request', async () => {
-    const videosData = [
-      {
-        title: 'Test title',
-        url_to_video: 'www.youtube.com',
-        imageData: 'src/assests/image1.png',
-      },
-      {
-        title: 'Test title2',
-        url_to_video: 'www.youtube.com',
-        imageData: 'src/assests/image2.png',
-      },
-      {
-        title: 'Test title3',
-        url_to_video: 'www.youtube.com',
-        imageData: 'src/assests/image3.png',
-      },
-    ];
-
-    const videoTest1 = new Video(videosData[0]);
-    const videoTest2 = new Video(videosData[1]);
-    const videoTest3 = new Video(videosData[2]);
-    await videoTest1.save();
-    await videoTest2.save();
-    await videoTest3.save();
     const res = await request(app).get('/api/videos');
     expect(res.statusCode).toEqual(200);
     expect(Array.isArray(res.body)).toBeTruthy();
