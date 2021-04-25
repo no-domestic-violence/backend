@@ -3,6 +3,9 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import promMid from 'express-prometheus-middleware';
+import * as Sentry from '@sentry/node';
+import * as Tracing from '@sentry/tracing';
+import dotenv from 'dotenv';
 import httpLogger from './logger/http-logger';
 import {
   hotlineRoutes,
@@ -16,9 +19,6 @@ import handleError from './middleware/error/handleError';
 import Error from './middleware/error/ErrorHandler';
 import { BASE_URI } from './constants';
 import swaggerDocument from './assets/swagger.json';
-import * as Sentry from "@sentry/node";
-import * as Tracing from "@sentry/tracing";
-import dotenv from 'dotenv';
 
 const app = express();
 
@@ -69,25 +69,12 @@ app.get(BASE_URI, (req, res) => {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(
-  Sentry.Handlers.errorHandler({
-    shouldHandleError(error) {
-      // Capture all 404 and 500 errors
-      if (error.status === 404 || error.status === 500) {
-        return true;
-      }
-      return false;
-    },
-  })
-);
-// The error handler must be before any other error middleware and after all controllers
-app.use(Sentry.Handlers.errorHandler());
-
 app.get('*', (req, res, next) => {
   setImmediate(() => {
     next(Error.notFound('Not found.'));
   });
 });
+app.use(Sentry.Handlers.errorHandler());
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   handleError(err, req, res);
