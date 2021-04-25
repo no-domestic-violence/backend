@@ -15,8 +15,8 @@ export const getArticleById = async (req, res, next) => {
   const { id } = req.params;
   try {
     const articleData = await Article.findById(id);
-    process.env.NODE_ENV === 'development' &&
-      redisClient.setex(id, 3600, JSON.stringify(articleData));
+    process.env.NODE_ENV === 'development'
+      && redisClient.setex(id, 3600, JSON.stringify(articleData));
     res.status(200).send(articleData);
   } catch (e) {
     next(e);
@@ -34,7 +34,9 @@ export const createArticle = async (req, res, next) => {
     author_id: req.body.author_id,
   });
   try {
-    const { title, author, text, violence_type, url_to_image } = req.body;
+    const {
+      title, author, text, violence_type, url_to_image,
+    } = req.body;
     if (!title || !author || !text || !violence_type || !url_to_image) {
       next(
         Error.badRequest('All the fields are required and must be non blank!'),

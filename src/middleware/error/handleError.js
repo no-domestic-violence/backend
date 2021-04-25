@@ -1,6 +1,6 @@
+import * as Sentry from '@sentry/node';
 import Error from './ErrorHandler';
 import logger from '../../logger';
-import * as Sentry from '@sentry/node';
 
 // eslint-disable-next-line no-unused-vars
 function handleError(err, req, res, next) {
