@@ -1,3 +1,5 @@
+/* eslint-disable  import/prefer-default-export */
+
 export const mockHotline = {
   organisation_name: 'Test name',
   country: 'Germany',
