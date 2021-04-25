@@ -1,7 +1,7 @@
 import Error from './ErrorHandler';
 import logger from '../../logger';
-
-function handleError(err, req, res) {
+// eslint-disable-next-line no-unused-vars
+function handleError(err, req, res, next) {
   if (err instanceof Error) {
     res.status(err.statusCode).json(err.message);
     logger.error(err.message);
