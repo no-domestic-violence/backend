@@ -14,6 +14,9 @@ export const getArticles = async (req, res, next) => {
 export const getArticleById = async (req, res, next) => {
   const { id } = req.params;
   try {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      next(Error.notFound('Article does not exist'))
+    }
     const articleData = await Article.findById(id);
     process.env.NODE_ENV === 'development'
       && redisClient.setex(id, 3600, JSON.stringify(articleData));
