@@ -77,6 +77,23 @@ const MISSING_LOGIN_USER_INFO = {
   MISSING_PASSWORD: getLoginUser(),
 };
 
+const getchangePassword = (overrides = {}) => ({
+  email: 'welcome@gmail.com',
+  oldPassword: 'Welcome1',
+  password: 'Welcome2',
+  ...overrides,
+});
+
+const MISSING_PASSWORD_INFO = {
+  MISSING_OLDPASSWORD: getchangePassword({ oldPassword: '' }),
+  MISSING_PASSWORD: getchangePassword({ password: '' }),
+  MISSING_EMAIL: getchangePassword({ email: '' }),
+};
+
+const MISSING_CHANGEPASSWORD_INFO = {
+  MISSING_PASSWORD: getchangePassword(),
+};
+
 describe('signup endpoint', () => {
   describe('should save the user in database after signup', () => {
     // eslint-disable-next-line arrow-parens
@@ -288,6 +305,51 @@ describe('changePassword endpoint', () => {
           expect(isPasswordCorrect).toEqual(true);
           expect(res.statusCode).toEqual(200);
           expect(res.body.message).toEqual('You updated the password');
+        });
+      });
+    });
+  });
+
+  describe('fails because the old password is incorrect', () => {
+    Object.entries(MISSING_CHANGEPASSWORD_INFO).forEach(testCase => {
+      const [key, userData] = testCase;
+      const payload = {
+        email: userData.email,
+        password: uuid4(),
+        oldPassword: userData.password,
+      };
+      describe(key, () => {
+        let user;
+
+        beforeAll(async () => {
+          user = await createUser(uuid4(), payload.email, payload.oldPassword);
+          await user.save();
+        });
+        afterAll(async () => {
+          await user.delete();
+        });
+        test(key, async () => {
+          payload.oldPassword += 'xyz';
+          const res = await request(app)
+            .post('/api/changePassword')
+            .send(payload);
+          expect(res.statusCode).toEqual(401);
+          expect(res.body.message).toEqual('Old password is not correct');
+        });
+      });
+    });
+  });
+
+  describe('fails with missing user email,password & oldPassword', () => {
+    Object.entries(MISSING_PASSWORD_INFO).forEach(testCase => {
+      const [key, payload] = testCase;
+      describe(key, () => {
+        test(key, async () => {
+          const res = await request(app)
+            .post('/api/changePassword')
+            .send(payload);
+          expect(res.statusCode).toEqual(400);
+          expect(res.body.message).toEqual('All fields are required');
         });
       });
     });
