@@ -6,12 +6,14 @@ import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
 
 // signup endpoint
-export const validationErrors = async (req, next) => {
+export const validationErrors = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     next(
       Error.unprocessableEntity('Please provide a valid username or password'),
     );
+  } else {
+    next();
   }
 };
 
@@ -33,27 +35,32 @@ export const createUser = async (username, email, password) => {
   return user;
 };
 
-export const requireAllfields = async (req, next) => {
+export const requireAllfields = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
     next(Error.badRequest('All fields are required'));
+  } else {
+    next();
   }
 };
 
 export const signup = async (req, res, next) => {
   try {
-    await validationErrors(req, next);
+    // await requireAllfields(req, next);
+
+    // await validationErrors(req, next);
     await assertUserExists(req.body.email, next);
     const user = await createUser(
       req.body.username,
       req.body.email,
       req.body.password,
     );
-    await requireAllfields(req, next);
     await user.save();
     // create and assign a token
     const token = generateToken(user);
-    res.status(201).json({ user, success: true });
+    res
+      .status(201)
+      .json({ user, success: true, message: 'Signed up successfully !' });
     res.send({
       token,
     });
@@ -83,7 +90,7 @@ export const validatePassword = async (existingPassword, password, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    await validationErrors(req, next);
+    // await validationErrors(req, next);
     const user = await getUser(req.body.email, next);
     await validatePassword(user.password, req.body.password, next);
     const token = generateToken(user);
@@ -101,7 +108,7 @@ export const login = async (req, res, next) => {
 export const requiresAllfields = async (req, next) => {
   const { email, oldPassword, password } = req.body;
   if (!email || !oldPassword || !password) {
-    next(Error.unprocessableEntity('Please provide email and password'));
+    next(Error.badRequest('Please provide email and password'));
   }
 };
 
