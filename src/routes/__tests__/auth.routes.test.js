@@ -38,18 +38,20 @@ const VALID_USERS = {
 };
 
 const INVALID_USERS = {
+  INVALID_EMAIL: getUser({ email: 'jhhfuzegf' }),
+  USERNAME_LENGTH_1: getUser({ username: 'a' }),
+  INVALID_PASSWORD_LENGHT: getUser({ password: 'Welcome' }),
+};
+
+const MISSING_USER_INFO = {
   DEFAULT: getUser({
     username: undefined,
     email: undefined,
     password: undefined,
   }),
-  MISSING_USERNAME: getUser({ username: undefined }),
-  MISSING_PASSWORD: getUser({ password: undefined }),
-  MISSING_EMAIL: getUser({ email: undefined }),
-  EMPTY_EMAIL: getUser({ email: '' }),
-  INVALID_EMAIL: getUser({ email: 'jhhfuzegf' }),
-  USERNAME_LENGTH_1: getUser({ username: 'a' }),
-  INVALID_PASSWORD_LENGHT: getUser({ password: 'Welcome' }),
+  MISSING_USERNAME: getUser({ username: '' }),
+  MISSING_PASSWORD: getUser({ password: '' }),
+  MISSING_EMAIL: getUser({ email: '' }),
 };
 
 const getLoginUser = (overrides = {}) => ({
@@ -65,11 +67,14 @@ const LOGIN_VALID_USERS = {
 
 const LOGIN_INVALID_USERS = {
   DEFAULT: getLoginUser({ email: undefined, password: undefined }),
-  MISSING_PASSWORD: getLoginUser({ password: undefined }),
   MISSING_EMAIL: getLoginUser({ email: undefined }),
   EMPTY_EMAIL: getLoginUser({ email: '' }),
   INVALID_EMAIL: getLoginUser({ email: 'jhhfuzegf' }),
   INVALID_PASSWORD_LENGHT: getLoginUser({ password: 'Welcome' }),
+};
+
+const MISSING_LOGIN_USER_INFO = {
+  MISSING_PASSWORD: getLoginUser(),
 };
 
 describe('signup endpoint', () => {
@@ -83,6 +88,7 @@ describe('signup endpoint', () => {
             .post('/api/signup')
             .send(payload);
           expect(res.statusCode).toEqual(201);
+          expect(res.body.message).toEqual('Signed up successfully !');
           expect(res.body).toHaveProperty('success');
           expect(res.body).toHaveProperty('user');
 
@@ -107,6 +113,21 @@ describe('signup endpoint', () => {
           expect(res.body.message).toEqual(
             'Please provide a valid username or password',
           );
+        });
+      });
+    });
+  });
+
+  describe('fails with missing user data', () => {
+    Object.entries(MISSING_USER_INFO).forEach(testCase => {
+      const [key, payload] = testCase;
+      describe(key, () => {
+        test(key, async () => {
+          const res = await request(app)
+            .post('/api/signup')
+            .send(payload);
+          expect(res.statusCode).toEqual(400);
+          expect(res.body.message).toEqual('All fields are required');
         });
       });
     });
@@ -167,6 +188,34 @@ describe('login endpoint', () => {
       });
     });
   });
+
+  describe('fails with invalid password', () => {
+    Object.entries(MISSING_LOGIN_USER_INFO).forEach(testCase => {
+      const [key, payload] = testCase;
+      describe(key, () => {
+        let user;
+
+        beforeAll(async () => {
+          user = await createUser(uuid4(), payload.email, payload.password);
+
+          await user.save();
+        });
+        afterAll(async () => {
+          await user.delete();
+        });
+
+        test(key, async () => {
+          payload.password += 'new';
+          const res = await request(app)
+            .post('/api/login')
+            .send(payload);
+          expect(res.statusCode).toEqual(401);
+          expect(res.body.message).toEqual('Invalid Email or Password');
+        });
+      });
+    });
+  });
+
   describe('fails with invalid data', () => {
     Object.entries(LOGIN_INVALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
@@ -231,7 +280,6 @@ describe('changePassword endpoint', () => {
             .post('/api/changePassword')
             .send(payload);
 
-          expect(res.body.message).toEqual('You updated the password');
           const actual = await User.findOne({ email: payload.email });
           const isPasswordCorrect = await bcrypt.compare(
             payload.password,
@@ -239,6 +287,7 @@ describe('changePassword endpoint', () => {
           );
           expect(isPasswordCorrect).toEqual(true);
           expect(res.statusCode).toEqual(200);
+          expect(res.body.message).toEqual('You updated the password');
         });
       });
     });
