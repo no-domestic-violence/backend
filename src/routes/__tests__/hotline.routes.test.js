@@ -7,18 +7,10 @@ import {
   closeDatabase,
 } from '../../utils/database';
 
-const hotlineData = {
-  organisation_name: 'Test name',
-  country: 'Germany',
-  city: 'Berlin',
-  website: 'www.test.com',
-  phone: '+497777777777',
-  description: '24/7 during the whole year',
-};
+import {  mockHotline } from '../../models/__mocks__/hotline';
 
 beforeEach(async () => {
-  const hotlineTest = new Hotline(hotlineData);
-  await hotlineTest.save();
+ await Hotline.create(mockHotline);
 });
 beforeAll(() => {
   return connectToDatabase();
@@ -47,7 +39,6 @@ describe('Shelter endpoints', () => {
     const res = await request(app).get(`/api/hotlines?searchTerm=${testQuery}`);
     expect(Array.isArray(res.body)).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.type).toEqual('application/json');
     expect(res.body).toEqual([]);
   });
 });

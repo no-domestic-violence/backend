@@ -2,33 +2,12 @@ import request from 'supertest';
 import app from '../../app';
 import { connectToDatabase, clearDatabase, closeDatabase } from '../../utils/database';
 import Shelter from '../../models/shelter.model';
+import {  mockShelters } from '../../models/__mocks__/shelter';
 
-const sheltersData = [
-  {
-    place_name: 'Test name',
-    address: 'Berlin, Turmstrasse, 0',
-    contact_person: 'Test',
-    phone: '+497777777777',
-    longitude: 12.12,
-    latitude: 13.13,
-    description: 'Test description',
-  },
-  {
-    place_name: 'Test name2',
-    address: 'Berlin, Wicherstr, 10',
-    contact_person: 'Test contact',
-    phone: '+497777779999',
-    longitude: 12.12,
-    latitude: 13.13,
-    description: 'Test description',
-  },
-];
 
 beforeEach(async () => {
-  const shelterTest1 = new Shelter(sheltersData[0]);
-  const shelterTest2 = new Shelter(sheltersData[1]);
-  await shelterTest1.save();
-  await shelterTest2.save();
+  await Shelter.create(mockShelters[0]);
+  await Shelter.create(mockShelters[1]);
 });
 
 beforeAll(() => {
