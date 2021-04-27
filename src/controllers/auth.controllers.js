@@ -46,9 +46,6 @@ export const requireAllfields = async (req, res, next) => {
 
 export const signup = async (req, res, next) => {
   try {
-    // await requireAllfields(req, next);
-
-    // await validationErrors(req, next);
     await assertUserExists(req.body.email, next);
     const user = await createUser(
       req.body.username,
@@ -56,18 +53,15 @@ export const signup = async (req, res, next) => {
       req.body.password,
     );
     await user.save();
-    // create and assign a token
     const token = generateToken(user);
     res
       .status(201)
-      .json({ user, success: true, message: 'Signed up successfully !' });
+      .json({ user, success: true, message: 'Signed up successfully!' });
     res.send({
       token,
     });
   } catch (e) {
-    next(
-      Error.badRequest('The server can’t return a response due to an error'),
-    );
+    next(Error.internal('The server can’t return a response due to an error'));
   }
 };
 
@@ -81,8 +75,8 @@ export const getUser = async (email, next) => {
   return user;
 };
 
-export const validatePassword = async (existingPassword, password, next) => {
-  const validPassword = await bcrypt.compare(password, existingPassword);
+export const validatePassword = async (currentPassword, password, next) => {
+  const validPassword = await bcrypt.compare(password, currentPassword);
   if (!validPassword) {
     next(Error.unauthorized('Invalid Email or Password'));
   }
@@ -90,13 +84,12 @@ export const validatePassword = async (existingPassword, password, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    // await validationErrors(req, next);
     const user = await getUser(req.body.email, next);
     await validatePassword(user.password, req.body.password, next);
     const token = generateToken(user);
     res.header('auth-token', token).send({
       success: true,
-      message: 'Logged in successfully !',
+      message: 'Logged in successfully!',
       token,
       user,
     });
@@ -105,19 +98,17 @@ export const login = async (req, res, next) => {
   }
 };
 // changePassword endpoint
-export const requiresAllfields = async (req, next) => {
+export const requireCredentials = async (req, res, next) => {
   const { email, oldPassword, password } = req.body;
   if (!email || !oldPassword || !password) {
-    next(Error.badRequest('Please provide email and password'));
+    next(Error.badRequest('All fields are required'));
+  } else {
+    next();
   }
 };
 
-export const assertPasswordExist = async (
-  oldPassword,
-  existingPassword,
-  next,
-) => {
-  const isPasswordCorrect = await bcrypt.compare(oldPassword, existingPassword);
+export const assertPasswordExist = async (oldPassword, newPassword, next) => {
+  const isPasswordCorrect = await bcrypt.compare(oldPassword, newPassword);
   if (!isPasswordCorrect) {
     next(Error.unauthorized('Old password is not correct'));
   }
@@ -133,7 +124,6 @@ export const createNewPassword = async password => {
 export const changePassword = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    await requiresAllfields(req, next);
     await assertPasswordExist(req.body.oldPassword, user.password, next);
     const hashedNewPassword = await createNewPassword(req.body.password);
     user.password = hashedNewPassword;
