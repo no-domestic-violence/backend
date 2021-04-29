@@ -18,7 +18,13 @@ import {
 } from './user.controllers';
 
 import {
-  signup, login, changePassword, deleteUser,
+  signup,
+  login,
+  changePassword,
+  deleteUser,
+  validationErrors,
+  requireAllfields,
+  requireCredentials,
 } from './auth.controllers';
 
 export {
@@ -38,4 +44,7 @@ export {
   login,
   changePassword,
   deleteUser,
+  validationErrors,
+  requireAllfields,
+  requireCredentials,
 };
