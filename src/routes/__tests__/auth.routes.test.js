@@ -11,14 +11,14 @@ import {
 } from '../../utils/database';
 import { createUser } from '../../controllers/auth.controllers';
 import {
-  VALID_USERS,
-  INVALID_USERS,
-  MISSING_USER_INFO,
-  LOGIN_INVALID_USERS,
-  LOGIN_VALID_USERS,
-  INCORRECT_LOGIN_PASSWORD,
-  INCORRECT_CHANGEPASSWORD_INFO,
-  MISSING_CHANGEPASSWORD_INFO,
+  mockVALID_USERS,
+  mockINVALID_USERS,
+  mockMISSING_USER_INFO,
+  mockLOGIN_INVALID_USERS,
+  mockLOGIN_VALID_USERS,
+  mockINCORRECT_LOGIN_PASSWORD,
+  mockINCORRECT_CHANGEPASSWORD_INFO,
+  mockMISSING_CHANGEPASSWORD_INFO,
 } from '../__mocks__/auth.user';
 
 beforeAll(() => connectToDatabase());
@@ -30,7 +30,7 @@ afterAll(() => closeDatabase());
 describe('signup endpoint', () => {
   describe('should save the user in database after signup', () => {
     // eslint-disable-next-line arrow-parens
-    Object.entries(VALID_USERS).forEach(testCase => {
+    Object.entries(mockVALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         test(key, async () => {
@@ -52,7 +52,7 @@ describe('signup endpoint', () => {
   });
 
   describe('signup fails with invalid data', () => {
-    Object.entries(INVALID_USERS).forEach(testCase => {
+    Object.entries(mockINVALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         test(key, async () => {
@@ -69,7 +69,7 @@ describe('signup endpoint', () => {
   });
 
   describe('signup fails with missing user data', () => {
-    Object.entries(MISSING_USER_INFO).forEach(testCase => {
+    Object.entries(mockMISSING_USER_INFO).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         test(key, async () => {
@@ -84,7 +84,7 @@ describe('signup endpoint', () => {
   });
 
   describe('signup fails with already signed up user', () => {
-    Object.entries(VALID_USERS).forEach(testCase => {
+    Object.entries(mockVALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         let user;
@@ -115,7 +115,7 @@ describe('signup endpoint', () => {
 
 describe('login endpoint', () => {
   describe('should login the user', () => {
-    Object.entries(LOGIN_VALID_USERS).forEach(testCase => {
+    Object.entries(mockLOGIN_VALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         let user;
@@ -140,7 +140,7 @@ describe('login endpoint', () => {
   });
 
   describe('login fails with invalid password', () => {
-    Object.entries(INCORRECT_LOGIN_PASSWORD).forEach(testCase => {
+    Object.entries(mockINCORRECT_LOGIN_PASSWORD).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         let user;
@@ -167,7 +167,7 @@ describe('login endpoint', () => {
   });
 
   describe('login fails with invalid data', () => {
-    Object.entries(LOGIN_INVALID_USERS).forEach(testCase => {
+    Object.entries(mockLOGIN_INVALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         test(key, async () => {
@@ -184,7 +184,7 @@ describe('login endpoint', () => {
   });
 
   describe('login fails with not signed up user', () => {
-    Object.entries(LOGIN_VALID_USERS).forEach(testCase => {
+    Object.entries(mockLOGIN_VALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         beforeAll(async () => {
@@ -208,7 +208,7 @@ describe('login endpoint', () => {
 
 describe('changePassword endpoint', () => {
   describe('user should change the old password', () => {
-    Object.entries(VALID_USERS).forEach(testCase => {
+    Object.entries(mockVALID_USERS).forEach(testCase => {
       const [key, userData] = testCase;
       const payload = {
         email: userData.email,
@@ -244,7 +244,7 @@ describe('changePassword endpoint', () => {
   });
 
   describe('change password fails because the old password is incorrect', () => {
-    Object.entries(INCORRECT_CHANGEPASSWORD_INFO).forEach(testCase => {
+    Object.entries(mockINCORRECT_CHANGEPASSWORD_INFO).forEach(testCase => {
       const [key, userData] = testCase;
       const payload = {
         email: userData.email,
@@ -274,7 +274,7 @@ describe('changePassword endpoint', () => {
   });
 
   describe('change password fails with missing user email,password & oldPassword', () => {
-    Object.entries(MISSING_CHANGEPASSWORD_INFO).forEach(testCase => {
+    Object.entries(mockMISSING_CHANGEPASSWORD_INFO).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         test(key, async () => {
@@ -291,7 +291,7 @@ describe('changePassword endpoint', () => {
 
 describe('deleteUser endpoint', () => {
   describe('should delete the user account', () => {
-    Object.entries(VALID_USERS).forEach(testCase => {
+    Object.entries(mockVALID_USERS).forEach(testCase => {
       const [key, payload] = testCase;
       describe(key, () => {
         let user;
