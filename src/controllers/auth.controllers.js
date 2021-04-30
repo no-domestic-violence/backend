@@ -61,7 +61,6 @@ export const signup = async (req, res, next) => {
       token,
     });
   } catch (e) {
-    console.log(e);
     next(Error.internal('The server can’t return a response due to an error'));
   }
 };
@@ -95,7 +94,6 @@ export const login = async (req, res, next) => {
       user,
     });
   } catch (e) {
-    console.log(e);
     next(e);
   }
 };
