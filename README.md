@@ -22,7 +22,7 @@ POOL project is a mobile application that aims to help the survivors of domestic
 - Mongoose
 - Mongo DB
 - Json Web Token
-- Bcryptjs
+- Jest
 - Heroku
 
 ## Application Architecture Diagram
@@ -50,42 +50,16 @@ The main reasons for choosing MongoDB in POOL project are as below:
 
 ![DB Model](db_model.png)
 
-Users can perform CRUD operations on contacts and bookmarks. Other data such as articles, videos and podcasts are read only.
+Basic users can perform CRUD operations on contacts and bookmarks. Authorized user with editor or admin role can perform CRUD operations on articles, videos, and podcasts.
 
 Contacts document is embedded in the users collection for optimal querying. Since a user can have maximum 2 emergency contacts (one-to-few relationship), the document size would not exceed the limit.
 
-A user can add as many bookmarks as they want (one-to-many relationship). As a lot of data is updated frequently in the bookmarks collection, referencing was chosen for better performance.
-
 Each article, video, podcast has one or few violence type tags. The number of violence types are limited, thus another collection is not needed.
 
-## Folder Structure
+## API
 
-```s
-└── src
-    ├── config
-    │   ├── development.js
-    │   ├── key.js
-    │   └── production.js
-    ├── index.js
-    ├── models
-        ├── Article.js
-    │   ├── Hotline.js
-    │   ├── Shelter.js
-    │   └── User.js
-    └── routes
-        ├── auth.js
-        ├── articlesRoutes.js
-        ├── hotlinesRoutes.js
-        ├── sheltersRoutes.js
-        ├── sosContactRoutes.js
-        └── verifyToken.js
-    ├── package-lock.json
-    ├── package.json
-    ├── .gitignore
-    ├── .Procfile
-    ├── .eslintrc
-    ├── README.md
-```
+We use Swagger to document our APIs.
+http://pool-api-mobile.herokuapp.com/api-docs/
 
 ## Setup
 
@@ -104,13 +78,13 @@ cd backend
 yarn install
 ```
 
-3. Create development.js file inside of config folder and add the following environment variables:
+3. Create .env file and add following information:
 
 ```s
-module.exports = {
-  mongoURI: 'your mongodb atlas uri',
-  JWTSecret: 'your JWTSecret uri',
-};
+
+  mongoURI = mongodb atlas uri
+  JWTSecret = JWTSecret uri
+  SENTRY = team sentry link
 ```
 
 4. Start environment
@@ -119,12 +93,20 @@ module.exports = {
 yarn dev
 ```
 
-5. Open http://localhost:3001 to view it in the browser.
+5. Open http://localhost:3001/api to view it in the browser.
 
-6. Before merging to master, check errors and prettier rules
+6. Before merging to master
+
+- check lint and prettier rules
 
 ```s
 yarn lint
+```
+
+- run tests
+
+```s
+yarn test
 ```
 
 **Caching**
@@ -151,16 +133,15 @@ brew services stop redis
 
 **Testing**
 
-- testing framework - Jest, HTTP assertions library - supertest
+We use Jest and supertest (HTTP assertions library)
+
 - Run tests
 
 ```s
 yarn test
 ```
 
-- Naming convention for mocks : mock\*\*\*\*
-
-  example) user ->
+- Naming convention for mocks : mock\*\*\*\*, for example:
 
 ```s
 mockUser
@@ -215,41 +196,8 @@ heroku build:cancel
 
 ---
 
-## Routing for REST API
-
-API endpoints are set up on the server side for the client to be able to communicate with the database. The client can make a request to this route. On this route with a callback function, the server makes a request to the database and gets a response. Inside the callback, you can query the database by using different Mongoose helper functions.
-
-To query specific data with conditions, the client should specify the particular variable that needs to be fetched in the URL. This route parameter is passed onto the server inside req.params. With this parameter server looks for the matching data in the db. In order to perform this, the name of the variable should be assigned with a colon in the respective backend API endpoint.
-
-Example backend code:
-
-```
-router
-  .route('/users/:username/contacts')
-   /* This endpoint is for users who would like to add, edit and delete their
-   emergency contact in the app. :username is retrieved from a list of users
-   of the app */
-
-	.get((req, res) => {
-    Contact.findOne(
-      { username: req.params.username }
-   ...
-  })
-```
-
-Example frontend code:
-
-```
-const getContacts = async () => {
-    try {
-      const response = await appApiClient.get(
-        `/users/${username}/contacts`);
-    ...
-  };
-```
-
 ## Authors of the project:
 
-- Soyoon Choi: Update user, CRUD Contacts of user
-- Irina Baeva: Delete /Update user, Create /Read Shelters and Hotlines
-- Behnaz Derakhshani: Create /Read user, Create /Read Articles
+- Soyoon Choi
+- Irina Baeva
+- Behnaz Derakhshani

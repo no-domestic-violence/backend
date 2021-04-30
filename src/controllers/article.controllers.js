@@ -14,8 +14,12 @@ export const getArticles = async (req, res, next) => {
 export const getArticleById = async (req, res, next) => {
   const { id } = req.params;
   try {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      next(Error.notFound('Article does not exist'));
+    }
     const articleData = await Article.findById(id);
-    redisClient.setex(id, 3600, JSON.stringify(articleData));
+    process.env.NODE_ENV === 'development'
+      && redisClient.setex(id, 3600, JSON.stringify(articleData));
     res.status(200).send(articleData);
   } catch (e) {
     next(e);
@@ -52,12 +56,16 @@ export const createArticle = async (req, res, next) => {
 export const deleteArticle = async (req, res, next) => {
   const { id } = req.params;
   try {
-    await Article.findOneAndDelete({ _id: id }, (err, doc) => {
-      if (err || doc == null) {
-        res.status(204).send('Article not found.');
-      }
-    });
-    return res.status(202).json({ message: 'Article was deleted!' });
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      next(Error.notFound('Article does not exist'));
+    } else {
+      await Article.findOneAndDelete({ _id: id }, (err, doc) => {
+        if (err || doc == null) {
+          res.status(204).send('Article not found.');
+        }
+      });
+      return res.status(202).json({ message: 'Article was deleted!' });
+    }
   } catch (e) {
     next(e);
   }

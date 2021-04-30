@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable arrow-parens */
 import request from 'supertest';
 import bcrypt from 'bcryptjs';

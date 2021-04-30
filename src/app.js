@@ -1,8 +1,13 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-named-as-default-member */
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import promMid from 'express-prometheus-middleware';
+import * as Sentry from '@sentry/node';
+import * as Tracing from '@sentry/tracing';
+import dotenv from 'dotenv';
 import httpLogger from './logger/http-logger';
 import {
   hotlineRoutes,
@@ -21,6 +26,28 @@ const app = express();
 
 app.use(httpLogger);
 app.use(morgan('dev')); // to show in console
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+dotenv.config();
+
+Sentry.init({
+  dsn: process.env.SENTRY,
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({ app }),
+  ],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(
   promMid({
@@ -29,9 +56,6 @@ app.use(
     requestDurationBuckets: [0.1, 0.5, 1, 1.5],
   }),
 );
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use(BASE_URI, express.static('./src/assets/images'));
 app.use(BASE_URI, authRoutes);
@@ -46,11 +70,13 @@ app.get(BASE_URI, (req, res) => {
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.get('*', (req, res, next) => {
   setImmediate(() => {
     next(Error.notFound('Not found.'));
   });
 });
+app.use(Sentry.Handlers.errorHandler());
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   handleError(err, req, res);

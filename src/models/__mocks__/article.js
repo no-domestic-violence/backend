@@ -3,7 +3,7 @@ export const mockDefaultArticle = {
   author: 'Test User',
   text: 'Lorem ipsum',
   violence_type: ['emotional'],
-  url_to_image: '"https://www.google.com/',
+  url_to_image: 'https://www.google.com/',
   created_at: new Date(),
 };
 export const mockArticleWithoutTitle = {

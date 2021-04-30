@@ -1,12 +1,7 @@
 import mongoose from 'mongoose';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import dotenv from 'dotenv';
 import logger from '../logger';
-
-dotenv.config();
-
-const mongoServer = new MongoMemoryServer();
 
 const opts = {
   useNewUrlParser: true,
@@ -14,8 +9,17 @@ const opts = {
   useCreateIndex: true,
 };
 
-export const connectToDatabase = async (url = process.env.MONGODB_URI) => {
-  const testDbUri = await mongoServer.getUri();
+let testDbUri;
+let mongoServer;
+
+const setTestURI = async () => {
+  mongoServer = new MongoMemoryServer();
+  testDbUri = await mongoServer.getUri();
+  return testDbUri;
+};
+
+export const connectToDatabase = async (url = process.env.mongoURI) => {
+  (process.env.NODE_ENV === 'test') && await setTestURI();
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
     opts,

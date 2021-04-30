@@ -4,7 +4,7 @@ import Error from './error/ErrorHandler';
 const verifyToken = (req, res, next) => {
   const token = req.header('auth-token');
   if (!token) {
-    next(Error.unauthorized('Access denied'));
+    next(Error.unauthorized('No access token provided'));
     return;
   }
   try {
@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
     req.user = verified;
     next();
   } catch (error) {
-    next(Error.badRequest('Invalid token'));
+    next(Error.unauthorized('Invalid token'));
   }
 };
 

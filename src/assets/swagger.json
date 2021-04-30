@@ -75,7 +75,11 @@
             "description": "Not Found"
           }
         },
-        "deprecated": false
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "get": {
         "tags": [
@@ -114,7 +118,7 @@
           {
             "name": "articleId",
             "in": "path",
-            "description": "Id of article that needs to be fetched",
+            "description": " Particular article object's ID (Automatically assigned by MongoDB) that needs to be fetched",
             "required": true,
             "type": "string"
           }
@@ -142,7 +146,7 @@
           {
             "name": "articleId",
             "in": "path",
-            "description": "Article id to delete",
+            "description": "Particular article object's ID (Automatically assigned by MongoDB) that needs to be deleted",
             "required": true,
             "type": "string"
           }
@@ -157,7 +161,12 @@
           "404": {
             "description": "Article Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/shelters": {
@@ -315,7 +324,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "get": {
         "tags": [
@@ -346,35 +360,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
-      },
-      "delete": {
-        "tags": [
-          "user-controller"
-        ],
-        "summary": "delete sos contact by id",
-        "operationId": "deleteContactByIdUsingDELETE",
-        "produces": "application/json",
-        "parameters": [
+        },
+        "security": [
           {
-            "in": "path",
-            "name": "username",
-            "description": "username who deletes contact",
-            "required": true,
-            "type": "string"
+            "bearerAuth": []
           }
-        ],
-        "responses": {
-          "202": {
-            "description": "Contact successfully deleted"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
+        ]
       }
     },
     "/users/{username}/contacts/{contactId}": {
@@ -397,7 +388,7 @@
           {
             "in": "path",
             "name": "contactId",
-            "description": "ContactId to edit",
+            "description": "Particular contact object's ID (Automatically assigned by MongoDB) that needs to be edited",
             "required": true,
             "type": "string"
           }
@@ -415,7 +406,52 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "delete sos contact by id",
+        "operationId": "deleteContactByIdUsingDELETE",
+        "produces": "application/json",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "description": "username who deletes contact",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "contactId",
+            "description": "Particular contact object's ID (Automatically assigned by MongoDB) that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Contact successfully deleted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/signup": {
@@ -449,7 +485,7 @@
             "description": "All fields are required"
           },
           "422": {
-            "description" :"Please provide a valid username or password"
+            "description": "Please provide a valid username or password"
           }
         },
         "deprecated": false
@@ -486,7 +522,7 @@
             "description": "User is not signed up"
           },
           "422": {
-            "description" :"Please provide a valid username or password"
+            "description": "Please provide a valid username or password"
           },
           "401": {
             "description": "Unauthorized"
@@ -523,14 +559,23 @@
             }
           },
           "422": {
-            "description" :"Please provide a valid username or password"
+            "description": "Please provide a valid username or password"
           },
           "401": {
             "description": "Unauthorized"
           }
         },
-        "deprecated": false
-      }
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ]
     },
     "/deleteUser": {
       "delete": {
@@ -563,19 +608,39 @@
             "description": "User not found"
           }
         },
-        "deprecated": false
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
-  },   
+  },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    },
   "definitions": {
     "Article": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "title": {
           "type": "string"
         },
         "author": {
           "type": "string"
+        },
+        "author_id": {
+          "$ref": "#/definitions/User/properties/_id"
         },
         "text": {
           "type": "string"
@@ -604,6 +669,10 @@
     "Shelter": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "place_name": {
           "type": "string"
         },
@@ -632,6 +701,10 @@
     "Hotline": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "organisation_name": {
           "type": "string"
         },
@@ -656,6 +729,10 @@
     "Video": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "title": {
           "type": "string"
         },
@@ -671,6 +748,10 @@
     "User": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "username": {
           "type": "string"
         },
@@ -681,13 +762,26 @@
           "type": "string"
         },
         "contacts": {
-          "$ref": "#/definitions/Contact"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "role": {
+          "type": "string",
+          "enum": { "0": "basic",
+            "1":"editor",
+            "2": "admin"}         
         }
       }
     },
     "Contact": {
       "type": "object",
       "properties": {
+        "_id":{
+          "type": "string",
+          "format": "uuid"
+        },
         "name": {
           "type": "string"
         },
