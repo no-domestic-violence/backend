@@ -630,8 +630,7 @@
       "type": "object",
       "properties": {
         "_id":{
-          "type": "string",
-          "format": "uuid"
+          "type": "string"
         },
         "title": {
           "type": "string"
@@ -670,8 +669,7 @@
       "type": "object",
       "properties": {
         "_id":{
-          "type": "string",
-          "format": "uuid"
+          "type": "string"
         },
         "place_name": {
           "type": "string"
@@ -702,8 +700,7 @@
       "type": "object",
       "properties": {
         "_id":{
-          "type": "string",
-          "format": "uuid"
+          "type": "string"
         },
         "organisation_name": {
           "type": "string"
@@ -730,8 +727,7 @@
       "type": "object",
       "properties": {
         "_id":{
-          "type": "string",
-          "format": "uuid"
+          "type": "string"
         },
         "title": {
           "type": "string"
@@ -749,8 +745,7 @@
       "type": "object",
       "properties": {
         "_id":{
-          "type": "string",
-          "format": "uuid"
+          "type": "string"
         },
         "username": {
           "type": "string"
@@ -779,8 +774,7 @@
       "type": "object",
       "properties": {
         "_id":{
-          "type": "string",
-          "format": "uuid"
+          "type": "string"
         },
         "name": {
           "type": "string"
