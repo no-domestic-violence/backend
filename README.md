@@ -37,8 +37,8 @@ POOL project is a mobile application that aims to help the survivors of domestic
 The components implements the following functionalities:
 
 - React Native: User registration, login, browse educational resources and add/delete bookmarks, search hotlines and shelters on map, show/create/edit/remove emergency contacts.
-- Express/node.js server: Abstracts access to database for clients with RESTful API using Mongoose library: user management (login, register, delete), emergency contact management (read, add, edit, remove), articles (read, add, edit, remove), videos, shelters, hotlines.
-- MongoDB database: stores the user related data (login credentials, emergency contacts, bookmarks, T&C acceptance history), geospatial data for shelters, resources, hotlines, and T&C.
+- Express/node.js server: Abstracts access to database for clients with RESTful API using Mongoose library: user management (login, register, delete, authorization of different roles), emergency contact management (read, add, edit, remove), articles (read, add, edit, remove), videos, shelters, hotlines.
+- MongoDB database: stores the user related data (login credentials, emergency contacts), geospatial data for shelters, resources, hotlines, and T&C.
 
 ## Data Model
 
@@ -61,9 +61,8 @@ Contacts document is embedded in the users collection for optimal querying. Sinc
 
 Each article, video, podcast has one or few violence type tags. The number of violence types are limited, thus another collection is not needed.
 
-## API
+## API Swagger Documentation
 
-We use Swagger to document our APIs.
 http://pool-api-mobile.herokuapp.com/api-docs/
 
 ## Setup
@@ -146,7 +145,6 @@ App uses Jest and supertest (HTTP assertions library)
 yarn test
 ```
 
-
 **Application monitoring**
 
 App uses Sentry as application monitoring and error tracking.
@@ -159,7 +157,6 @@ App uses Sentry as application monitoring and error tracking.
 Winston and morgan (HTTP logger) display logs on terminal and logs are collected on a separate log file.
 
 ![Logging example](./readme_assets/logging.png)
-
 
 ![Logging example](./readme_assets/logging_file.png)
 
