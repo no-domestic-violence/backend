@@ -15,6 +15,11 @@
 
 POOL project is a mobile application that aims to help the survivors of domestic violence. The main features of the app are: resources in forms of curated articles, videos & podcasts about intimate partner violence, finding shelters and hotlines. Signed up users can have additional access to emergency contact features.
 
+**The api uses Heroku for production**
+
+- Production URL: https://pool-api-mobile.herokuapp.com/api/
+- Not protected endpoints: /shelters, /hotlines
+
 ## Tech Stack
 
 - Node.js
@@ -27,12 +32,12 @@ POOL project is a mobile application that aims to help the survivors of domestic
 
 ## Application Architecture Diagram
 
-![Architecture diagram](app_architecture.png)
+![Architecture diagram](./readme_assets/app_architecture.png)
 
 The components implements the following functionalities:
 
 - React Native: User registration, login, browse educational resources and add/delete bookmarks, search hotlines and shelters on map, show/create/edit/remove emergency contacts.
-- Express/node.js server: Abstracts access to database for clients with RESTful API using Mongoose library: user management (login, register, delete), emergency contact management (read,add, edit, remove), bookmark management (add, remove, read), fetching resources, shelters, hotlines.
+- Express/node.js server: Abstracts access to database for clients with RESTful API using Mongoose library: user management (login, register, delete), emergency contact management (read, add, edit, remove), articles (read, add, edit, remove), videos, shelters, hotlines.
 - MongoDB database: stores the user related data (login credentials, emergency contacts, bookmarks, T&C acceptance history), geospatial data for shelters, resources, hotlines, and T&C.
 
 ## Data Model
@@ -48,7 +53,7 @@ The main reasons for choosing MongoDB in POOL project are as below:
 - Performing Geolocation Operations → Map is one of the main features of the app which needs frequent and fast geospatial querying.
 - Storing large volumes of data without relations → Some of the collections such as shelters, hotlines and resources do not have relations.
 
-![DB Model](db_model.png)
+![DB Model](./readme_assets/db_model.png)
 
 Basic users can perform CRUD operations on contacts and bookmarks. Authorized user with editor or admin role can perform CRUD operations on articles, videos, and podcasts.
 
@@ -133,7 +138,7 @@ brew services stop redis
 
 **Testing**
 
-We use Jest and supertest (HTTP assertions library)
+App uses Jest and supertest (HTTP assertions library)
 
 - Run tests
 
@@ -141,38 +146,22 @@ We use Jest and supertest (HTTP assertions library)
 yarn test
 ```
 
-- Naming convention for mocks : mock\*\*\*\*, for example:
 
-```s
-mockUser
-```
+**Application monitoring**
 
-**The api uses Heroku for production**
+App uses Sentry as application monitoring and error tracking.
 
-- Production URL: https://pool-api-mobile.herokuapp.com/
-- Not protected endpoints: /shelters, /hotlines
+![Logging example](./readme_assets/error_sentry.png)
+![Logging example](./readme_assets/perfomance_sentry.png)
 
-**Metrics**
+**Aplication logging**
 
-Metrics are running on http://localhost:3001/metrics
+Winston and morgan (HTTP logger) display logs on terminal and logs are collected on a separate log file.
 
-To run the prometheus and grafana dashboards:
+![Logging example](./readme_assets/logging.png)
 
-```s
-docker-compose up
-```
 
-Prometheus running on:
-
-```s
-http://localhost:9090
-```
-
-Grafana running on:
-
-```s
-http://localhost:3000
-```
+![Logging example](./readme_assets/logging_file.png)
 
 **To use Heroku for development**
 
