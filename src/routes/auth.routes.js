@@ -1,16 +1,13 @@
 import express from 'express';
 import { signupValidation, loginValidation } from '../utils/authentication';
-
 import {
-  signup,
-  login,
-  changePassword,
-  deleteUser,
-  requireAllfields,
   validationErrors,
-  // eslint-disable-next-line import/named
+  requireAllfields,
   requireCredentials,
-} from '../controllers';
+} from '../middleware/authMiddlewares';
+
+// eslint-disable-next-line object-curly-newline
+import { signup, login, changePassword, deleteUser } from '../controllers';
 
 const router = express.Router();
 
