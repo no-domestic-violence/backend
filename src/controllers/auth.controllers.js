@@ -1,22 +1,10 @@
 /* eslint-disable arrow-parens */
-import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/authentication';
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
 
 // signup endpoint
-export const validationErrors = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    next(
-      Error.unprocessableEntity('Please provide a valid username or password'),
-    );
-  } else {
-    next();
-  }
-};
-
 export const assertUserExists = async (email, next) => {
   const userExist = await User.findOne({ email });
   if (userExist) {
@@ -27,21 +15,11 @@ export const assertUserExists = async (email, next) => {
 export const createUser = async (username, email, password) => {
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
-  const user = new User({
+  return new User({
     username,
     email,
     password: hashPassword,
   });
-  return user;
-};
-
-export const requireAllfields = async (req, res, next) => {
-  const { username, email, password } = req.body;
-  if (!username || !email || !password) {
-    next(Error.badRequest('All fields are required'));
-  } else {
-    next();
-  }
 };
 
 export const signup = async (req, res, next) => {
@@ -97,16 +75,8 @@ export const login = async (req, res, next) => {
     next(e);
   }
 };
-// changePassword endpoint
-export const requireCredentials = async (req, res, next) => {
-  const { email, oldPassword, password } = req.body;
-  if (!email || !oldPassword || !password) {
-    next(Error.badRequest('All fields are required'));
-  } else {
-    next();
-  }
-};
 
+// changePassword endpoint
 export const assertPasswordExist = async (oldPassword, newPassword, next) => {
   const isPasswordCorrect = await bcrypt.compare(oldPassword, newPassword);
   if (!isPasswordCorrect) {
