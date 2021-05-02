@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import { searchHotline } from './hotline.controllers';
 import { getShelters } from './shelter.controllers';
 
@@ -17,15 +18,7 @@ import {
   deleteContact,
 } from './user.controllers';
 
-import {
-  signup,
-  login,
-  changePassword,
-  deleteUser,
-  validationErrors,
-  requireAllfields,
-  requireCredentials,
-} from './auth.controllers';
+import { signup, login, changePassword, deleteUser } from './auth.controllers';
 
 export {
   searchHotline,
@@ -44,7 +37,4 @@ export {
   login,
   changePassword,
   deleteUser,
-  validationErrors,
-  requireAllfields,
-  requireCredentials,
 };
