@@ -56,14 +56,14 @@ describe('Videos endpoint', () => {
       .post('/api/videos')
       .set('Content-type', 'multipart/form-data');
     expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('data');
+    expect(res.body).toHaveProperty('video');
     expect(res.body).toHaveProperty('success');
   });
   test('should get all videos as array with GET request', async () => {
     const res = await request(app).get('/api/videos');
     expect(res.statusCode).toEqual(200);
-    expect(Array.isArray(res.body)).toBeTruthy();
-    expect(res.body).toHaveLength(3);
+    expect(Array.isArray(res.body.videos)).toBeTruthy();
+    expect(res.body.videos).toHaveLength(3);
     expect(res.type).toEqual('application/json');
   });
 });
