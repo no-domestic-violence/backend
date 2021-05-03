@@ -85,10 +85,10 @@ describe('User endpoints', () => {
       .send(mockContact)
       .expect(201)
       .then(res => {
-        expect(res.body[1].name).toBe(mockContact.name);
-        expect(res.body[1].phone).toBe(mockContact.phone);
-        expect(res.body[1].message).toBe(mockContact.message);
-        expect(res.body.length).toBe(2);
+        expect(res.body.contacts[1].name).toBe(mockContact.name);
+        expect(res.body.contacts[1].phone).toBe(mockContact.phone);
+        expect(res.body.contacts[1].message).toBe(mockContact.message);
+        expect(res.body.contacts.length).toBe(2);
       });
   });
 
@@ -113,9 +113,9 @@ describe('User endpoints', () => {
       .send(mockContact)
       .expect(201)
       .then(res => {
-        expect(res.body[0].name).toBe(mockContact.name);
-        expect(res.body[0].phone).toBe(mockContact.phone);
-        expect(res.body[0].message).toBe(mockContact.message);
+        expect(res.body.contacts[0].name).toBe(mockContact.name);
+        expect(res.body.contacts[0].phone).toBe(mockContact.phone);
+        expect(res.body.contacts[0].message).toBe(mockContact.message);
       });
   });
 
