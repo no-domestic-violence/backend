@@ -67,7 +67,6 @@ describe('User endpoints', () => {
     const res = await request(app)
       .get(`/api/users/invalidusername/contacts`)
       .set({ 'auth-token': mockToken });
-    console.log(res.body);
     expect(res.statusCode).toBe(404);
     expect(res.body.message).toEqual('User does not exist');
   });

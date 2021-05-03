@@ -1,16 +1,8 @@
 import User from '../models/user.model';
-import Error from '../middleware/error/ErrorHandler';
 import { validateUser, validateObjId } from '../utils/validators';
 
 export const editContact = async (req, res, next) => {
   try {
-    const { name, phone, message } = req.body;
-    if (!name || !phone || !message) {
-      next(
-        Error.badRequest('All the fields are required and must be non blank!'),
-      );
-      return;
-    }
     const { id } = req.params;
     validateObjId(id, 'Contact', next);
     const user = await User.findOneAndUpdate(
@@ -32,7 +24,6 @@ export const editContact = async (req, res, next) => {
     validateUser(user, 'User with provided contact does not exist', next);
     const { contacts } = user;
     res.status(201).json({ success: true, contacts });
-    // }
   } catch (e) {
     next(e);
   }
@@ -58,13 +49,6 @@ export const getContact = async (req, res, next) => {
 
 export const addContact = async (req, res, next) => {
   try {
-    const { name, phone, message } = req.body;
-    if (!name || !phone || !message) {
-      next(
-        Error.badRequest('All the fields are required and must be non blank!'),
-      );
-      return;
-    }
     const user = await User.findOneAndUpdate(
       { username: req.params.username },
       {
@@ -101,7 +85,6 @@ export const deleteContact = async (req, res, next) => {
       },
       { new: true },
     );
-
     validateUser(user, 'User with provided contact does not exist', next);
     const { contacts } = user;
     res.status(202).json({ success: true, contacts });
