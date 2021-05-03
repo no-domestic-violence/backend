@@ -12,8 +12,9 @@ export const searchHotline = async (req, res, next) => {
         { organisation_name: { $regex: searchTerm, $options: 'i' } },
       ],
     }).sort({ organisation_name: 1 });
-    process.env.NODE_ENV === 'development' && redisClient.setex(searchTerm, 3600, JSON.stringify(hotlinesResponse));
-    res.status(200).send(hotlinesResponse);
+    process.env.NODE_ENV === 'development' &&
+      redisClient.setex(searchTerm, 3600, JSON.stringify(hotlinesResponse));
+    res.status(200).json({ success: true, hotlines: hotlinesResponse });
   } catch (error) {
     next(Error.badRequest('Bad request.'));
   }

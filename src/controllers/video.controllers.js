@@ -18,7 +18,7 @@ export const createVideo = async (req, res, next) => {
     const result = await newVideo.save();
     res.status(201).json({
       success: true,
-      data: result,
+      video: result,
     });
   } catch (e) {
     next(e);
@@ -28,7 +28,7 @@ export const createVideo = async (req, res, next) => {
 export const getVideos = async (req, res, next) => {
   try {
     const videos = await Video.find({});
-    res.status(200).send(videos);
+    res.status(200).json({ success: true, videos });
   } catch (e) {
     next(e);
   }

@@ -13,7 +13,7 @@ export const getShelters = async (req, res, next) => {
         locs: 1,
       },
     );
-    res.status(200).send(sheltersList);
+    res.status(200).json({ success: true, shelters: sheltersList });
   } catch (e) {
     next(e);
   }
