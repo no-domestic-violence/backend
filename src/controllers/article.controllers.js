@@ -5,7 +5,7 @@ import redisClient from '../utils/redisClient';
 export const getArticles = async (req, res, next) => {
   try {
     const articles = await Article.find({});
-    res.status(200).send(articles);
+    res.status(200).json({ success: true, articles });
   } catch (e) {
     next(e);
   }
@@ -17,10 +17,10 @@ export const getArticleById = async (req, res, next) => {
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       next(Error.notFound('Article does not exist'));
     }
-    const articleData = await Article.findById(id);
-    process.env.NODE_ENV === 'development'
-      && redisClient.setex(id, 3600, JSON.stringify(articleData));
-    res.status(200).send(articleData);
+    const article = await Article.findById(id);
+    process.env.NODE_ENV === 'development' &&
+      redisClient.setex(id, 3600, JSON.stringify(article));
+    res.status(200).json({ success: true, article });
   } catch (e) {
     next(e);
   }
@@ -37,9 +37,7 @@ export const createArticle = async (req, res, next) => {
     author_id: req.body.author_id,
   });
   try {
-    const {
-      title, author, text, violence_type, url_to_image,
-    } = req.body;
+    const { title, author, text, violence_type, url_to_image } = req.body;
     if (!title || !author || !text || !violence_type || !url_to_image) {
       next(
         Error.badRequest('All the fields are required and must be non blank!'),
@@ -47,7 +45,7 @@ export const createArticle = async (req, res, next) => {
       return;
     }
     await article.save();
-    res.status(201).json({ success: true, data: article });
+    res.status(201).json({ success: true, article });
   } catch (e) {
     next(e);
   }
@@ -61,10 +59,12 @@ export const deleteArticle = async (req, res, next) => {
     } else {
       await Article.findOneAndDelete({ _id: id }, (err, doc) => {
         if (err || doc == null) {
-          res.status(204).send('Article not found.');
+          res.status(204).json({ message: 'Article not found.' });
         }
       });
-      return res.status(202).json({ message: 'Article was deleted!' });
+      return res
+        .status(202)
+        .json({ success: true, message: 'Article was deleted!' });
     }
   } catch (e) {
     next(e);
