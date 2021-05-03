@@ -5,6 +5,11 @@ import {
   checkDeleteArticlePermission,
 } from './authorization';
 import { articleCache, hotlinesCache } from './cache';
+import {
+  validationErrors,
+  requireAllfields,
+  requireCredentials,
+} from './authMiddlewares';
 
 export {
   verifyToken,
@@ -13,4 +18,7 @@ export {
   checkDeleteArticlePermission,
   articleCache,
   hotlinesCache,
+  validationErrors,
+  requireAllfields,
+  requireCredentials,
 };

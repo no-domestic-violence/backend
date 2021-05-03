@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-named-as-default-member */
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
