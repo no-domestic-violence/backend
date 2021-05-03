@@ -187,4 +187,4 @@ heroku build:cancel
 - Soyoon Choi : User(contacts) API, setup error handler, authorization, setup loggers and monitoring, API documentation
 - Irina Baeva : Setup production and development environment (yarn, babel, lint),
   API: Articles (Create, Edit, Delete), Hotlines (Get searching), Shelters, Video (including handling multipart/form-data for image), Caching with Redis on development mode, Setup logging and monitoring.
-- Behnaz Derakhshani
+- Behnaz Derakhshani : Authentication (signup, login, changepassword, deleting account) & error handling and expectation, API: Articles(Read), API documentation
