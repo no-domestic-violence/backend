@@ -47,12 +47,12 @@ describe('Aricle endpoints', () => {
       .post('/api/articles')
       .send(mockDefaultArticle);
     expect(res.statusCode).toEqual(201);
-    expect(res.body).toHaveProperty('data');
+    expect(res.body).toHaveProperty('article');
     expect(res.body).toHaveProperty('success');
-    expect(res.body.data.title).toBe(createdMockArticle.title);
-    expect(res.body.data.author).toBe(createdMockArticle.author);
-    expect(res.body.data.text).toBe(createdMockArticle.text);
-    expect(res.body.data.url_to_image).toBe(createdMockArticle.url_to_image);
+    expect(res.body.article.title).toBe(createdMockArticle.title);
+    expect(res.body.article.author).toBe(createdMockArticle.author);
+    expect(res.body.article.text).toBe(createdMockArticle.text);
+    expect(res.body.article.url_to_image).toBe(createdMockArticle.url_to_image);
   });
   test('should call checkCreateArticlePermission middleware with POST', async () => {
     await request(app)
@@ -71,15 +71,15 @@ describe('Aricle endpoints', () => {
     await Article.create(mockDefaultArticle);
     const res = await request(app).get('/api/articles');
     expect(res.statusCode).toEqual(200);
-    expect(Array.isArray(res.body)).toBeTruthy();
-    expect(res.body.length).toBe(1);
+    expect(Array.isArray(res.body.articles)).toBeTruthy();
+    expect(res.body.articles.length).toBe(1);
   });
 
   test('should get specific article with GET request to specific id', async () => {
     const createdMockArticle = await Article.create(mockDefaultArticle);
     let res = await request(app).get('/api/articles/' + createdMockArticle._id);
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toMatchObject({
+    expect(res.body.article).toMatchObject({
       title: 'Test title',
       author: 'Test User',
       text: 'Lorem ipsum',
