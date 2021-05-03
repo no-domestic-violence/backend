@@ -165,7 +165,7 @@ describe('User endpoints', () => {
       .expect(401);
   });
 
-  test('should respond with an error when deleting not existing contact', async () => {
+  test('should respond with an error when deleting contact with invalid objectId format', async () => {
     const invalidContactId = '6062e6501e80a94test40522';
     const res = await request(app)
       .delete(`/api/users/${username}/contacts/${invalidContactId}`)
