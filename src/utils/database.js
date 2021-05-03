@@ -19,11 +19,11 @@ const setTestURI = async () => {
 };
 
 export const connectToDatabase = async (url = process.env.mongoURI) => {
-  (process.env.NODE_ENV === 'test') && await setTestURI();
+  process.env.NODE_ENV === 'test' && (await setTestURI());
   await mongoose.connect(
     process.env.NODE_ENV === 'test' ? testDbUri : url,
     opts,
-    (err) => {
+    err => {
       if (err) {
         logger.error(err);
       }
@@ -39,9 +39,9 @@ export const closeDatabase = async () => {
   await mongoServer.stop();
 };
 
-export const clearDatabase = async () => {
+export const clearDatabase = () => {
   const { collections } = mongoose.connection;
-  Object.keys(collections).forEach((collection) => {
-    mongoose.connection.collection(collection).deleteMany({});
+  Object.keys(collections).forEach(async collection => {
+    await mongoose.connection.collection(collection).deleteMany({});
   });
 };
