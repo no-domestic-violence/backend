@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router
-  .route('/users/:username/contacts/:_id')
+  .route('/users/:username/contacts/:id')
   .patch(verifyToken, editContact)
   .delete(verifyToken, deleteContact);
 router

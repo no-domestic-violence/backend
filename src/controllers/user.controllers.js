@@ -10,16 +10,15 @@ export const editContact = async (req, res, next) => {
       );
       return;
     }
-
-    const contactId = req.params._id;
+    const { id } = req.params;
     let user;
     // check if id is valid ObjectId - to resolve mongoose castError
-    if (!contactId.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       next(Error.notFound('Contact does not exist'));
     } else {
       user = await User.findOneAndUpdate(
         {
-          'contacts._id': contactId,
+          'contacts._id': id,
         },
         {
           $set: {
@@ -29,14 +28,15 @@ export const editContact = async (req, res, next) => {
           },
         },
         {
-          arrayFilters: [{ 'contact._id': contactId }],
+          arrayFilters: [{ 'contact._id': id }],
           new: true,
         },
       );
       if (!user) {
         next(Error.notFound('Contact does not exist'));
       } else {
-        res.status(201).json(user.contacts);
+        const { contacts } = user;
+        res.status(201).json({ success: true, contacts });
       }
     }
   } catch (e) {
@@ -55,7 +55,8 @@ export const getContact = async (req, res, next) => {
     if (!user) {
       await next(Error.notFound('User does not exist'));
     } else {
-      return res.status(200).send(user);
+      const { contacts } = user;
+      return res.status(200).json({ success: true, contacts });
     }
   } catch (e) {
     next(e);
@@ -90,7 +91,7 @@ export const addContact = async (req, res, next) => {
       await next(Error.notFound('User does not exist'));
     }
     const { contacts } = user;
-    return res.status(201).json(contacts);
+    return res.status(201).json({ success: true, contacts });
   } catch (e) {
     next(e);
   }
@@ -98,17 +99,17 @@ export const addContact = async (req, res, next) => {
 
 export const deleteContact = async (req, res, next) => {
   try {
-    const contactId = req.params._id;
+    const { id } = req.params;
     let user;
-    if (!contactId.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       next(Error.notFound('Contact does not exist'));
     } else {
       user = await User.findOneAndUpdate(
-        { 'contacts._id': contactId },
+        { 'contacts._id': id },
         {
           $pull: {
             contacts: {
-              _id: req.params._id,
+              _id: id,
             },
           },
         },
@@ -118,7 +119,8 @@ export const deleteContact = async (req, res, next) => {
     if (!user) {
       next(Error.notFound('Contact does not exist'));
     } else {
-      res.status(202).json(user.contacts);
+      const { contacts } = user;
+      res.status(202).json({ success: true, contacts });
     }
   } catch (e) {
     next(e);
