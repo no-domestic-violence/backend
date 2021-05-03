@@ -1,6 +1,6 @@
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
-import { validateUser } from '../utils/validators';
+import { validateUser, validateObjId } from '../utils/validators';
 
 export const editContact = async (req, res, next) => {
   try {
@@ -12,31 +12,27 @@ export const editContact = async (req, res, next) => {
       return;
     }
     const { id } = req.params;
-    let user;
-    // check if id is valid ObjectId - to resolve mongoose castError
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      next(Error.notFound('Contact does not exist'));
-    } else {
-      user = await User.findOneAndUpdate(
-        {
-          'contacts._id': id,
+    validateObjId(id, 'Contact', next);
+    const user = await User.findOneAndUpdate(
+      {
+        'contacts._id': id,
+      },
+      {
+        $set: {
+          'contacts.$[contact].name': req.body.name,
+          'contacts.$[contact].phone': req.body.phone,
+          'contacts.$[contact].message': req.body.message,
         },
-        {
-          $set: {
-            'contacts.$[contact].name': req.body.name,
-            'contacts.$[contact].phone': req.body.phone,
-            'contacts.$[contact].message': req.body.message,
-          },
-        },
-        {
-          arrayFilters: [{ 'contact._id': id }],
-          new: true,
-        },
-      );
-      validateUser(user, 'User with provided contact does not exist', next);
-      const { contacts } = user;
-      res.status(201).json({ success: true, contacts });
-    }
+      },
+      {
+        arrayFilters: [{ 'contact._id': id }],
+        new: true,
+      },
+    );
+    validateUser(user, 'User with provided contact does not exist', next);
+    const { contacts } = user;
+    res.status(201).json({ success: true, contacts });
+    // }
   } catch (e) {
     next(e);
   }
@@ -93,22 +89,19 @@ export const addContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    let user;
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      next(Error.notFound('Contact does not exist'));
-    } else {
-      user = await User.findOneAndUpdate(
-        { 'contacts._id': id },
-        {
-          $pull: {
-            contacts: {
-              _id: id,
-            },
+    validateObjId(id, 'Contact', next);
+    const user = await User.findOneAndUpdate(
+      { 'contacts._id': id },
+      {
+        $pull: {
+          contacts: {
+            _id: id,
           },
         },
-        { new: true },
-      );
-    }
+      },
+      { new: true },
+    );
+
     validateUser(user, 'User with provided contact does not exist', next);
     const { contacts } = user;
     res.status(202).json({ success: true, contacts });
