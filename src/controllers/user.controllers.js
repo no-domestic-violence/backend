@@ -1,5 +1,6 @@
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
+import { validateUser } from '../utils/validators';
 
 export const editContact = async (req, res, next) => {
   try {
@@ -32,12 +33,9 @@ export const editContact = async (req, res, next) => {
           new: true,
         },
       );
-      if (!user) {
-        next(Error.notFound('Contact does not exist'));
-      } else {
-        const { contacts } = user;
-        res.status(201).json({ success: true, contacts });
-      }
+      validateUser(user, 'User with provided contact does not exist', next);
+      const { contacts } = user;
+      res.status(201).json({ success: true, contacts });
     }
   } catch (e) {
     next(e);
@@ -52,12 +50,9 @@ export const getContact = async (req, res, next) => {
       },
       ['contacts'],
     );
-    if (!user) {
-      await next(Error.notFound('User does not exist'));
-    } else {
-      const { contacts } = user;
-      return res.status(200).json({ success: true, contacts });
-    }
+    validateUser(user, 'User does not exist', next);
+    const { contacts } = user;
+    return res.status(200).json({ success: true, contacts });
   } catch (e) {
     next(e);
   }
@@ -87,9 +82,7 @@ export const addContact = async (req, res, next) => {
       },
       { new: true },
     );
-    if (!user) {
-      await next(Error.notFound('User does not exist'));
-    }
+    validateUser(user, 'User does not exist', next);
     const { contacts } = user;
     return res.status(201).json({ success: true, contacts });
   } catch (e) {
@@ -116,12 +109,9 @@ export const deleteContact = async (req, res, next) => {
         { new: true },
       );
     }
-    if (!user) {
-      next(Error.notFound('Contact does not exist'));
-    } else {
-      const { contacts } = user;
-      res.status(202).json({ success: true, contacts });
-    }
+    validateUser(user, 'User with provided contact does not exist', next);
+    const { contacts } = user;
+    res.status(202).json({ success: true, contacts });
   } catch (e) {
     next(e);
   }
