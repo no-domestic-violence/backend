@@ -64,10 +64,12 @@ describe('User endpoints', () => {
   });
 
   test('should respond with an error when getting contacts of nonexistent user', async () => {
-    await request(app)
+    const res = await request(app)
       .get(`/api/users/invalidusername/contacts`)
-      .set({ 'auth-token': mockToken })
-      .expect(404);
+      .set({ 'auth-token': mockToken });
+    console.log(res.body);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toEqual('User does not exist');
   });
 
   test('should throw bad request error if required field for a contact is missing when adding or editing the contact', async () => {
@@ -99,11 +101,12 @@ describe('User endpoints', () => {
       .expect(401);
   });
   test('should respond with an error when adding a contact on nonexistent user', async () => {
-    await request(app)
+    const res = await request(app)
       .patch(`/api/users/invalidusername/contacts`)
       .set({ 'auth-token': mockToken })
-      .send(mockContact)
-      .expect(404);
+      .send(mockContact);
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toEqual('User does not exist');
   });
 
   test('should successfully edit a contact', async () => {
@@ -126,13 +129,26 @@ describe('User endpoints', () => {
       .expect(401);
   });
 
-  test('should respond with an error when editing not existing contact', async () => {
+  test('should respond with an error when editing contact with invalid objectId', async () => {
     const invalidContactId = '6062e6501e80a94test40522';
-    await request(app)
+    const res = await request(app)
       .patch(`/api/users/${username}/contacts/${invalidContactId}`)
       .set({ 'auth-token': mockToken })
-      .send(mockContact)
-      .expect(404);
+      .send(mockContact);
+    expect(res.statusCode).toEqual(404);
+    expect(res.body.message).toEqual('Contact does not exist');
+  });
+
+  test('should respond with an error when editing contact of not existing user', async () => {
+    const contactId = '6062e6501e80a94123440522';
+    const res = await request(app)
+      .patch(`/api/users/fakeuserfake/contacts/${contactId}`)
+      .set({ 'auth-token': mockToken })
+      .send(mockContact);
+    expect(res.statusCode).toEqual(404);
+    expect(res.body.message).toEqual(
+      'User with provided contact does not exist',
+    );
   });
 
   test('should successfully delete contact', async () => {
@@ -151,9 +167,21 @@ describe('User endpoints', () => {
 
   test('should respond with an error when deleting not existing contact', async () => {
     const invalidContactId = '6062e6501e80a94test40522';
-    await request(app)
+    const res = await request(app)
       .delete(`/api/users/${username}/contacts/${invalidContactId}`)
-      .set({ 'auth-token': mockToken })
-      .expect(404);
+      .set({ 'auth-token': mockToken });
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toEqual('Contact does not exist');
+  });
+
+  test('should respond with an error when deleting contact of not existing user', async () => {
+    const contactId = '6062e6501e80a94123440522';
+    const res = await request(app)
+      .delete(`/api/users/fakeuserfake/contacts/${contactId}`)
+      .set({ 'auth-token': mockToken });
+    expect(res.statusCode).toBe(404);
+    expect(res.body.message).toEqual(
+      'User with provided contact does not exist',
+    );
   });
 });
