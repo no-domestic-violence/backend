@@ -1,6 +1,6 @@
 import Article from '../models/article.model';
 import Error from '../middleware/error/ErrorHandler';
-import redisClient from '../utils/redisClient';
+import { setRedisCache } from '../utils/redisClient';
 
 export const getArticles = async (req, res, next) => {
   try {
@@ -18,8 +18,7 @@ export const getArticleById = async (req, res, next) => {
       next(Error.notFound('Article does not exist'));
     }
     const article = await Article.findById(id);
-    process.env.NODE_ENV === 'development' &&
-      redisClient.setex(id, 3600, JSON.stringify(article));
+    setRedisCache(id, article);
     res.status(200).json({ success: true, article });
   } catch (e) {
     next(e);

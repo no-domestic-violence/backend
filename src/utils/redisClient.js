@@ -7,4 +7,10 @@ redisClient.on('error', (e) => {
   logger.error(e);
 });
 
-export default redisClient;
+const setRedisCache = (name, data) => {
+  return process.env.NODE_ENV === 'development' &&
+      redisClient.setex(name, 3600, JSON.stringify(data));
+}
+
+export {redisClient, setRedisCache};
+
