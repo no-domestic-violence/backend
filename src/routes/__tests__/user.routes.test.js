@@ -183,4 +183,46 @@ describe('User endpoints', () => {
       'User with provided contact does not exist',
     );
   });
+
+  test('should respond with error when adding contact with empty name', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({
+        name: '',
+        phone: '12341234123',
+        message: 'help',
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toEqual('Invalid value');
+  });
+
+  test('should respond with error when adding contact with invalid phone number format', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({
+        name: 'contact',
+        phone: '<>d$02@4%^^^^@!#$',
+        message: 'help',
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toEqual('Invalid phone number format');
+  });
+
+  test('should respond with error when adding contact with message that exceeds 25 characters', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({
+        name: 'contact',
+        phone: '015735137532',
+        message:
+          'help lorem ipsum hello refactoring second edition fully revised and updated includes factory calander',
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toEqual(
+      'Message must be between 1 and 25 characters',
+    );
+  });
 });
