@@ -11,6 +11,10 @@ import {
   requireCredentials,
 } from './authMiddlewares';
 import requireAllContactFields from './requireAllContactFields';
+import {
+  contactValidationErrors,
+  validateContactFields,
+} from './contactFieldsValidation';
 
 export {
   verifyToken,
@@ -23,4 +27,6 @@ export {
   requireAllfields,
   requireCredentials,
   requireAllContactFields,
+  validateContactFields,
+  contactValidationErrors,
 };
