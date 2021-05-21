@@ -1,5 +1,10 @@
 import express from 'express';
-import { verifyToken, requireAllContactFields } from '../middleware';
+import {
+  verifyToken,
+  requireAllContactFields,
+  validateContactFields,
+  contactValidationErrors,
+} from '../middleware';
 
 import {
   getContact,
@@ -12,11 +17,21 @@ const router = express.Router();
 
 router
   .route('/users/:username/contacts/:id')
-  .patch(verifyToken, requireAllContactFields, editContact)
+  .patch(
+    verifyToken,
+    validateContactFields,
+    contactValidationErrors,
+    editContact,
+  )
   .delete(verifyToken, deleteContact);
 router
   .route('/users/:username/contacts')
   .get(verifyToken, getContact)
-  .patch(verifyToken, requireAllContactFields, addContact);
+  .patch(
+    verifyToken,
+    validateContactFields,
+    contactValidationErrors,
+    addContact,
+  );
 
 export default router;
