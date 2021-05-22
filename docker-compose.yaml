@@ -12,6 +12,7 @@ services:
       - prometheus
     ports:
      - "3000:3000"
-
-volumes:
-  data:
+  node-exporter:
+   image: prom/node-exporter
+   ports:
+     - '9100:9100'
