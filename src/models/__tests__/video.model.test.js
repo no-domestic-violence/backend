@@ -24,16 +24,16 @@ afterAll(() => {
   closeDatabase();
 });
 
-describe('User', () => {
-  let createrMockVideo;
+describe('Video', () => {
+  let createdMockVideo;
 
   beforeEach(async () => {
-    createrMockVideo = await Video.create(mockVideos[0]);
+    createdMockVideo = await Video.create(mockVideos[0]);
   });
 
   test('can be created correctly', async () => {
-    expect(createrMockVideo).toBeTruthy();
-    expect(createrMockVideo).toMatchObject(mockVideos[0]);
+    expect(createdMockVideo).toBeTruthy();
+    expect(createdMockVideo).toMatchObject(mockVideos[0]);
   });
 });
 
