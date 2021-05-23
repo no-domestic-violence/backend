@@ -12,10 +12,18 @@ import {
 } from '../../models/__mocks__/user';
 
 describe('permissions', () => {
-  test('should check if the user has permission to create article', () => {
+  test('should restrict access to create article with basic user', () => {
     const permission = hasCreateArticlePermission(mockBasicUser);
+    expect(permission).toEqual(false);
+  });
+  test('should give access to admin to create article', () => {
+    const permission = hasCreateArticlePermission(mockAdmin);
     expect(permission).toEqual(true);
-    // change this to false after admin, editor assign is implemented
+  });
+
+  test('should give access to editor to create article', () => {
+    const permission = hasCreateArticlePermission(mockAuthor);
+    expect(permission).toEqual(true);
   });
   test('should check if the owner of the article has permission to delete article', () => {
     const permission = hasDeleteArticlePermission(mockAuthor, mockAuthorId);
