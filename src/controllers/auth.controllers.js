@@ -32,7 +32,10 @@ export const signup = async (req, res, next) => {
     );
     await user.save();
     const token = generateToken(user);
-    res.header('auth-token', token).send({ user, token, success: true, message: 'Signed up successfully!' });
+    res
+      .header('auth-token', token)
+      .status(201)
+      .send({ user, token, success: true, message: 'Signed up successfully!' });
     res.send({
       token,
     });
