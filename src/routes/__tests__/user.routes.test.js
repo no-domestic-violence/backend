@@ -63,6 +63,14 @@ describe('User endpoints', () => {
     expect(res.body.message).toEqual('No access token provided');
   });
 
+  test('should respond with an error when getting contacts with invalid auth token', async () => {
+    const res = await request(app)
+      .get(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': 'invalidtoken' });
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('Invalid token');
+  });
+
   test('should respond with an error when getting contacts of nonexistent user', async () => {
     const res = await request(app)
       .get(`/api/users/invalidusername/contacts`)
@@ -100,6 +108,16 @@ describe('User endpoints', () => {
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toEqual('No access token provided');
   });
+
+  test('should respond with an error when adding contact with invalid auth token', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': 'invalidtoken' })
+      .send(mockContact);
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('Invalid token');
+  });
+
   test('should respond with an error when adding a contact on nonexistent user', async () => {
     const res = await request(app)
       .patch(`/api/users/invalidusername/contacts`)
@@ -128,6 +146,15 @@ describe('User endpoints', () => {
       .send(mockContact);
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toEqual('No access token provided');
+  });
+
+  test('should respond with an error when editing contact with invalid auth token', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts/${contactId}`)
+      .set({ 'auth-token': 'invalidtoken' })
+      .send(mockContact);
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('Invalid token');
   });
 
   test('should respond with an error when editing contact with invalid objectId', async () => {
@@ -160,11 +187,19 @@ describe('User endpoints', () => {
   });
 
   test('should respond with error when deleting contact without auth token', async () => {
-    const res = await request(app)
-      .patch(`/api/users/${username}/contacts/${contactId}`)
-      .send(mockContact);
+    const res = await request(app).delete(
+      `/api/users/${username}/contacts/${contactId}`,
+    );
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toEqual('No access token provided');
+  });
+
+  test('should respond with an error when deleting contact with invalid auth token', async () => {
+    const res = await request(app)
+      .delete(`/api/users/${username}/contacts/${contactId}`)
+      .set({ 'auth-token': 'invalidtoken' });
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('Invalid token');
   });
 
   test('should respond with an error when deleting contact with invalid objectId format', async () => {
