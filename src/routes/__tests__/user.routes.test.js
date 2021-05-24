@@ -79,14 +79,6 @@ describe('User endpoints', () => {
     expect(res.body.message).toEqual('User does not exist');
   });
 
-  test('should throw bad request error if required field for a contact is missing when adding or editing the contact', async () => {
-    await request(app)
-      .patch(`/api/users/${username}/contacts`)
-      .set({ 'auth-token': mockToken })
-      .send({})
-      .expect(400);
-  });
-
   test('should successfully add a contact', async () => {
     await request(app)
       .patch(`/api/users/${username}/contacts`)
@@ -222,6 +214,13 @@ describe('User endpoints', () => {
     );
   });
 
+  test('should throw bad request error if required field for a contact is missing when adding a contact', async () => {
+    await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({})
+      .expect(400);
+  });
   test('should respond with error when adding contact with empty name', async () => {
     const res = await request(app)
       .patch(`/api/users/${username}/contacts`)
@@ -235,6 +234,34 @@ describe('User endpoints', () => {
     expect(res.body.message).toEqual('Invalid value');
   });
 
+  test('should respond with error when adding contact with invalid name format', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({
+        name: '<>d$02@4%^^^^',
+        phone: '12341234123',
+        message: 'help',
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toEqual('Invalid name format');
+  });
+
+  test('should respond with error when adding contact with invalid name length', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({
+        name: 'lorem ipsum hello this is a name hi test tezt testtestetsete',
+        phone: '12341234123',
+        message: 'help',
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toEqual(
+      'Name must be between 1 and 16 characters',
+    );
+  });
+
   test('should respond with error when adding contact with invalid phone number format', async () => {
     const res = await request(app)
       .patch(`/api/users/${username}/contacts`)
@@ -246,6 +273,19 @@ describe('User endpoints', () => {
       });
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toEqual('Invalid phone number format');
+  });
+
+  test('should respond with error when adding contact with phone number that exceeds valid length', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({
+        name: 'contact',
+        phone: '12387878787877887878',
+        message: 'help me ',
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toEqual('Phone number should be max 15 digits');
   });
 
   test('should respond with error when adding contact with message that exceeds 25 characters', async () => {
@@ -264,16 +304,16 @@ describe('User endpoints', () => {
     );
   });
 
-  test('should respond with error when adding contact with phone number that exceeds valid length', async () => {
+  test('should respond with error when adding contact with invalid message format', async () => {
     const res = await request(app)
       .patch(`/api/users/${username}/contacts`)
       .set({ 'auth-token': mockToken })
       .send({
         name: 'contact',
-        phone: '12387878787877887878',
-        message: 'help me ',
+        phone: '015735137532',
+        message: '^$%*!(#)F(#*$kldfjlajfkldsjf#$)!@%U(+~',
       });
     expect(res.statusCode).toBe(400);
-    expect(res.body.message).toEqual('Phone number should be max 15 digits');
+    expect(res.body.message).toEqual('Invalid message format');
   });
 });
