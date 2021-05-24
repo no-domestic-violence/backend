@@ -58,9 +58,9 @@ describe('User endpoints', () => {
   });
 
   test('should respond with an error when getting contacts without auth token', async () => {
-    await request(app)
-      .get(`/api/users/${username}/contacts`)
-      .expect(401);
+    const res = await request(app).get(`/api/users/${username}/contacts`);
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('No access token provided');
   });
 
   test('should respond with an error when getting contacts of nonexistent user', async () => {
@@ -94,10 +94,11 @@ describe('User endpoints', () => {
   });
 
   test('should respond with error when adding contact without auth token', async () => {
-    await request(app)
+    const res = await request(app)
       .patch(`/api/users/${username}/contacts`)
-      .send(mockContact)
-      .expect(401);
+      .send(mockContact);
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('No access token provided');
   });
   test('should respond with an error when adding a contact on nonexistent user', async () => {
     const res = await request(app)
@@ -122,10 +123,11 @@ describe('User endpoints', () => {
   });
 
   test('should respond with error when editing contact without auth token', async () => {
-    await request(app)
+    const res = await request(app)
       .patch(`/api/users/${username}/contacts/${contactId}`)
-      .send(mockContact)
-      .expect(401);
+      .send(mockContact);
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('No access token provided');
   });
 
   test('should respond with an error when editing contact with invalid objectId', async () => {
@@ -158,10 +160,11 @@ describe('User endpoints', () => {
   });
 
   test('should respond with error when deleting contact without auth token', async () => {
-    await request(app)
+    const res = await request(app)
       .patch(`/api/users/${username}/contacts/${contactId}`)
-      .send(mockContact)
-      .expect(401);
+      .send(mockContact);
+    expect(res.statusCode).toBe(401);
+    expect(res.body.message).toEqual('No access token provided');
   });
 
   test('should respond with an error when deleting contact with invalid objectId format', async () => {
