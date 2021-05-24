@@ -15,6 +15,7 @@ import {
   contactValidationErrors,
   validateContactFields,
 } from './contactFieldsValidation';
+import validateObjId from './validateObjId';
 
 export {
   verifyToken,
@@ -29,4 +30,5 @@ export {
   requireAllContactFields,
   validateContactFields,
   contactValidationErrors,
+  validateObjId,
 };

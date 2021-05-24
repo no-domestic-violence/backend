@@ -1,10 +1,9 @@
 import User from '../models/user.model';
-import { validateUser, validateObjId } from '../utils/validators';
+import validateUser from '../utils/validateUser';
 
 export const editContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    validateObjId(id, 'Contact', next);
     const user = await User.findOneAndUpdate(
       {
         'contacts._id': id,
@@ -73,7 +72,6 @@ export const addContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    validateObjId(id, 'Contact', next);
     const user = await User.findOneAndUpdate(
       { 'contacts._id': id },
       {
