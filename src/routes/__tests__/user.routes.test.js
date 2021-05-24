@@ -263,4 +263,17 @@ describe('User endpoints', () => {
       'Message must be between 1 and 25 characters',
     );
   });
+
+  test('should respond with error when adding contact with phone number that exceeds valid length', async () => {
+    const res = await request(app)
+      .patch(`/api/users/${username}/contacts`)
+      .set({ 'auth-token': mockToken })
+      .send({
+        name: 'contact',
+        phone: '12387878787877887878',
+        message: 'help me ',
+      });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toEqual('Phone number should be max 15 digits');
+  });
 });
