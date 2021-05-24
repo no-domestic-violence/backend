@@ -14,9 +14,6 @@ export const getArticles = async (req, res, next) => {
 export const getArticleById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      next(Error.notFound('Article does not exist'));
-    }
     const article = await Article.findById(id);
     process.env.NODE_ENV === 'development' &&
       redisClient.setex(id, 3600, JSON.stringify(article));
@@ -54,18 +51,14 @@ export const createArticle = async (req, res, next) => {
 export const deleteArticle = async (req, res, next) => {
   const { id } = req.params;
   try {
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-      next(Error.notFound('Article does not exist'));
-    } else {
-      await Article.findOneAndDelete({ _id: id }, (err, doc) => {
-        if (err || doc == null) {
-          res.status(204).json({ message: 'Article not found.' });
-        }
-      });
-      return res
-        .status(202)
-        .json({ success: true, message: 'Article was deleted!' });
-    }
+    await Article.findOneAndDelete({ _id: id }, (err, doc) => {
+      if (err || doc == null) {
+        res.status(204).json({ message: 'Article not found.' });
+      }
+    });
+    return res
+      .status(202)
+      .json({ success: true, message: 'Article was deleted!' });
   } catch (e) {
     next(e);
   }
