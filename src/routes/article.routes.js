@@ -10,6 +10,7 @@ import {
   checkCreateArticlePermission,
   checkDeleteArticlePermission,
   articleCache,
+  validateObjId,
 } from '../middleware';
 
 const router = express.Router();
@@ -21,7 +22,12 @@ router
 
 router
   .route('/articles/:id')
-  .get(articleCache, getArticleById)
-  .delete(verifyToken, checkDeleteArticlePermission, deleteArticle);
+  .get(validateObjId('Article'), articleCache, getArticleById)
+  .delete(
+    verifyToken,
+    checkDeleteArticlePermission,
+    validateObjId('Article'),
+    deleteArticle,
+  );
 
 export default router;

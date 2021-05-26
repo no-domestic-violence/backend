@@ -19,8 +19,8 @@ const validateContactFields = [
     .matches(/(\(?([\d \-\)\–\+\/\(]+){6,}\)?([ .\-–\/]?)([\d]+))/)
     .withMessage('Invalid phone number format'),
   check('phone')
-    .isLength({ min: 7, max: 15 })
-    .withMessage('Phone number should be between 7 and 15 digits'),
+    .isLength({ max: 15 })
+    .withMessage('Phone number should be max 15 digits'),
 ];
 
 const contactValidationErrors = async (req, res, next) => {

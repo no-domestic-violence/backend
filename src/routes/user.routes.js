@@ -1,9 +1,9 @@
 import express from 'express';
 import {
   verifyToken,
-  requireAllContactFields,
   validateContactFields,
   contactValidationErrors,
+  validateObjId,
 } from '../middleware';
 
 import {
@@ -19,11 +19,12 @@ router
   .route('/users/:username/contacts/:id')
   .patch(
     verifyToken,
+    validateObjId('Contact'),
     validateContactFields,
     contactValidationErrors,
     editContact,
   )
-  .delete(verifyToken, deleteContact);
+  .delete(verifyToken, validateObjId('Contact'), deleteContact);
 router
   .route('/users/:username/contacts')
   .get(verifyToken, getContact)
