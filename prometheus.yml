@@ -7,8 +7,3 @@ scrape_configs:
   - job_name: 'node-exporter'
     static_configs:
       - targets: ['node-exporter:9100']
-remote_write:
-  - url: https://prometheus-us-central1.grafana.net/api/prom/push
-    basic_auth:
-      username: 63835
-      password: eyJrIjoiM2ExOGJhYTlhNGRjZTJiOGIwN2ZjYjlkM2E2OTFkYTRhNDk4OGNiNCIsIm4iOiJwb29sIiwiaWQiOjQ3NDU3MH0=
