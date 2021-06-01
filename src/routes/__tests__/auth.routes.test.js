@@ -38,7 +38,8 @@ describe('signup endpoint', () => {
           const res = await request(app)
             .post('/api/signup')
             .send(payload);
-          expect(res.statusCode).toEqual(200);
+          expect(res.statusCode).toEqual(201);
+          expect(res.body.message).toEqual('Signed up successfully!');
           expect(res.body).toHaveProperty('success');
           expect(res.body).toHaveProperty('user');
 
