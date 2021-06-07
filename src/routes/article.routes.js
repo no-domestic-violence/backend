@@ -19,7 +19,7 @@ const router = express.Router();
 router
   .route('/articles')
   .get(getArticles)
-  .post(verifyToken, checkCreateArticlePermission, articleValidationRules, validateRequest, createArticle);
+  .post(verifyToken, checkCreateArticlePermission, createArticle); // TODO: add articleValidationRules as middleware 
 
 router
   .route('/articles/:id')

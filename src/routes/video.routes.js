@@ -9,12 +9,7 @@ import {
 const router = express.Router();
 router
   .route('/videos')
-  .post(
-    upload.single('imageData'),
-    videoValidationRules,
-    validateRequest,
-    createVideo,
-  )
+  .post(upload.single('imageData'), createVideo) // TODO: add articleValidationRules as middleware
   .get(getVideos);
 
 export default router;
