@@ -10,11 +10,7 @@ export const hasDeleteArticlePermission = (user, authorId) => {
 
 // remove permission from basic when admin,editor assign is implemented
 export const hasCreateArticlePermission = user => {
-<<<<<<< HEAD
   return user.role === ADMIN || user.role === EDITOR;
-=======
-  return user.role === BASIC || user.role === EDITOR || user.role === ADMIN;
->>>>>>> master
 };
 
 export const hasEditArticlePermission = (user, authorId) => {

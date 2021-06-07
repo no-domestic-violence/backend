@@ -24,18 +24,11 @@ router
 
 router
   .route('/articles/:id')
-<<<<<<< HEAD
   .get(validateObjId('Article'), articleCache, getArticleById)
   .delete(
     verifyToken,
     checkDeleteArticlePermission,
     validateObjId('Article'),
-=======
-  .get(articleCache, getArticleById)
-  .delete(
-    verifyToken,
-    checkDeleteArticlePermission,
->>>>>>> master
     deleteArticle,
   );
 
