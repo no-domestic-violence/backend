@@ -30,7 +30,6 @@ export const connectToDatabase = async (url = process.env.mongoURI) => {
     },
   );
   logger.info('MongoDB is connected!');
-  /* eslint-disable no-console */
 };
 
 export const closeDatabase = async () => {

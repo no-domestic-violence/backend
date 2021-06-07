@@ -16,3 +16,11 @@ export const hasCreateArticlePermission = user => {
 export const hasEditArticlePermission = (user, authorId) => {
   return user._id === authorId.toString();
 };
+// use it when admin role created
+export const hasDeleteVideoPermission = user => {
+  return user.role === ADMIN;
+};
+
+export const hasCreateEditVideoPermission = user => {
+  return user.role === BASIC || user.role === ADMIN;
+};

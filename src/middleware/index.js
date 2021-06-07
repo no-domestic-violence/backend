@@ -10,11 +10,6 @@ import {
   requireAllfields,
   requireCredentials,
 } from './authMiddlewares';
-import requireAllContactFields from './requireAllContactFields';
-import {
-  contactValidationErrors,
-  validateContactFields,
-} from './contactFieldsValidation';
 import validateObjId from './validateObjId';
 
 export {
@@ -27,8 +22,5 @@ export {
   validationErrors,
   requireAllfields,
   requireCredentials,
-  requireAllContactFields,
-  validateContactFields,
-  contactValidationErrors,
   validateObjId,
 };

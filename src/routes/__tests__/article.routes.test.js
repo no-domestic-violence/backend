@@ -54,7 +54,7 @@ describe('Aricle endpoints', () => {
     expect(res.body.article.text).toBe(createdMockArticle.text);
     expect(res.body.article.url_to_image).toBe(createdMockArticle.url_to_image);
   });
-  test('should call checkCreateArticlePermission middleware with POST', async () => {
+  test('should call checkCreateArticlePermission and verifyToken middleware with POST', async () => {
     await request(app)
       .post('/api/articles')
       .send(mockDefaultArticle);

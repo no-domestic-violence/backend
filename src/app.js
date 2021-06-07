@@ -25,7 +25,7 @@ import swaggerDocument from './assets/swagger.json';
 const app = express();
 
 app.use(httpLogger);
-app.use(morgan('dev')); // to show in console
+app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,14 +35,9 @@ dotenv.config();
 Sentry.init({
   dsn: process.env.SENTRY,
   integrations: [
-    // enable HTTP calls tracing
     new Sentry.Integrations.Http({ tracing: true }),
-    // enable Express.js middleware tracing
     new Tracing.Integrations.Express({ app }),
   ],
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
 
