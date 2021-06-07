@@ -61,7 +61,9 @@ app.use(BASE_URI, articleRoutes);
 app.use(BASE_URI, videoRoutes);
 
 app.get(BASE_URI, (req, res) => {
-  res.send('Welcome to the "Pool" project API');
+  res.send(
+    `Welcome to the Pool project API, ${process.env.INSTANCE} instance running currently`,
+  );
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
