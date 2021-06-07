@@ -1,6 +1,6 @@
 import Hotline from '../models/hotline.model';
 import Error from '../middleware/error/ErrorHandler';
-import redisClient from '../utils/redisClient';
+import { setRedisCache } from '../utils/redisClient';
 
 /* eslint-disable  import/prefer-default-export */
 export const searchHotline = async (req, res, next) => {
@@ -12,8 +12,7 @@ export const searchHotline = async (req, res, next) => {
         { organisation_name: { $regex: searchTerm, $options: 'i' } },
       ],
     }).sort({ organisation_name: 1 });
-    process.env.NODE_ENV === 'development' &&
-      redisClient.setex(searchTerm, 3600, JSON.stringify(hotlinesResponse));
+    setRedisCache(searchTerm, hotlinesResponse);
     res.status(200).json({ success: true, hotlines: hotlinesResponse });
   } catch (error) {
     next(Error.badRequest('Bad request.'));

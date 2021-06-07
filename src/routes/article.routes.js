@@ -13,20 +13,29 @@ import {
   validateObjId,
 } from '../middleware';
 
+import { articleValidationRules, validateRequest } from '../middleware/validation/index';
+
 const router = express.Router();
 
 router
   .route('/articles')
   .get(getArticles)
-  .post(verifyToken, checkCreateArticlePermission, createArticle);
+  .post(verifyToken, checkCreateArticlePermission, createArticle); // TODO: add articleValidationRules as middleware 
 
 router
   .route('/articles/:id')
+<<<<<<< HEAD
   .get(validateObjId('Article'), articleCache, getArticleById)
   .delete(
     verifyToken,
     checkDeleteArticlePermission,
     validateObjId('Article'),
+=======
+  .get(articleCache, getArticleById)
+  .delete(
+    verifyToken,
+    checkDeleteArticlePermission,
+>>>>>>> master
     deleteArticle,
   );
 
