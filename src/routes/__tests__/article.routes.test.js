@@ -92,6 +92,7 @@ describe('Aricle endpoints', () => {
     const invalidFormatId = '6062e6501e80a94test40522';
     let res = await request(app).get(`/api/articles/${invalidFormatId}`);
     expect(res.statusCode).toEqual(404);
+    expect(res.body.message).toEqual('Article does not exist');
   });
 
   test('should delete specific article with DELETE request to specific id', async () => {
@@ -107,6 +108,7 @@ describe('Aricle endpoints', () => {
     const invalidFormatId = '6062e6501e80a94test40522';
     let res = await request(app).delete(`/api/articles/${invalidFormatId}`);
     expect(res.statusCode).toEqual(404);
+    expect(res.body.message).toEqual('Article does not exist');
   });
 
   test('should respond with No Content error when cannot find the id with DELETE request', async () => {

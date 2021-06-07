@@ -10,6 +10,7 @@ import {
   checkCreateArticlePermission,
   checkDeleteArticlePermission,
   articleCache,
+  validateObjId,
 } from '../middleware';
 
 import { articleValidationRules, validateRequest } from '../middleware/validation/index';
@@ -23,10 +24,11 @@ router
 
 router
   .route('/articles/:id')
-  .get(articleCache, getArticleById)
+  .get(validateObjId('Article'), articleCache, getArticleById)
   .delete(
     verifyToken,
     checkDeleteArticlePermission,
+    validateObjId('Article'),
     deleteArticle,
   );
 

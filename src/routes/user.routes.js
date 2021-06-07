@@ -1,5 +1,9 @@
 import express from 'express';
-import { verifyToken, requireAllContactFields } from '../middleware';
+import { verifyToken, validateObjId } from '../middleware';
+import {
+  contactValidationRules,
+  validateRequest,
+} from '../middleware/validation';
 
 import {
   getContact,
@@ -12,11 +16,17 @@ const router = express.Router();
 
 router
   .route('/users/:username/contacts/:id')
-  .patch(verifyToken, requireAllContactFields, editContact)
-  .delete(verifyToken, deleteContact);
+  .patch(
+    verifyToken,
+    validateObjId('Contact'),
+    contactValidationRules,
+    validateRequest,
+    editContact,
+  )
+  .delete(verifyToken, validateObjId('Contact'), deleteContact);
 router
   .route('/users/:username/contacts')
   .get(verifyToken, getContact)
-  .patch(verifyToken, requireAllContactFields, addContact);
+  .patch(verifyToken, contactValidationRules, validateRequest, addContact);
 
 export default router;
