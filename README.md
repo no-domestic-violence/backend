@@ -113,6 +113,33 @@ yarn lint
 yarn test
 ```
 
+**Load Balancing with NGINX and Docker**
+
+![Server architecture and metrics](./readme_assets/server_architecture_and_metrics.png)
+
+1. Build dockerized image of the app
+
+```s
+docker build -t load-balanced-app .
+```
+
+2. Run the app instances
+
+```s
+docker run -e "INSTANCE=First" -p 3002:3001 -d load-balanced-app
+docker run -e "INSTANCE=Second" -p 3003:3001 -d load-balanced-app
+docker run -e "INSTANCE=Third" -p 3004:3001 -d load-balanced-app
+```
+
+3. cd to nginx directory, build and run the load balancer
+
+```s
+docker build -t nginx-load-balancer .
+docker run -p 3001:80 -d nginx-load-balancer
+```
+
+Then the NGINX load balancer on port 3001 distributes the requests to 3 server instances.
+
 **Caching**
 
 1. Install Redis
@@ -151,6 +178,12 @@ App uses Sentry as application monitoring and error tracking.
 
 ![Logging example](./readme_assets/error_sentry.png)
 ![Logging example](./readme_assets/perfomance_sentry.png)
+
+To monitor docker containers on grafana:
+
+```s
+docker-compose up
+```
 
 **Aplication logging**
 
