@@ -36,9 +36,6 @@ export const signup = async (req, res, next) => {
       .header('auth-token', token)
       .status(201)
       .send({ user, token, success: true, message: 'Signed up successfully!' });
-    res.send({
-      token,
-    });
   } catch (e) {
     next(Error.internal('The server can’t return a response due to an error'));
   }
