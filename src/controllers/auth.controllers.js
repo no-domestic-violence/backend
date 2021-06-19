@@ -33,7 +33,7 @@ export const signup = async (req, res, next) => {
     await user.save();
     const token = generateToken(user);
     res
-      .header('auth-token', token)
+      .header('Authorization', `Bearer ${token}`)
       .status(201)
       .send({ user, token, success: true, message: 'Signed up successfully!' });
   } catch (e) {
@@ -63,7 +63,7 @@ export const login = async (req, res, next) => {
     const user = await getUser(req.body.email, next);
     await validatePassword(user.password, req.body.password, next);
     const token = generateToken(user);
-    res.header('auth-token', token).send({
+    res.header('Authorization', `Bearer ${token}`).send({
       success: true,
       message: 'Logged in successfully!',
       token,
