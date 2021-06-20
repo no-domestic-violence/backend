@@ -48,6 +48,7 @@
     "express-prometheus-middleware": "^1.1.0",
     "express-validator": "^6.6.1",
     "fs": "^0.0.1-security",
+    "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb-memory-server": "^6.9.6",
     "mongoose": "^5.10.9",

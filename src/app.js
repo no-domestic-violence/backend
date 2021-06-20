@@ -9,6 +9,7 @@ import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import dotenv from 'dotenv';
 import httpLogger from './logger/http-logger';
+import helmet from 'helmet';
 import {
   hotlineRoutes,
   shelterRoutes,
@@ -27,6 +28,26 @@ const app = express();
 app.use(httpLogger);
 app.use(morgan('dev'));
 app.use(cors());
+
+// Sets all of the defaults CSP, but overrides some
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      'default-src': ["'self"],
+      'script-src': ["'self'"],
+      'style-src': ["'self'"],
+      'font-src': ["'self'", 'https:'],
+      'connect-sources': [
+        "'self'",
+        'ws://localhost:3001',
+        'https://pool-api-mobile.herokuapp.com/',
+      ],
+      'img-src': ["'self'", 'https:'],
+    },
+  }),
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
