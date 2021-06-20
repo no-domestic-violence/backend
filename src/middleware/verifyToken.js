@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import Error from './error/ErrorHandler';
 
 const verifyToken = (req, res, next) => {
-  const bearerHeader = req.headers['authorization'];
+  const bearerHeader = req.headers.authorization;
   if (!bearerHeader) {
     next(Error.unauthorized('No access token provided'));
     return;

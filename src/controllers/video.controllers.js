@@ -9,7 +9,7 @@ export const createVideo = async (req, res, next) => {
       imageData: req.file.filename,
     });
     const { title, url_to_video } = req.body;
-    if (!title || !url_to_video ) {
+    if (!title || !url_to_video) {
       next(
         Error.badRequest('All the fields are required and must be non blank!'),
       );

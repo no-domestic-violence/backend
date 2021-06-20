@@ -48,7 +48,7 @@ const contactValidationRules = [
     .isLength({ min: 1, max: 25 })
     .withMessage('Message must be between 1 and 25 characters'),
   check('phone')
-    .matches(/(\(?([\d \-\)\–\+\/\(]+){6,}\)?([ .\-–\/]?)([\d]+))/)
+    .matches(/(\(?([\d \-\)\–\+\/\(]+){6,}\)?([ .\-–\/]?)([\d]+))/) // eslint-disable-line
     .withMessage('Invalid phone number format'),
   check('phone')
     .isLength({ max: 15 })
@@ -65,4 +65,9 @@ const validateRequest = async (req, res, next) => {
   next(Error.badRequest(extractedErrors[0]));
 };
 
-export { articleValidationRules, videoValidationRules, contactValidationRules, validateRequest };
+export {
+  articleValidationRules,
+  videoValidationRules,
+  contactValidationRules,
+  validateRequest,
+};

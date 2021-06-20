@@ -22,5 +22,5 @@ export const hasDeleteVideoPermission = user => {
 };
 
 export const hasCreateEditVideoPermission = user => {
-  return user.role === BASIC || user.role === ADMIN;
+  return user.role === ADMIN;
 };
