@@ -8,8 +8,8 @@ import promMid from 'express-prometheus-middleware';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import dotenv from 'dotenv';
-import httpLogger from './logger/http-logger';
 import helmet from 'helmet';
+import httpLogger from './logger/http-logger';
 import {
   hotlineRoutes,
   shelterRoutes,
@@ -47,6 +47,8 @@ app.use(
     },
   }),
 );
+
+app.use( helmet.hidePoweredBy());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
