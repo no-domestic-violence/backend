@@ -4,6 +4,7 @@ import fs from 'fs';
 import appRoot from 'app-root-path';
 import logger from './index';
 
+/* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as no value holds user input */
 const accessLogStream = fs.createWriteStream(`${appRoot}/logs/app.log`, {
   flags: 'a',
 });
