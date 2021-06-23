@@ -13,14 +13,17 @@ import {
   validateObjId,
 } from '../middleware';
 
-import { articleValidationRules, validateRequest } from '../middleware/validation/index';
+// import {
+//   articleValidationRules,
+//   validateRequest,
+// } from '../middleware/validation/index';
 
 const router = express.Router();
 
 router
   .route('/articles')
   .get(getArticles)
-  .post(verifyToken, checkCreateArticlePermission, createArticle); // TODO: add articleValidationRules as middleware 
+  .post(verifyToken, checkCreateArticlePermission, createArticle); // TODO: add articleValidationRules as middleware
 
 router
   .route('/articles/:id')

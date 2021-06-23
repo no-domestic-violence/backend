@@ -1,10 +1,10 @@
 import express from 'express';
 import { createVideo, getVideos } from '../controllers';
 import { upload } from '../middleware/multer';
-import {
-  videoValidationRules,
-  validateRequest,
-} from '../middleware/validation/index';
+// import {
+//   videoValidationRules,
+//   validateRequest,
+// } from '../middleware/validation/index';
 
 const router = express.Router();
 router
