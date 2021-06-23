@@ -9,6 +9,7 @@ import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
+import hpp from 'hpp';
 import httpLogger from './logger/http-logger';
 import {
   hotlineRoutes,
@@ -29,6 +30,7 @@ app.use(httpLogger);
 app.use(morgan('dev'));
 app.use(cors());
 
+app.use(helmet());
 // Sets all of the defaults CSP, but overrides some
 app.use(
   helmet.contentSecurityPolicy({
@@ -48,10 +50,10 @@ app.use(
   }),
 );
 
-app.use( helmet.hidePoweredBy());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(hpp());
 
 dotenv.config();
 
