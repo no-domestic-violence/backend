@@ -1,6 +1,7 @@
 export const mockDefaultArticle = {
   title: 'Test title',
   author: 'Test User',
+  author_id: '6062e6501e80a94123440522',
   text: 'Lorem ipsum',
   violence_type: ['emotional'],
   url_to_image: 'https://www.google.com/',

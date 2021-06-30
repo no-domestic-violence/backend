@@ -56,13 +56,13 @@ const contactValidationRules = [
 ];
 
 const validateRequest = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    next();
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const firstErrorMsg = result.errors[0].msg;
+    next(Error.badRequest(firstErrorMsg));
+    return;
   }
-  const extractedErrors = [];
-  errors.array().map(err => extractedErrors.push(err.msg));
-  next(Error.badRequest(extractedErrors[0]));
+  next();
 };
 
 export {
