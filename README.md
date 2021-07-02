@@ -214,6 +214,22 @@ heroku build:cancel
 ```
 
 ---
+In order to run https with certificates (locally for one server in development mode):
+* generate a private key
+
+openssl genrsa -aes128 -out private.key 2048
+
+* generate a public key from private key
+
+openssl rsa -pubout -in private.key -out public.key
+
+* generate request
+
+openssl req -new  -key private.key -out request.csr
+
+* generate certificate
+
+openssl x509 -req -days 3 -in request.csr -signkey private.key -out certificate.crt
 
 ## Authors of the project:
 
