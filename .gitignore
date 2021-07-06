@@ -10,3 +10,8 @@ logs
 **/*.log
 .env
 
+certificate.crt
+private.key
+public.key
+request.csr
+

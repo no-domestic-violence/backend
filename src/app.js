@@ -36,11 +36,11 @@ app.use(
   helmet.contentSecurityPolicy({
     useDefaults: true,
     directives: {
-      'default-src': ["'self"],
+      'default-src': ["'self'"],
       'script-src': ["'self'"],
       'style-src': ["'self'"],
       'font-src': ["'self'", 'https:'],
-      'connect-sources': [
+      'connect-src': [
         "'self'",
         'ws://localhost:3001',
         'https://pool-api-mobile.herokuapp.com/',
