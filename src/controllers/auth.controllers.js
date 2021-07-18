@@ -1,6 +1,6 @@
 /* eslint-disable arrow-parens */
 import bcrypt from 'bcryptjs';
-import { generateToken } from '../utils/authentication';
+import { generateRefreshToken, generateToken } from '../utils/authentication';
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
 
@@ -32,12 +32,14 @@ export const signup = async (req, res, next) => {
     );
     await user.save();
     const token = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
     res
       .header('Authorization', `Bearer ${token}`)
       .status(201)
       .send({
         user,
         token,
+        refreshToken,
         success: true,
         message: 'Signed up successfully!',
       });
@@ -68,10 +70,12 @@ export const login = async (req, res, next) => {
     const user = await getUser(req.body.email, next);
     await validatePassword(user.password, req.body.password, next);
     const token = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
     res.header('Authorization', `Bearer ${token}`).send({
       success: true,
       message: 'Logged in successfully!',
       token,
+      refreshToken,
       user,
     });
   } catch (e) {
@@ -124,4 +128,9 @@ export const deleteUser = async (req, res, next) => {
   } catch (e) {
     res.send(e);
   }
+};
+
+export const refreshUserToken = (req, res) => {
+  const token = generateToken(req.user);
+  res.status(201).json({ token });
 };

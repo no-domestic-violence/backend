@@ -18,7 +18,13 @@ import {
   deleteContact,
 } from './user.controllers';
 
-import { signup, login, changePassword, deleteUser } from './auth.controllers';
+import {
+  signup,
+  login,
+  changePassword,
+  deleteUser,
+  refreshUserToken,
+} from './auth.controllers';
 
 export {
   searchHotline,
@@ -37,4 +43,5 @@ export {
   login,
   changePassword,
   deleteUser,
+  refreshUserToken,
 };

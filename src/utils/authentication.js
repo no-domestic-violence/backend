@@ -13,15 +13,29 @@ const signupValidation = [
     .withMessage('Your password must be at least eight charachters'),
 ];
 
-const generateToken = (user) => jwt.sign(
-  {
-    _id: user._id,
-    email: user.email,
-    username: user.username,
-    role: user.role,
-  },
-  process.env.JWT_SECRET,
-);
+const generateToken = user =>
+  jwt.sign(
+    {
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: 60 },
+  );
+
+const generateRefreshToken = user =>
+  jwt.sign(
+    {
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: '30d' },
+  );
 
 const loginValidation = [
   check('email')
@@ -32,4 +46,9 @@ const loginValidation = [
     .withMessage('Your password must be at least eight charachters'),
 ];
 
-export { signupValidation, loginValidation, generateToken };
+export {
+  signupValidation,
+  loginValidation,
+  generateToken,
+  generateRefreshToken,
+};
