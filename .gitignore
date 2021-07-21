@@ -9,6 +9,7 @@ coverage
 logs
 **/*.log
 .env
+certificates/
 private.key
 public.key
 certificate.crt

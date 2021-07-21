@@ -9,8 +9,8 @@ import fs from 'fs'
 dotenv.config();
 
 let https_server = https.createServer({
-  cert: fs.readFileSync('./certificate.crt'),
-  key: fs.readFileSync('./private.key'),
+  cert: fs.readFileSync('./certificates/certificate.crt'),
+  key: fs.readFileSync('./certificates/private.key'),
   passphrase: process.env.KEY_PASSPHRASE
 }, app);
 
