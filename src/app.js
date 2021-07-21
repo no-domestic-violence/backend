@@ -46,6 +46,7 @@ app.use(
         'https://pool-api-mobile.herokuapp.com/',
       ],
       'img-src': ["'self'", 'https:'],
+      'require-trusted-types-for': ["'script'"],
       upgradeInsecureRequests: [],
     },
   }),
