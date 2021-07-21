@@ -46,7 +46,17 @@ app.use(
         'https://pool-api-mobile.herokuapp.com/',
       ],
       'img-src': ["'self'", 'https:'],
+      'require-trusted-types-for': ["'script'"],
+      upgradeInsecureRequests: [],
     },
+  }),
+);
+
+// Sets "Strict-Transport-Security: max-age=123456; includeSubDomains"
+app.use(
+  helmet.hsts({
+    maxAge: 15552000, // Sensitive, recommended >= 15552000
+    includeSubDomains: true, // Sensitive, recommended 'true'
   }),
 );
 
