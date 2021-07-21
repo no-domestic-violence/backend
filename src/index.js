@@ -4,13 +4,12 @@ import app from './app';
 import logger from './logger';
 import { HTTP_PORT, HTTPS_PORT } from './constants';
 import https from 'https';
-import fs from 'fs'
-;
+import fs from 'fs';
 dotenv.config();
 
 let https_server = https.createServer({
-  cert: fs.readFileSync('./certificates/certificate.crt'),
-  key: fs.readFileSync('./certificates/private.key'),
+  cert: fs.readFileSync('./certificate.crt'),
+  key: fs.readFileSync('./private.key'),
   passphrase: process.env.KEY_PASSPHRASE
 }, app);
 

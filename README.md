@@ -215,15 +215,6 @@ heroku build:cancel
 
 ---
 In order to run https with certificates (locally for one server in development mode):
-* create certificates folder
-```s
-mkdir certificates
-```
-
-* move to certificates folder 
-```s
-cd certificates
-```
 
 * generate a private key
 ```s
