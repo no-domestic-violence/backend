@@ -8,7 +8,7 @@ import {
   clearDatabase,
 } from '../../utils/database';
 import {
-  verifyToken,
+  verifyAccessToken,
   checkCreateArticlePermission,
   checkDeleteArticlePermission,
 } from '../../middleware';
@@ -25,7 +25,7 @@ afterAll(() => {
   return closeDatabase();
 });
 
-jest.mock('../../middleware/verifyToken', () =>
+jest.mock('../../middleware/verifyAccessToken', () =>
   jest.fn((req, res, next) => {
     next();
   }),
@@ -54,12 +54,12 @@ describe('Aricle endpoints', () => {
     expect(res.body.article.text).toBe(createdMockArticle.text);
     expect(res.body.article.url_to_image).toBe(createdMockArticle.url_to_image);
   });
-  test('should call checkCreateArticlePermission and verifyToken middleware with POST', async () => {
+  test('should call checkCreateArticlePermission and verifyAccessToken middleware with POST', async () => {
     await request(app)
       .post('/api/articles')
       .send(mockDefaultArticle);
     expect(checkCreateArticlePermission).toBeCalledTimes(1);
-    expect(verifyToken).toBeCalledTimes(1);
+    expect(verifyAccessToken).toBeCalledTimes(1);
   });
   test('should send the right error status code in case not all reqired fields are sent with POST', async () => {
     const res = await request(app)
@@ -116,10 +116,10 @@ describe('Aricle endpoints', () => {
     let res = await request(app).delete(`/api/articles/${validFormatId}`);
     expect(res.statusCode).toEqual(204);
   });
-  test('should call verifyToken and checkDeleteArticlePermission middlewares with DELETE request', async () => {
+  test('should call verifyAccessToken and checkDeleteArticlePermission middlewares with DELETE request', async () => {
     const createdMockArticle = await Article.create(mockDefaultArticle);
     await request(app).delete('/api/articles/' + createdMockArticle._id);
     expect(checkDeleteArticlePermission).toBeCalledTimes(1);
-    expect(verifyToken).toBeCalledTimes(1);
+    expect(verifyAccessToken).toBeCalledTimes(1);
   });
 });
