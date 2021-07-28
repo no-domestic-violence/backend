@@ -9,6 +9,8 @@
 - [Data Model](#--data-model)
 - [Folder structure](#folder-structure)
 - [Setup](#setup)
+- [HTTPS Certificates](#https-certificates)
+- [Dependency Check](#dependency-check)
 - [Authors of the project](#authors-of-the-project)
 
 ## Project Description
@@ -214,25 +216,39 @@ heroku build:cancel
 ```
 
 ---
+## HTTPS Certificates
+
 In order to run https with certificates (locally for one server in development mode):
 
-* generate a private key
+1. generate a private key
 ```s
 openssl genrsa -aes128 -out private.key 2048
 ```
 
-* generate a public key from private key
+2. generate a public key from private key
 ```s
 openssl rsa -pubout -in private.key -out public.key
 ```
-* generate request
+3. generate request
 ```s
 openssl req -new  -key private.key -out request.csr
 ```
-* generate certificate
+4. generate certificate
 
 openssl x509 -req -days 3 -in request.csr -signkey private.key -out certificate.crt
 
+## OWASP Dependency Check.
+
+1. Make sure you have OWASP dependency-check
+
+2. Create directory for report
+```s
+mkdir vulnerabilities
+```
+3. Generate report 
+```s
+dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
+```
 ## Authors of the project:
 
 - Soyoon Choi : User(contacts) API, setup error handler, authorization, setup loggers and monitoring, API documentation
