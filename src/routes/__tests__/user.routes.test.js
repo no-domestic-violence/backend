@@ -16,7 +16,7 @@ const mockToken = jwt.sign(
     username: mockUserWithContact.username,
     role: mockUserWithContact.role,
   },
-  process.env.JWT_SECRET,
+  process.env.JWT_ACCESS_TOKEN_SECRET,
   { expiresIn: '1m' },
 );
 
@@ -59,7 +59,7 @@ describe('User endpoints', () => {
 
   test('should respond with an error when getting contacts without auth token', async () => {
     const res = await request(app).get(`/api/users/${username}/contacts`);
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('No access token provided');
   });
 
@@ -67,7 +67,7 @@ describe('User endpoints', () => {
     const res = await request(app)
       .get(`/api/users/${username}/contacts`)
       .set({ authorization: 'invalidtoken' });
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('Invalid token');
   });
 
@@ -97,7 +97,7 @@ describe('User endpoints', () => {
     const res = await request(app)
       .patch(`/api/users/${username}/contacts`)
       .send(mockContact);
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('No access token provided');
   });
 
@@ -106,7 +106,7 @@ describe('User endpoints', () => {
       .patch(`/api/users/${username}/contacts`)
       .set({ authorization: 'invalidtoken' })
       .send(mockContact);
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('Invalid token');
   });
 
@@ -136,7 +136,7 @@ describe('User endpoints', () => {
     const res = await request(app)
       .patch(`/api/users/${username}/contacts/${contactId}`)
       .send(mockContact);
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('No access token provided');
   });
 
@@ -145,7 +145,7 @@ describe('User endpoints', () => {
       .patch(`/api/users/${username}/contacts/${contactId}`)
       .set({ authorization: 'invalidtoken' })
       .send(mockContact);
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('Invalid token');
   });
 
@@ -182,7 +182,7 @@ describe('User endpoints', () => {
     const res = await request(app).delete(
       `/api/users/${username}/contacts/${contactId}`,
     );
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('No access token provided');
   });
 
@@ -190,7 +190,7 @@ describe('User endpoints', () => {
     const res = await request(app)
       .delete(`/api/users/${username}/contacts/${contactId}`)
       .set({ authorization: 'invalidtoken' });
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(403);
     expect(res.body.message).toEqual('Invalid token');
   });
 
