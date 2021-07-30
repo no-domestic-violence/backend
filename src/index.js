@@ -16,17 +16,21 @@ let https_server = https.createServer({
 const startServer = async () => {
   try {
     await connectToDatabase();
-    app.listen(HTTP_PORT, '0.0.0.0', () => {
-      /* eslint-disable no-console */
-      logger.info(`Http server is running on http://localhost:${HTTP_PORT}/api`);
-    });
     // https server running in dev mode
     if (process.env.NODE_ENV === 'development') {
       https_server.listen(HTTPS_PORT, () => {
         /* eslint-disable no-console */
-        logger.info(`Https server is running on https://localhost:${HTTPS_PORT}/api`);
+        logger.info(
+          `Https server is running on https://localhost:${HTTPS_PORT}/api`,
+        );
       });
     }
+    app.listen(HTTP_PORT, '0.0.0.0', () => {
+      /* eslint-disable no-console */
+      logger.info(
+        `Http server is running on http://localhost:${HTTP_PORT}/api`,
+      );
+    });
   } catch (e) {
     logger.error(e);
   }
