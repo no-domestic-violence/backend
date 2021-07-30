@@ -1,10 +1,12 @@
 /* eslint-disable arrow-parens */
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { generateAccessToken, generateRefreshToken } from '../utils/authentication';
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from '../utils/authentication';
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
-
 
 // signup endpoint
 export const assertUserExists = async (email, next) => {
@@ -136,38 +138,45 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
-
 export const logout = async (req, res) => {
   try {
     const { refreshToken } = req.body;
-    await User.findOneAndUpdate({ refreshToken }, { refreshToken: '' }, { new: true });
-    return res.status(200).json({ message: "User logged out" });
+    await User.findOneAndUpdate(
+      { refreshToken },
+      { refreshToken: '' },
+      { new: true },
+    );
+    return res.status(200).json({ message: 'User logged out' });
   } catch (err) {
     return Error.internal('Internal Server Error');
   }
-}
+};
 
-
+// refreshing access token
 export const verifyRefreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) {
-      next(Error.forbidden("No refresh token provided"));
+      next(Error.forbidden('No refresh token provided'));
       return;
-    } 
-      const userWithRefreshToken = await User.findOne({ refreshToken });
+    }
+    const userWithRefreshToken = await User.findOne({ refreshToken });
     if (!userWithRefreshToken) {
-      next(Error.unauthorized('Token expired'));
+      next(Error.forbidden('Invalid refresh token'));
       return;
-      } 
+    }
     // extract payload from refresh token and generate a new access token, send it
-    const payload = jwt.verify(userWithRefreshToken.refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
+    const payload = jwt.verify(
+      userWithRefreshToken.refreshToken,
+      process.env.JWT_REFRESH_TOKEN_SECRET,
+    );
     const newAccessToken = generateAccessToken(payload);
-    return res.status(200).json({ accessToken: newAccessToken });
-
+    return res.status(201).json({ accessToken: newAccessToken });
   } catch (err) {
-    next(Error.internal('Internal Server Error'));
+    if (err.name === 'TokenExpiredError') {
+      next(Error.forbidden('Refresh token expired'));
+    } else {
+      next(Error.internal('Something went wrong'));
+    }
   }
-}
-
-
+};

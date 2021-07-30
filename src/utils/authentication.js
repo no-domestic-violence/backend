@@ -13,8 +13,9 @@ const signupValidation = [
     .withMessage('Your password must be at least eight charachters'),
 ];
 
-const generateAccessToken = (user) => 
-  (process.env.JWT_ACCESS_TOKEN_SECRET) && jwt.sign(
+const generateAccessToken = user =>
+  process.env.JWT_ACCESS_TOKEN_SECRET &&
+  jwt.sign(
     {
       _id: user._id,
       email: user.email,
@@ -22,22 +23,21 @@ const generateAccessToken = (user) =>
       role: user.role,
     },
     process.env.JWT_ACCESS_TOKEN_SECRET,
-  { expiresIn: "10min"}
-   );
+    { expiresIn: '15m' },
+  );
 
-
-const generateRefreshToken = (user) => 
-(process.env.JWT_REFRESH_TOKEN_SECRET) && jwt.sign(
-      {
-        _id: user._id,
-        email: user.email,
-        username: user.username,
-        role: user.role,
-      },
-      process.env.JWT_REFRESH_TOKEN_SECRET,
-      { expiresIn: "1d" }
-  )
-
+const generateRefreshToken = user =>
+  process.env.JWT_REFRESH_TOKEN_SECRET &&
+  jwt.sign(
+    {
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
+    },
+    process.env.JWT_REFRESH_TOKEN_SECRET,
+    { expiresIn: '30d' },
+  );
 
 const loginValidation = [
   check('email')
@@ -48,4 +48,9 @@ const loginValidation = [
     .withMessage('Your password must be at least eight charachters'),
 ];
 
-export { signupValidation, loginValidation, generateAccessToken, generateRefreshToken };
+export {
+  signupValidation,
+  loginValidation,
+  generateAccessToken,
+  generateRefreshToken,
+};

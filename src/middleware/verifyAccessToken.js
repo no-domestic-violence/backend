@@ -13,7 +13,13 @@ const verifyAccessToken = (req, res, next) => {
     req.user = verified;
     next();
   } catch (error) {
-    next(Error.unauthorized('Invalid token'));
+    if (error.name === 'TokenExpiredError') {
+      next(Error.forbidden('Access token expired'));
+    } else if (error.name === 'JsonWebTokenError') {
+      next(Error.forbidden('Invalid token'));
+    } else {
+      next(Error.internal('Something went wrong'));
+    }
   }
 };
 
