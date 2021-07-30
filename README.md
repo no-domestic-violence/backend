@@ -10,7 +10,8 @@
 - [Folder structure](#folder-structure)
 - [Setup](#setup)
 - [HTTPS Certificates](#https-certificates)
-- [Dependency Check](#dependency-check)
+- [OWASP Dependency Check](#owasp-dependency-check)
+- [Security Measures by Web Application Security Risks according to OWASP](#security-measures-by-web-application-security-risks-according-to-owasp)
 - [Authors of the project](#authors-of-the-project)
 
 ## Project Description
@@ -249,6 +250,36 @@ mkdir vulnerabilities
 ```s
 dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
 ```
+
+## Security Measures by Web Application Security Risks according to OWASP
+* NoSQL Injection
+  * Use input sanitization
+* Broken Authentication
+  * Use JWT authentication token
+  * Use JWT refresh token
+  * Use standard Authorization: Bearer < access token >
+  * Limit failed login attempts
+  * Increase password length
+  * Increase password strength
+  * Implement weak password check
+* Sensitive Data Exposure
+  * Store sensitive data in encrypted secure storage (client side)
+  * Store password using strong, salted hashing function with Bcrypt
+  * Enforce encryption using HTTP Strict Transport Security
+  * Encrypt all data in transit with secure TLS protocol
+  * Prevent using cache for sensitive data
+* Security Misconfiguration
+  * Keep error messages short
+  * Use eslint-plugin-security and Sonar Cloud to identify potential security hotspots
+* Cross-Site Scripting XSS
+  * Use React JS and React Native that automatically escape XSS by design
+  * Enable and customise Content Security Policy (CSP)
+  * Validate all user inputs (client and server)
+* Using Components with Known Vulnerabilities
+  * Use OWASP Dependency Check
+* Reverse Engineering (mobile)
+  * Use an obfuscation tool
+
 ## Authors of the project:
 
 - Soyoon Choi : User(contacts) API, setup error handler, authorization, setup loggers and monitoring, API documentation
