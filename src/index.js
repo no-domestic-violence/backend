@@ -7,17 +7,19 @@ import https from 'https';
 import fs from 'fs';
 dotenv.config();
 
-let https_server = https.createServer({
-  cert: fs.readFileSync('./certificate.crt'),
-  key: fs.readFileSync('./private.key'),
-  passphrase: process.env.KEY_PASSPHRASE
-}, app);
-
 const startServer = async () => {
   try {
     await connectToDatabase();
     // https server running in dev mode
     if (process.env.NODE_ENV === 'development') {
+      let https_server = https.createServer(
+        {
+          cert: fs.readFileSync('./certificate.crt'),
+          key: fs.readFileSync('./private.key'),
+          passphrase: process.env.KEY_PASSPHRASE,
+        },
+        app,
+      );
       https_server.listen(HTTPS_PORT, () => {
         /* eslint-disable no-console */
         logger.info(
