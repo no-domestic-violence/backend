@@ -157,12 +157,12 @@ export const verifyRefreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) {
-      next(Error.forbidden('No refresh token provided'));
+      next(Error.unauthorized('No refresh token provided'));
       return;
     }
     const userWithRefreshToken = await User.findOne({ refreshToken });
     if (!userWithRefreshToken) {
-      next(Error.forbidden('Invalid refresh token'));
+      next(Error.unauthorized('Invalid refresh token'));
       return;
     }
     // extract payload from refresh token and generate a new access token, send it
@@ -174,7 +174,7 @@ export const verifyRefreshToken = async (req, res, next) => {
     return res.status(201).json({ accessToken: newAccessToken });
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      next(Error.forbidden('Refresh token expired'));
+      next(Error.unauthorized('Refresh token expired'));
     } else {
       next(Error.internal('Something went wrong'));
     }

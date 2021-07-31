@@ -4,7 +4,7 @@ import Error from './error/ErrorHandler';
 const verifyAccessToken = (req, res, next) => {
   const bearerHeader = req.headers.authorization;
   if (!bearerHeader) {
-    next(Error.forbidden('No access token provided'));
+    next(Error.unauthorized('Invalid token'));
     return;
   }
   try {
@@ -14,9 +14,9 @@ const verifyAccessToken = (req, res, next) => {
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      next(Error.forbidden('Access token expired'));
+      next(Error.unauthorized('Invalid token'));
     } else if (error.name === 'JsonWebTokenError') {
-      next(Error.forbidden('Invalid token'));
+      next(Error.unauthorized('Invalid token'));
     } else {
       next(Error.internal('Something went wrong'));
     }
