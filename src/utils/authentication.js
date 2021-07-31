@@ -23,7 +23,7 @@ const generateAccessToken = user =>
       role: user.role,
     },
     process.env.JWT_ACCESS_TOKEN_SECRET,
-    { expiresIn: 1 },
+    { expiresIn: '15min' },
   );
 
 const generateRefreshToken = user =>
@@ -36,7 +36,7 @@ const generateRefreshToken = user =>
       role: user.role,
     },
     process.env.JWT_REFRESH_TOKEN_SECRET,
-    { expiresIn: 10 },
+    { expiresIn: '60d' },
   );
 
 const loginValidation = [
