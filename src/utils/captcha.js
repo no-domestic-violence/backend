@@ -14,9 +14,10 @@ const verifyCaptcha = async captchaResp => {
     );
     return resp.success;
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(`Error while verifying captcha: `, err.message);
     return false;
   }
 };
 
-export { verifyCaptcha };
+export default verifyCaptcha;
