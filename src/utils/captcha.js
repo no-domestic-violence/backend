@@ -14,7 +14,7 @@ const verifyCaptcha = async captchaResp => {
     );
     return resp.success;
   } catch (err) {
-    console.log(`Error while verifzing captcha: `, err.message);
+    console.log(`Error while verifying captcha: `, err.message);
     return false;
   }
 };
