@@ -16,7 +16,8 @@ const verifyCaptcha = async captchaResp => {
         body: formBody,
       },
     );
-    return resp.success;
+    const response = await resp.json();
+    return response.success;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(`Error while verifying captcha: `, err.message);
