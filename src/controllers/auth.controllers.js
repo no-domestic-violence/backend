@@ -7,6 +7,7 @@ import {
 } from '../utils/authentication';
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
+import verifyCaptcha from '../utils/captcha';
 
 // signup endpoint
 export const assertUserExists = async (email, next) => {
@@ -73,8 +74,19 @@ export const validatePassword = async (currentPassword, password, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    const user = await getUser(req.body.email, next);
-    await validatePassword(user.password, req.body.password, next);
+    const { email, password, captchaToken, platform } = req.body;
+    if (process.env.NODE_ENV === 'production' && platform === 'web') {
+      if (!captchaToken) {
+        return res.status(400).send('Please solve the captcha');
+      }
+      const isCorrect = await verifyCaptcha(captchaToken);
+      if (!isCorrect) {
+        return res.status(400).send('Wrong captcha token provided');
+      }
+    }
+
+    const user = await getUser(email, next);
+    await validatePassword(user.password, password, next);
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
     user.refreshToken = refreshToken;

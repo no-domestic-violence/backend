@@ -5,7 +5,7 @@ const validationErrors = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     next(
-      Error.unprocessableEntity('Please provide a valid username or password'),
+      Error.unprocessableEntity(errors.array()[0].msg),
     );
   } else {
     next();
