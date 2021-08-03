@@ -90,7 +90,8 @@ yarn install
 ```s
 
   mongoURI = mongodb atlas uri
-  JWTSecret = JWTSecret uri
+  JWT_ACCESS_TOKEN_SECRET = jwt access token secret string
+  JWT_REFRESH_TOKEN_SECRET = jwt refresh token secret string
   SENTRY = team sentry link
 ```
 

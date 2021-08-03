@@ -1,4 +1,4 @@
-import verifyToken from './verifyToken';
+import verifyAccessToken from './verifyAccessToken';
 import multer from './multer';
 import {
   checkCreateArticlePermission,
@@ -13,7 +13,7 @@ import {
 import validateObjId from './validateObjId';
 
 export {
-  verifyToken,
+  verifyAccessToken,
   multer,
   checkCreateArticlePermission,
   checkDeleteArticlePermission,

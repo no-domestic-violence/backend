@@ -13,6 +13,10 @@ class ErrorHandler extends Error {
     return new ErrorHandler(401, message);
   }
 
+  static forbidden(message) {
+    return new ErrorHandler(403, message);
+  }
+  
   static internal(message) {
     return new ErrorHandler(500, message);
   }

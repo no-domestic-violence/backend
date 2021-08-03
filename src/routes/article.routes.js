@@ -6,7 +6,7 @@ import {
   deleteArticle,
 } from '../controllers';
 import {
-  verifyToken,
+  verifyAccessToken,
   checkCreateArticlePermission,
   checkDeleteArticlePermission,
   articleCache,
@@ -24,7 +24,7 @@ router
   .route('/articles')
   .get(getArticles)
   .post(
-    verifyToken,
+    verifyAccessToken,
     checkCreateArticlePermission,
     articleValidationRules,
     validateRequest,
@@ -35,7 +35,7 @@ router
   .route('/articles/:id')
   .get(validateObjId('Article'), articleCache, getArticleById)
   .delete(
-    verifyToken,
+    verifyAccessToken,
     checkDeleteArticlePermission,
     validateObjId('Article'),
     deleteArticle,

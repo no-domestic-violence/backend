@@ -16,7 +16,7 @@ const mockToken = jwt.sign(
     username: mockUserWithContact.username,
     role: mockUserWithContact.role,
   },
-  process.env.JWT_SECRET,
+  process.env.JWT_ACCESS_TOKEN_SECRET,
   { expiresIn: '1m' },
 );
 
@@ -57,10 +57,10 @@ describe('User endpoints', () => {
       });
   });
 
-  test('should respond with an error when getting contacts without auth token', async () => {
+  test('should respond with an error when getting contacts without access token', async () => {
     const res = await request(app).get(`/api/users/${username}/contacts`);
     expect(res.statusCode).toBe(401);
-    expect(res.body.message).toEqual('No access token provided');
+    expect(res.body.message).toEqual('Invalid token');
   });
 
   test('should respond with an error when getting contacts with invalid auth token', async () => {
@@ -98,7 +98,7 @@ describe('User endpoints', () => {
       .patch(`/api/users/${username}/contacts`)
       .send(mockContact);
     expect(res.statusCode).toBe(401);
-    expect(res.body.message).toEqual('No access token provided');
+    expect(res.body.message).toEqual('Invalid token');
   });
 
   test('should respond with an error when adding contact with invalid auth token', async () => {
@@ -137,7 +137,7 @@ describe('User endpoints', () => {
       .patch(`/api/users/${username}/contacts/${contactId}`)
       .send(mockContact);
     expect(res.statusCode).toBe(401);
-    expect(res.body.message).toEqual('No access token provided');
+    expect(res.body.message).toEqual('Invalid token');
   });
 
   test('should respond with an error when editing contact with invalid auth token', async () => {
@@ -183,7 +183,7 @@ describe('User endpoints', () => {
       `/api/users/${username}/contacts/${contactId}`,
     );
     expect(res.statusCode).toBe(401);
-    expect(res.body.message).toEqual('No access token provided');
+    expect(res.body.message).toEqual('Invalid token');
   });
 
   test('should respond with an error when deleting contact with invalid auth token', async () => {

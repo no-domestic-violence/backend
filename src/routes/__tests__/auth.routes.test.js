@@ -28,6 +28,12 @@ afterEach(() => clearDatabase());
 
 afterAll(() => closeDatabase());
 
+jest.mock('../../middleware/verifyAccessToken', () =>
+  jest.fn((req, res, next) => {
+    next();
+  }),
+);
+
 describe('signup endpoint', () => {
   /*
   describe('should save the user in database after signup', () => {

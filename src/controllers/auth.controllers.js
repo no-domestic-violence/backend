@@ -1,6 +1,10 @@
 /* eslint-disable arrow-parens */
 import bcrypt from 'bcryptjs';
-import { generateToken } from '../utils/authentication';
+import jwt from 'jsonwebtoken';
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from '../utils/authentication';
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
 import verifyCaptcha from '../utils/captcha';
@@ -32,15 +36,17 @@ export const signup = async (req, res, next) => {
       req.body.password,
     );
     await user.save();
-    const token = generateToken(user);
-    // const refreshToken = generateRefreshToken(user);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+    user.refreshToken = refreshToken;
+    await user.save();
     res
-      .header('Authorization', `Bearer ${token}`)
+      .header('Authorization', `Bearer ${accessToken}`)
       .status(201)
       .send({
         user,
-        token,
-        // refreshToken,
+        accessToken,
+        refreshToken,
         success: true,
         message: 'Signed up successfully!',
       });
@@ -81,13 +87,15 @@ export const login = async (req, res, next) => {
 
     const user = await getUser(email, next);
     await validatePassword(user.password, password, next);
-    const token = generateToken(user);
-    // const refreshToken = generateRefreshToken(user);
-    res.header('Authorization', `Bearer ${token}`).send({
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+    user.refreshToken = refreshToken;
+    await user.save();
+    res.header('Authorization', `Bearer ${accessToken}`).send({
       success: true,
       message: 'Logged in successfully!',
-      token,
-      // refreshToken,
+      accessToken,
+      refreshToken,
       user,
     });
   } catch (e) {
@@ -142,7 +150,45 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
-export const refreshUserToken = (req, res) => {
-  const token = generateToken(req.user);
-  res.status(201).json({ token });
+export const logout = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    await User.findOneAndUpdate(
+      { refreshToken },
+      { refreshToken: '' },
+      { new: true },
+    );
+    return res.status(200).json({ message: 'User logged out' });
+  } catch (err) {
+    return Error.internal('Internal Server Error');
+  }
+};
+
+// refreshing access token
+export const verifyRefreshToken = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      next(Error.unauthorized('No refresh token provided'));
+      return;
+    }
+    const userWithRefreshToken = await User.findOne({ refreshToken });
+    if (!userWithRefreshToken) {
+      next(Error.unauthorized('Invalid refresh token'));
+      return;
+    }
+    // extract payload from refresh token and generate a new access token, send it
+    const payload = jwt.verify(
+      userWithRefreshToken.refreshToken,
+      process.env.JWT_REFRESH_TOKEN_SECRET,
+    );
+    const newAccessToken = generateAccessToken(payload);
+    return res.status(201).json({ accessToken: newAccessToken });
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      next(Error.unauthorized('Refresh token expired'));
+    } else {
+      next(Error.internal('Something went wrong'));
+    }
+  }
 };
