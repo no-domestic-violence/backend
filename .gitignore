@@ -19,4 +19,5 @@ certificate.crt
 private.key
 public.key
 request.csr
+vulnerabilities
 

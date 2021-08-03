@@ -10,15 +10,9 @@ dotenv.config();
 const startServer = async () => {
   try {
     await connectToDatabase();
-    app.listen(HTTP_PORT, '0.0.0.0', () => {
-      /* eslint-disable no-console */
-      logger.info(
-        `Http server is running on http://localhost:${HTTP_PORT}/api`,
-      );
-    });
     // https server running in dev mode
     if (process.env.NODE_ENV === 'development') {
-      const https_server = https.createServer(
+      let https_server = https.createServer(
         {
           cert: fs.readFileSync('./certificate.crt'),
           key: fs.readFileSync('./private.key'),
@@ -26,7 +20,6 @@ const startServer = async () => {
         },
         app,
       );
-
       https_server.listen(HTTPS_PORT, () => {
         /* eslint-disable no-console */
         logger.info(
@@ -34,6 +27,12 @@ const startServer = async () => {
         );
       });
     }
+    app.listen(HTTP_PORT, '0.0.0.0', () => {
+      /* eslint-disable no-console */
+      logger.info(
+        `Http server is running on http://localhost:${HTTP_PORT}/api`,
+      );
+    });
   } catch (e) {
     logger.error(e);
   }

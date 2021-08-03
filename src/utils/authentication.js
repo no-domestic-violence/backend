@@ -4,13 +4,22 @@ import jwt from 'jsonwebtoken';
 const signupValidation = [
   check('username')
     .isLength({ min: 2 })
-    .withMessage('Your username is required'),
+    .withMessage('Your username is required')
+    .trim()
+    .escape(),
   check('email')
     .isEmail()
-    .withMessage('Please provide a valid email address'),
+    .withMessage('Please provide a valid email address')
+    .trim()
+    .escape()
+    .normalizeEmail(),
   check('password')
     .isLength({ min: 8 })
-    .withMessage('Your password must be at least eight charachters'),
+    .withMessage('Your password must be at least eight charachters')
+    .matches('[0-9]')
+    .withMessage('Password Must Contain a Number')
+    .matches('[A-Z]')
+    .withMessage('Password Must Contain an Uppercase Letter'),
 ];
 
 const generateToken = (user) => jwt.sign(

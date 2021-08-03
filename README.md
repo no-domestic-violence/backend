@@ -9,6 +9,9 @@
 - [Data Model](#--data-model)
 - [Folder structure](#folder-structure)
 - [Setup](#setup)
+- [HTTPS Certificates](#https-certificates)
+- [OWASP Dependency Check](#owasp-dependency-check)
+- [Security Measures by Web Application Security Risks according to OWASP](#security-measures-by-web-application-security-risks-according-to-owasp)
 - [Authors of the project](#authors-of-the-project)
 
 ## Project Description
@@ -214,24 +217,68 @@ heroku build:cancel
 ```
 
 ---
+## HTTPS Certificates
+
 In order to run https with certificates (locally for one server in development mode):
 
-* generate a private key
+1. generate a private key
 ```s
 openssl genrsa -aes128 -out private.key 2048
 ```
 
-* generate a public key from private key
+2. generate a public key from private key
 ```s
 openssl rsa -pubout -in private.key -out public.key
 ```
-* generate request
+3. generate request
 ```s
 openssl req -new  -key private.key -out request.csr
 ```
-* generate certificate
-
+4. generate certificate
+```s
 openssl x509 -req -days 3 -in request.csr -signkey private.key -out certificate.crt
+```
+## OWASP Dependency Check.
+
+1. Make sure you have OWASP dependency-check
+
+2. Create directory for report
+```s
+mkdir vulnerabilities
+```
+3. Generate report 
+```s
+dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
+```
+
+## Security Measures by Web Application Security Risks according to OWASP
+* NoSQL Injection
+  * Use input sanitization
+* Broken Authentication
+  * Use JWT authentication token
+  * Use JWT refresh token
+  * Use standard Authorization: Bearer < access token >
+  * Limit failed login attempts
+  * Increase password length
+  * Increase password strength
+  * Implement weak password check
+* Sensitive Data Exposure
+  * Store sensitive data in encrypted secure storage (client side)
+  * Store password using strong, salted hashing function with Bcrypt
+  * Enforce encryption using HTTP Strict Transport Security
+  * Encrypt all data in transit with secure TLS protocol
+  * Prevent using cache for sensitive data
+* Security Misconfiguration
+  * Keep error messages short
+  * Use eslint-plugin-security and Sonar Cloud to identify potential security hotspots
+* Cross-Site Scripting XSS
+  * Use React JS and React Native that automatically escape XSS by design
+  * Enable and customise Content Security Policy (CSP)
+  * Validate all user inputs (client and server)
+* Using Components with Known Vulnerabilities
+  * Use OWASP Dependency Check
+* Reverse Engineering (mobile)
+  * Use an obfuscation tool
 
 ## Authors of the project:
 
