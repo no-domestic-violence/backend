@@ -296,6 +296,4 @@ dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
   API: Articles (Create, Edit, Delete), Hotlines (Get searching), Shelters, Video (including handling multipart/form-data for image), Caching with Redis on development mode, Setup logging and monitoring. client/server side input validation/sanitization, security headers including CSP, TLS encryption for development mode, implement weak password check, obfuscate bundle code, configure vulnerability check tools, authentication on mobile
 - Behnaz Derakhshani : Authentication (signup, login, changepassword, deleting account) & error handling and expectation, API: Articles(Read), API documentation
 
-## Security contribution:
 
-- 
