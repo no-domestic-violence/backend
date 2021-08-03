@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/authentication';
 import User from '../models/user.model';
 import Error from '../middleware/error/ErrorHandler';
+import verifyCaptcha from '../utils/captcha';
 
 // signup endpoint
 export const assertUserExists = async (email, next) => {
@@ -32,12 +33,14 @@ export const signup = async (req, res, next) => {
     );
     await user.save();
     const token = generateToken(user);
+    // const refreshToken = generateRefreshToken(user);
     res
       .header('Authorization', `Bearer ${token}`)
       .status(201)
       .send({
         user,
         token,
+        // refreshToken,
         success: true,
         message: 'Signed up successfully!',
       });
@@ -65,13 +68,26 @@ export const validatePassword = async (currentPassword, password, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    const user = await getUser(req.body.email, next);
-    await validatePassword(user.password, req.body.password, next);
+    const { email, password, captchaToken, platform } = req.body;
+    if (process.env.NODE_ENV === 'production' && platform === 'web') {
+      if (!captchaToken) {
+        return res.status(400).send('Please solve the captcha');
+      }
+      const isCorrect = await verifyCaptcha(captchaToken);
+      if (!isCorrect) {
+        return res.status(400).send('Wrong captcha token provided');
+      }
+    }
+
+    const user = await getUser(email, next);
+    await validatePassword(user.password, password, next);
     const token = generateToken(user);
+    // const refreshToken = generateRefreshToken(user);
     res.header('Authorization', `Bearer ${token}`).send({
       success: true,
       message: 'Logged in successfully!',
       token,
+      // refreshToken,
       user,
     });
   } catch (e) {
@@ -124,4 +140,9 @@ export const deleteUser = async (req, res, next) => {
   } catch (e) {
     res.send(e);
   }
+};
+
+export const refreshUserToken = (req, res) => {
+  const token = generateToken(req.user);
+  res.status(201).json({ token });
 };
