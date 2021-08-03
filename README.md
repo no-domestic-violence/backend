@@ -253,8 +253,11 @@ dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
 ```
 
 ## Security Measures by Web Application Security Risks according to OWASP
+![Application threat model](./readme_assets/pool-threat-model.png)
+
 * NoSQL Injection
   * Use input sanitization
+  * Ensure that the database queries are not constructed directly from user-controlled data
 * Broken Authentication
   * Use JWT authentication token
   * Use JWT refresh token
@@ -269,6 +272,7 @@ dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
   * Enforce encryption using HTTP Strict Transport Security
   * Encrypt all data in transit with secure TLS protocol
   * Prevent using cache for sensitive data
+  * Use hpp express middleware to prevent HTTP parameter pollution
 * Security Misconfiguration
   * Keep error messages short
   * Use eslint-plugin-security and Sonar Cloud to identify potential security hotspots
@@ -280,10 +284,18 @@ dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
   * Use OWASP Dependency Check
 * Reverse Engineering (mobile)
   * Use an obfuscation tool
+* Clickjacking
+  * Implement X-Frame-Options via Content Security Policy
+* Code Tampering
+  * Detect rooted devices
 
 ## Authors of the project:
 
-- Soyoon Choi : User(contacts) API, setup error handler, authorization, setup loggers and monitoring, API documentation
+- Soyoon Choi : User(contacts) API, setup loggers and monitoring, load balancer for development, API documentation. role based access control, client/server side input validation, refresh token, setup custom error handler, authentication on web, database query sanitization
 - Irina Baeva : Setup production and development environment (yarn, babel, lint),
-  API: Articles (Create, Edit, Delete), Hotlines (Get searching), Shelters, Video (including handling multipart/form-data for image), Caching with Redis on development mode, Setup logging and monitoring.
+  API: Articles (Create, Edit, Delete), Hotlines (Get searching), Shelters, Video (including handling multipart/form-data for image), Caching with Redis on development mode, Setup logging and monitoring. client/server side input validation/sanitization, security headers including CSP, TLS encryption for development mode, implement weak password check, obfuscate bundle code, configure vulnerability check tools, authentication on mobile
 - Behnaz Derakhshani : Authentication (signup, login, changepassword, deleting account) & error handling and expectation, API: Articles(Read), API documentation
+
+## Security contribution:
+
+- 
