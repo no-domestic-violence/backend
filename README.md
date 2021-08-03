@@ -235,9 +235,9 @@ openssl rsa -pubout -in private.key -out public.key
 openssl req -new  -key private.key -out request.csr
 ```
 4. generate certificate
-
+```s
 openssl x509 -req -days 3 -in request.csr -signkey private.key -out certificate.crt
-
+```
 ## OWASP Dependency Check.
 
 1. Make sure you have OWASP dependency-check
