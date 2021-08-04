@@ -1,0 +1,857 @@
+{
+  "summary": {
+    "title": "New Threat Model",
+    "owner": "Behnaz, Irina, Soyoon",
+    "description": ""
+  },
+  "detail": {
+    "contributors": [
+      {
+        "name": "Behnaz",
+        "$$hashKey": "object:14"
+      },
+      {
+        "name": "Irina",
+        "$$hashKey": "object:16"
+      },
+      {
+        "name": "Soyoon",
+        "$$hashKey": "object:18"
+      }
+    ],
+    "diagrams": [
+      {
+        "title": "POOL Threat Model",
+        "thumbnail": "./public/content/images/thumbnail.stride.jpg",
+        "id": 0,
+        "$$hashKey": "object:32",
+        "diagramJson": {
+          "cells": [
+            {
+              "type": "tm.Process",
+              "size": {
+                "width": 100,
+                "height": 100
+              },
+              "position": {
+                "x": 121,
+                "y": 347
+              },
+              "angle": 0,
+              "id": "2fe9557e-2bb4-4963-8e06-6a73eff795c7",
+              "z": 1,
+              "hasOpenThreats": false,
+              "description": "Mobile app",
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "type": "Information disclosure",
+                  "title": "Sensitive Data Exposure",
+                  "description": "Malicious user can get sensitive information",
+                  "mitigation": "Store sensitive data in encrypted secure storage",
+                  "$$hashKey": "object:531"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "title": "Broken authentication",
+                  "type": "Information disclosure",
+                  "mitigation": "Use JWT authentication token\nUse JWT refresh token\nAuto log out user when refresh token is expired\nLimit failed login attempts\nIncrease password length\nIncrease password strength\nImplement weak password check",
+                  "description": "Malicious user can get access to user credentials",
+                  "$$hashKey": "object:454"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "mitigation": "code obfuscation",
+                  "title": "Reverse engineering attack",
+                  "description": "Unauthorized person can have access to the source code, application vulnerabilities can be discovered",
+                  "type": "Information disclosure",
+                  "$$hashKey": "object:625"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "Code Tampering",
+                  "type": "Tampering",
+                  "mitigation": "Implement root detection with expo",
+                  "description": "Malicious user can exploit code modification via malicious forms of the apps hosted in third party app stores.",
+                  "$$hashKey": "object:389"
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasNoOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "React Native\napp"
+                },
+                ".element-text": {
+                  "class": "element-text hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Process",
+              "size": {
+                "width": 100,
+                "height": 100
+              },
+              "position": {
+                "x": 379,
+                "y": 259
+              },
+              "angle": 0,
+              "id": "824e6635-3e67-4113-a9d2-0e6fe41aaec4",
+              "z": 2,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "Brute force attack",
+                  "type": "Tampering",
+                  "description": "Multiple guesses of passwords by malicious user",
+                  "mitigation": "Implement ratelimiting on login",
+                  "$$hashKey": "object:247"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Low",
+                  "modelType": "UNDEFINED",
+                  "title": "using components with known vulnerabilities",
+                  "mitigation": "use OWASP dependency check and snyk",
+                  "type": "Repudiation",
+                  "$$hashKey": "object:472",
+                  "description": "Vulnerabilities from software dependencies"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "NoSQL Injection",
+                  "type": "Information disclosure",
+                  "mitigation": "Use input sanitization and ensure that the database queries are not constructed directly from user-controlled data",
+                  "description": "Applications performing NoSQL operations based on tainted data could be exploited in a way similar to SQL Injection, where an attacker could inject NoSQL objects to access sensitive information or compromise data integrity.",
+                  "$$hashKey": "object:901"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Low",
+                  "modelType": "UNDEFINED",
+                  "description": "attacker can craft a HTTP request in order to manipulate or retrieve hidden information",
+                  "mitigation": "Use hpp express middleware",
+                  "title": "HTTP Parameter Pollution",
+                  "type": "Information disclosure",
+                  "$$hashKey": "object:907"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Low",
+                  "modelType": "UNDEFINED",
+                  "type": "Information disclosure",
+                  "title": "Security misconfiguration",
+                  "description": "Attacker can obtain information on application vulnerabilities from misconfigured, verbose error messages.",
+                  "mitigation": "Keep error messages vague",
+                  "$$hashKey": "object:570"
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasNoOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "Express - REST\nAPI"
+                },
+                ".element-text": {
+                  "class": "element-text hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Store",
+              "size": {
+                "width": 160,
+                "height": 80
+              },
+              "position": {
+                "x": 640,
+                "y": 249
+              },
+              "angle": 0,
+              "id": "888236c9-adc9-4cc5-b957-59e4ab4121b1",
+              "z": 3,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "mitigation": "Encrypted storage engine with MongoDB Atlas, encrypt sensitive data such as user password with Bcrypt",
+                  "description": "Malicious user has access to database and steal unencrypted data",
+                  "type": "Information disclosure",
+                  "title": "Unencrypted data theft",
+                  "$$hashKey": "object:694"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "title": "Accessing DB credentials",
+                  "type": "Information disclosure",
+                  "description": "An attacker could get access to the DB credentials.",
+                  "mitigation": "2 Factor authentication. Expire and replace DB credentials regularly. Restricting IP addresses.",
+                  "$$hashKey": "object:700"
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasNoOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "MongoDB"
+                },
+                ".element-text": {
+                  "class": "element-text hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Actor",
+              "size": {
+                "width": 160,
+                "height": 80
+              },
+              "position": {
+                "x": 47,
+                "y": 76
+              },
+              "angle": 0,
+              "id": "4579f0dd-06a6-4e48-b615-edac3bba3721",
+              "z": 4,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "XSS",
+                  "type": "Information disclosure",
+                  "description": "Storing JWT token in localStorage can be unsafe",
+                  "mitigation": "Use cookies and set httpOnly flag.",
+                  "$$hashKey": "object:844"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "Clickjacking",
+                  "type": "Spoofing",
+                  "description": "Attacker tricks a user into clicking on something different from what the user percieves.",
+                  "mitigation": "Implement X-Frame-Options via CSP",
+                  "$$hashKey": "object:838"
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "Browser"
+                },
+                ".element-text": {
+                  "class": "element-text hasOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Process",
+              "size": {
+                "width": 100,
+                "height": 100
+              },
+              "position": {
+                "x": 302,
+                "y": 59
+              },
+              "angle": 0,
+              "id": "af7fea65-5f99-4598-8711-33882b035bd5",
+              "z": 5,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "XSS",
+                  "type": "Tampering",
+                  "description": "Malicious scripts could be injected on user inputs.",
+                  "mitigation": "Use React JS that automatically escape XSS by design\nEnable and customise Content Security Policy (CSP)\nValidate all user inputs (client and server)",
+                  "$$hashKey": "object:788"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "Brute force attack",
+                  "type": "Tampering",
+                  "$$hashKey": "object:240",
+                  "description": "Multiple guesses of passwords by malicious user",
+                  "mitigation": "reCAPTCHA"
+                },
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "Broken Authentication",
+                  "type": "Information disclosure",
+                  "$$hashKey": "object:427",
+                  "mitigation": "Use JWT authentication token\nUse JWT refresh token\nAuto log out user when refresh token is expired",
+                  "description": "Malicious user can get access to user credentials"
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasNoOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "React web app"
+                },
+                ".element-text": {
+                  "class": "element-text hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "id": "af7fea65-5f99-4598-8711-33882b035bd5"
+              },
+              "target": {
+                "id": "824e6635-3e67-4113-a9d2-0e6fe41aaec4"
+              },
+              "vertices": [
+                {
+                  "x": 362,
+                  "y": 188
+                },
+                {
+                  "x": 366,
+                  "y": 215
+                }
+              ],
+              "id": "66faa3d9-72f2-426a-b2c6-08120e5b1c07",
+              "labels": [
+                {
+                  "position": {
+                    "distance": 0.5131390534506053,
+                    "offset": -11.62742334457134
+                  },
+                  "attrs": {
+                    "text": {
+                      "text": "API Request",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 6,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "Man in the middle attack",
+                  "type": "Information disclosure",
+                  "description": "An attacker could intercept API queries in transit and obtain sensitive information.",
+                  "$$hashKey": "object:621",
+                  "mitigation": "TLS encryption, enforce encryption using HTTP Strict Transport Security"
+                }
+              ],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "id": "824e6635-3e67-4113-a9d2-0e6fe41aaec4"
+              },
+              "target": {
+                "x": 384,
+                "y": 147
+              },
+              "vertices": [
+                {
+                  "x": 425,
+                  "y": 192
+                }
+              ],
+              "id": "4f7b7328-c853-4c4f-850a-95695c8c1fcf",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "API Response",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 7,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "modelType": "UNDEFINED",
+                  "title": "Man in the middle attack",
+                  "type": "Information disclosure",
+                  "mitigation": "TLS encryption, enforce encryption using HTTP Strict Transport Security",
+                  "description": "An attacker could intercept API queries in transit and obtain sensitive information.",
+                  "$$hashKey": "object:628"
+                }
+              ],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "id": "2fe9557e-2bb4-4963-8e06-6a73eff795c7"
+              },
+              "target": {
+                "id": "824e6635-3e67-4113-a9d2-0e6fe41aaec4"
+              },
+              "vertices": [
+                {
+                  "x": 349,
+                  "y": 424
+                }
+              ],
+              "id": "90691380-015c-41e4-9696-492c9fbf550d",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "API Request",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 8,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "title": "Man in the middle attack",
+                  "type": "Information disclosure",
+                  "mitigation": "TLS encryption, enforce encryption using HTTP Strict Transport Security",
+                  "description": "An attacker could intercept API queries in transit and obtain sensitive information.",
+                  "$$hashKey": "object:661"
+                }
+              ],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "id": "824e6635-3e67-4113-a9d2-0e6fe41aaec4"
+              },
+              "target": {
+                "id": "2fe9557e-2bb4-4963-8e06-6a73eff795c7"
+              },
+              "vertices": [
+                {
+                  "x": 274,
+                  "y": 359
+                }
+              ],
+              "id": "7e93262c-81a4-4d3f-b23a-f1d574decb50",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "API Response",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 9,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "title": "Man in the middle attack",
+                  "type": "Information disclosure",
+                  "description": "An attacker could intercept API queries in transit and obtain sensitive information.",
+                  "mitigation": "TLS encryption, enforce encryption using HTTP Strict Transport Security",
+                  "$$hashKey": "object:487"
+                }
+              ],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "x": 208,
+                "y": 104
+              },
+              "target": {
+                "id": "af7fea65-5f99-4598-8711-33882b035bd5"
+              },
+              "vertices": [],
+              "id": "d740a35f-825d-4e04-98b7-3efa0890f7e9",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Request",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 10,
+              "hasOpenThreats": false,
+              "threats": [],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "x": 309,
+                "y": 135
+              },
+              "target": {
+                "x": 206,
+                "y": 134
+              },
+              "vertices": [],
+              "id": "d2e90198-65f9-45d2-9c88-6eb1f3efb56c",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Response",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 11,
+              "hasOpenThreats": false,
+              "threats": [],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Boundary",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "x": 368,
+                "y": 276
+              },
+              "target": {
+                "x": 458,
+                "y": 237
+              },
+              "vertices": [
+                {
+                  "x": 392,
+                  "y": 232
+                }
+              ],
+              "id": "e84b0c9f-3e31-4baa-8c41-1be66031c459",
+              "z": 12,
+              "attrs": {}
+            },
+            {
+              "type": "tm.Boundary",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "x": 411,
+                "y": 412
+              },
+              "target": {
+                "x": 343,
+                "y": 305
+              },
+              "vertices": [
+                {
+                  "x": 346,
+                  "y": 372
+                }
+              ],
+              "id": "ee1022f7-aad6-44a2-902d-249c29ac707f",
+              "z": 13,
+              "attrs": {}
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "x": 687,
+                "y": 244
+              },
+              "target": {
+                "x": 483,
+                "y": 311
+              },
+              "vertices": [
+                {
+                  "x": 596,
+                  "y": 209
+                }
+              ],
+              "id": "8941fa46-cd00-4107-bbf7-2cb63a5a9aed",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Query Results",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 14,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "description": "An attacker could intercept the db queries in transit and obtain sensitive informations, such as db credentials, query parameters or query results.",
+                  "title": "Man in the middle attack",
+                  "type": "Information disclosure",
+                  "mitigation": "TLS Encryption with MongoDB Atlas",
+                  "$$hashKey": "object:566"
+                }
+              ],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "id": "824e6635-3e67-4113-a9d2-0e6fe41aaec4"
+              },
+              "target": {
+                "x": 721,
+                "y": 332
+              },
+              "vertices": [
+                {
+                  "x": 659,
+                  "y": 401
+                }
+              ],
+              "id": "5517f718-b087-4f0f-80a4-0655c3109342",
+              "labels": [
+                {
+                  "position": {
+                    "distance": 0.4745275545843606,
+                    "offset": -6.481710698234627
+                  },
+                  "attrs": {
+                    "text": {
+                      "text": "Mongoose Queries",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 15,
+              "hasOpenThreats": false,
+              "threats": [
+                {
+                  "status": "Mitigated",
+                  "severity": "Medium",
+                  "title": "Man in the middle attack",
+                  "type": "Information disclosure",
+                  "description": "An attacker could intercept the db queries in transit and obtain sensitive informations, such as db credentials, query parameters or query results.",
+                  "mitigation": "TLS encryption with mongoDB Atlas",
+                  "$$hashKey": "object:711"
+                }
+              ],
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Boundary",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "x": 665,
+                "y": 165
+              },
+              "target": {
+                "x": 694,
+                "y": 410
+              },
+              "vertices": [
+                {
+                  "x": 595,
+                  "y": 296
+                }
+              ],
+              "id": "512a2edf-aca2-4bf1-b6ed-8f5f40d55d85",
+              "z": 16,
+              "attrs": {}
+            },
+            {
+              "type": "tm.Boundary",
+              "size": {
+                "width": 10,
+                "height": 10
+              },
+              "smooth": true,
+              "source": {
+                "x": 295,
+                "y": 33
+              },
+              "target": {
+                "x": 299,
+                "y": 201
+              },
+              "vertices": [
+                {
+                  "x": 265,
+                  "y": 122
+                }
+              ],
+              "id": "86a1fda8-a6dd-4477-88d4-1255ee8dde41",
+              "z": 17,
+              "attrs": {}
+            }
+          ]
+        },
+        "size": {
+          "height": 882,
+          "width": 812
+        },
+        "diagramType": "STRIDE"
+      }
+    ]
+  }
+}

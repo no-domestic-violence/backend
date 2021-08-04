@@ -11,7 +11,8 @@ import verifyCaptcha from '../utils/captcha';
 
 // signup endpoint
 export const assertUserExists = async (email, next) => {
-  const userExist = await User.findOne({ email });
+  const query = email.toString();
+  const userExist = await User.findOne({ email: query });
   if (userExist) {
     next(Error.badRequest('Email already exists'));
   }
@@ -57,7 +58,8 @@ export const signup = async (req, res, next) => {
 
 // login endpoint
 export const getUser = async (email, next) => {
-  const user = await User.findOne({ email });
+  const query = email.toString();
+  const user = await User.findOne({ email: query });
   if (!user) {
     next(Error.notFound('User is not signed up'));
     return;
@@ -120,7 +122,8 @@ export const createNewPassword = async password => {
 
 export const changePassword = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const query = req.body.email.toString();
+    const user = await User.findOne({ email: query});
     await assertPasswordExist(req.body.oldPassword, user.password, next);
     const hashedNewPassword = await createNewPassword(req.body.password);
     user.password = hashedNewPassword;
@@ -133,7 +136,8 @@ export const changePassword = async (req, res, next) => {
 
 // deleting account endpoint
 export const getUserforDeletion = async (username, next) => {
-  const user = await User.findOneAndDelete({ username });
+  const query = username.toString();
+  const user = await User.findOneAndDelete({ username: query });
   if (!user) {
     next(Error.notFound('User not found'));
     return;
@@ -153,8 +157,9 @@ export const deleteUser = async (req, res, next) => {
 export const logout = async (req, res) => {
   try {
     const { refreshToken } = req.body;
+    const query = refreshToken.toString();
     await User.findOneAndUpdate(
-      { refreshToken },
+      { refreshToken: query },
       { refreshToken: '' },
       { new: true },
     );
@@ -172,7 +177,8 @@ export const verifyRefreshToken = async (req, res, next) => {
       next(Error.unauthorized('Invalid token'));
       return;
     }
-    const userWithRefreshToken = await User.findOne({ refreshToken });
+    const query = refreshToken.toString();
+    const userWithRefreshToken = await User.findOne({ refreshToken : query });
     if (!userWithRefreshToken) {
       next(Error.unauthorized('Invalid token'));
       return;
