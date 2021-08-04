@@ -32,7 +32,7 @@ export const getContact = async (req, res, next) => {
   try {
     const user = await User.findOne(
       {
-        username: req.params.username,
+        username: req.user.username,
       },
       ['contacts'],
     );
@@ -49,7 +49,7 @@ export const getContact = async (req, res, next) => {
 export const addContact = async (req, res, next) => {
   try {
     const user = await User.findOneAndUpdate(
-      { username: req.params.username },
+      { username: req.user.username },
       {
         $push: {
           contacts: {
