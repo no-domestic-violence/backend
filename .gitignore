@@ -9,9 +9,15 @@ coverage
 logs
 **/*.log
 .env
+certificates/
+private.key
+public.key
+certificate.crt
+request.csr
 
 certificate.crt
 private.key
 public.key
 request.csr
+vulnerabilities
 

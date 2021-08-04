@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     sparse: true,
   },
   password: { type: String, required: true, sparse: true },
-
+  refreshToken: {type: String },
   contacts: [contactSchema],
   role: {
     type: String,
@@ -32,4 +32,5 @@ const userSchema = new mongoose.Schema({
     enum: [ROLE.BASIC, ROLE.EDITOR, ROLE.ADMIN],
   },
 });
+
 export default mongoose.model('User', userSchema);

@@ -9,6 +9,9 @@
 - [Data Model](#--data-model)
 - [Folder structure](#folder-structure)
 - [Setup](#setup)
+- [HTTPS Certificates](#https-certificates)
+- [OWASP Dependency Check](#owasp-dependency-check)
+- [Security Measures by Web Application Security Risks according to OWASP](#security-measures-by-web-application-security-risks-according-to-owasp)
 - [Authors of the project](#authors-of-the-project)
 
 ## Project Description
@@ -87,7 +90,8 @@ yarn install
 ```s
 
   mongoURI = mongodb atlas uri
-  JWTSecret = JWTSecret uri
+  JWT_ACCESS_TOKEN_SECRET = jwt access token secret string
+  JWT_REFRESH_TOKEN_SECRET = jwt refresh token secret string
   SENTRY = team sentry link
 ```
 
@@ -214,10 +218,82 @@ heroku build:cancel
 ```
 
 ---
+## HTTPS Certificates
+
+In order to run https with certificates (locally for one server in development mode):
+
+1. generate a private key
+```s
+openssl genrsa -aes128 -out private.key 2048
+```
+
+2. generate a public key from private key
+```s
+openssl rsa -pubout -in private.key -out public.key
+```
+3. generate request
+```s
+openssl req -new  -key private.key -out request.csr
+```
+4. generate certificate
+```s
+openssl x509 -req -days 3 -in request.csr -signkey private.key -out certificate.crt
+```
+## OWASP Dependency Check.
+
+1. Make sure you have OWASP dependency-check
+
+2. Create directory for report
+```s
+mkdir vulnerabilities
+```
+3. Generate report 
+```s
+dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
+```
+
+## Security Measures by Web Application Security Risks according to OWASP
+![Application threat model](./readme_assets/pool-threat-model.png)
+
+* NoSQL Injection
+  * Use input sanitization
+  * Ensure that the database queries are not constructed directly from user-controlled data
+* Broken Authentication
+  * Use JWT authentication token
+  * Use JWT refresh token
+  * Use standard Authorization: Bearer < access token >
+  * Limit failed login attempts
+  * Increase password length
+  * Increase password strength
+  * Implement weak password check
+* Sensitive Data Exposure
+  * Store sensitive data in encrypted secure storage (client side)
+  * Store password using strong, salted hashing function with Bcrypt
+  * Enforce encryption using HTTP Strict Transport Security
+  * Encrypt all data in transit with secure TLS protocol
+  * Prevent using cache for sensitive data
+  * Use hpp express middleware to prevent HTTP parameter pollution
+* Security Misconfiguration
+  * Keep error messages short
+  * Use eslint-plugin-security and Sonar Cloud to identify potential security hotspots
+* Cross-Site Scripting XSS
+  * Use React JS and React Native that automatically escape XSS by design
+  * Enable and customise Content Security Policy (CSP)
+  * Validate all user inputs (client and server)
+* Using Components with Known Vulnerabilities
+  * Use OWASP Dependency Check
+* Reverse Engineering (mobile)
+  * Use an obfuscation tool
+* Clickjacking
+  * Implement X-Frame-Options via Content Security Policy
+* Code Tampering
+  * Detect rooted devices
 
 ## Authors of the project:
 
-- Soyoon Choi : User(contacts) API, setup error handler, authorization, setup loggers and monitoring, API documentation
+- Soyoon Choi : User(contacts) API, setup loggers and monitoring, load balancer for development, API documentation. role based access control, client/server side input validation, refresh token, setup custom error handler, authentication on web, database query sanitization
 - Irina Baeva : Setup production and development environment (yarn, babel, lint),
-  API: Articles (Create, Edit, Delete), Hotlines (Get searching), Shelters, Video (including handling multipart/form-data for image), Caching with Redis on development mode, Setup logging and monitoring.
+  API: Articles (Create, Edit, Delete), Hotlines (Get searching), Shelters, Video (including handling multipart/form-data for image), Caching with Redis on development mode, Setup logging and monitoring. client/server side input validation/sanitization, security headers including CSP, TLS encryption for development mode, implement weak password check, obfuscate bundle code, configure vulnerability check tools, authentication on mobile
 - Behnaz Derakhshani : Authentication (signup, login, changepassword, deleting account) & error handling and expectation, API: Articles(Read), API documentation
+
+

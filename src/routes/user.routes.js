@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyToken, validateObjId } from '../middleware';
+import { verifyAccessToken, validateObjId } from '../middleware';
 import {
   contactValidationRules,
   validateRequest,
@@ -17,16 +17,16 @@ const router = express.Router();
 router
   .route('/users/:username/contacts/:id')
   .patch(
-    verifyToken,
+    verifyAccessToken,
     validateObjId('Contact'),
     contactValidationRules,
     validateRequest,
     editContact,
   )
-  .delete(verifyToken, validateObjId('Contact'), deleteContact);
+  .delete(verifyAccessToken, validateObjId('Contact'), deleteContact);
 router
   .route('/users/:username/contacts')
-  .get(verifyToken, getContact)
-  .patch(verifyToken, contactValidationRules, validateRequest, addContact);
+  .get(verifyAccessToken, getContact)
+  .patch(verifyAccessToken, contactValidationRules, validateRequest, addContact);
 
 export default router;

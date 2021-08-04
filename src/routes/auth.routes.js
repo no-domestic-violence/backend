@@ -1,20 +1,21 @@
 import express from 'express';
 import { signupValidation, loginValidation } from '../utils/authentication';
 import {
+  verifyAccessToken,
   validationErrors,
   requireAllfields,
   requireCredentials,
-} from '../middleware/authMiddlewares';
-
+} from '../middleware';
 // eslint-disable-next-line object-curly-newline
 import {
   signup,
   login,
   changePassword,
   deleteUser,
-  refreshUserToken,
+  verifyRefreshToken,
+  logout,
 } from '../controllers';
-import { verifyToken } from '../middleware';
+
 import {
   GeneralRouteRateLimit,
   loginEmailRouteRateLimit,
@@ -44,10 +45,11 @@ router
     validationErrors,
     login,
   );
+router.route('/logout').post(logout);
+router.route('/refreshToken').post(verifyRefreshToken);
 router
   .route('/changePassword')
-  .post(verifyToken, requireCredentials, changePassword);
-router.route('/deleteUser').delete(deleteUser);
-router.route('/refreshToken').post(verifyToken, refreshUserToken);
+  .post(verifyAccessToken, requireCredentials, changePassword);
+router.route('/deleteUser').delete(verifyAccessToken, deleteUser);
 
 export default router;
