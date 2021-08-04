@@ -71,14 +71,6 @@ describe('User endpoints', () => {
     expect(res.body.message).toEqual('Invalid token');
   });
 
-  test('should respond with an error when getting contacts of nonexistent user', async () => {
-    const res = await request(app)
-      .get(`/api/users/invalidusername/contacts`)
-      .set({ authorization: `Bearer ${mockToken}` });
-    expect(res.statusCode).toBe(404);
-    expect(res.body.message).toEqual('User does not exist');
-  });
-
   test('should successfully add a contact', async () => {
     await request(app)
       .patch(`/api/users/${username}/contacts`)
@@ -108,15 +100,6 @@ describe('User endpoints', () => {
       .send(mockContact);
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toEqual('Invalid token');
-  });
-
-  test('should respond with an error when adding a contact on nonexistent user', async () => {
-    const res = await request(app)
-      .patch(`/api/users/invalidusername/contacts`)
-      .set({ authorization: `Bearer ${mockToken}` })
-      .send(mockContact);
-    expect(res.statusCode).toBe(404);
-    expect(res.body.message).toEqual('User does not exist');
   });
 
   test('should successfully edit a contact', async () => {
