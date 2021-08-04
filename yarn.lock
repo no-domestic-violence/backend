@@ -3187,6 +3187,11 @@ express-prometheus-middleware@^1.1.0:
   optionalDependencies:
     prometheus-gc-stats "^0.6.2"
 
+express-sslify@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/express-sslify/-/express-sslify-1.2.0.tgz#30e84bceed1557eb187672bbe1430a0a2a100d9c"
+  integrity sha1-MOhLzu0VV+sYdnK74UMKCioQDZw=
+
 express-validator@^6.6.1:
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.10.0.tgz#66f70f73d04fb55c227401c75fe3713879c9cb70"

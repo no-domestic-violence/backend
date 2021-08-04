@@ -10,6 +10,7 @@ import * as Tracing from '@sentry/tracing';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import hpp from 'hpp';
+import enforce from 'express-sslify';
 import httpLogger from './logger/http-logger';
 import {
   hotlineRoutes,
@@ -26,6 +27,7 @@ import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(httpLogger);
 app.use(morgan('dev'));
 app.use(cors());
