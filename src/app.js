@@ -10,6 +10,7 @@ import * as Tracing from '@sentry/tracing';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import hpp from 'hpp';
+import enforce from 'express-sslify';
 import httpLogger from './logger/http-logger';
 import {
   hotlineRoutes,
@@ -26,6 +27,7 @@ import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
+process.env.NODE_ENV !== 'test' && app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(httpLogger);
 app.use(morgan('dev'));
 app.use(cors());
@@ -57,6 +59,7 @@ app.use(
   helmet.hsts({
     maxAge: 15552000, // Sensitive, recommended >= 15552000
     includeSubDomains: true, // Sensitive, recommended 'true'
+    preload: true, 
   }),
 );
 

@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      JWT_ACCESS_TOKEN_SECRET: testsecret
 
     strategy:
       matrix:
