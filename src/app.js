@@ -27,7 +27,8 @@ import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
-process.env.NODE_ENV !== 'test' && app.use(enforce.HTTPS({ trustProtoHeader: true }));
+process.env.NODE_ENV === 'prod' &&
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(httpLogger);
 app.use(morgan('dev'));
 app.use(cors());
@@ -59,7 +60,7 @@ app.use(
   helmet.hsts({
     maxAge: 15552000, // Sensitive, recommended >= 15552000
     includeSubDomains: true, // Sensitive, recommended 'true'
-    preload: true, 
+    preload: true,
   }),
 );
 
