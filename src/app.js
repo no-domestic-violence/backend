@@ -27,7 +27,7 @@ import swaggerDocument from './assets/swagger.json';
 
 const app = express();
 
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+process.env.NODE_ENV !== 'test' && app.use(enforce.HTTPS({ trustProtoHeader: true }));
 app.use(httpLogger);
 app.use(morgan('dev'));
 app.use(cors());
