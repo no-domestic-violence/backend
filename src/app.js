@@ -57,6 +57,7 @@ app.use(
   helmet.hsts({
     maxAge: 15552000, // Sensitive, recommended >= 15552000
     includeSubDomains: true, // Sensitive, recommended 'true'
+    preload: true, 
   }),
 );
 
