@@ -288,12 +288,13 @@ dependency-check --scan ./ -f JSON -f HTML -f XML -o vulnerabilities
   * Implement X-Frame-Options via Content Security Policy
 * Code Tampering
   * Detect rooted devices
+* Brute Force Attacks
+  * Implement rate limiting on authentication routes
+  * Implement Google reCAPTCHA v3 on web-app authentication
 
 ## Authors of the project:
 
 - Soyoon Choi : User(contacts) API, setup loggers and monitoring, load balancer for development, API documentation. role based access control, client/server side input validation, refresh token, setup custom error handler, authentication on web, database query sanitization
 - Irina Baeva : Setup production and development environment (yarn, babel, lint),
   API: Articles (Create, Edit, Delete), Hotlines (Get searching), Shelters, Video (including handling multipart/form-data for image), Caching with Redis on development mode, Setup logging and monitoring. client/server side input validation/sanitization, security headers including CSP, TLS encryption for development mode, implement weak password check, obfuscate bundle code, configure vulnerability check tools, authentication on mobile
-- Behnaz Derakhshani : Authentication (signup, login, changepassword, deleting account) & error handling and expectation, API: Articles(Read), API documentation
-
-
+- Behnaz Derakhshani : Implementing Google reCAPTCHA v3 on web-app authentication, Implementing rate limiting on authentication routes with Redis, Refresh token, Server side input validation, Authentication (signup, login, changepassword, deleting account) & error handling and expectation, API: Articles(Read), API documentation
