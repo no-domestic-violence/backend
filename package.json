@@ -61,6 +61,7 @@
     "node-fetch": "^2.6.1",
     "prettier-eslint-cli": "^5.0.1",
     "prom-client": "^13.1.0",
+    "rate-limiter-flexible": "^2.2.4",
     "redis": "^3.0.2",
     "redis-mock": "^0.56.3",
     "regenerator-runtime": "^0.13.7",
